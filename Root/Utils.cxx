@@ -1,10 +1,15 @@
+// WtStat
 #include <WtStat/Utils.h>
-#include <TH1D.h>
+// TopLoop
 #include <TopLoop/spdlog/fmt/fmt.h>
 #include <TopLoop/spdlog/spdlog.h>
 #include <TopLoop/spdlog/sinks/stdout_color_sinks.h>
 #include <TopLoop/json/json.hpp>
+// ATLAS
 #include <PathResolver/PathResolver.h>
+// ROOT
+#include <TH1D.h>
+// C++
 #include <fstream>
 
 void wts::shiftOverflowAndScale(TH1D* h, float lumi) {

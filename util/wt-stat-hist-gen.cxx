@@ -1,19 +1,26 @@
-#include <TopLoop/spdlog/fmt/fmt.h>
-#include <WtLoop/Externals/CLI11.hpp>
+// WtStat
 #include <WtStat/Utils.h>
 #include <WtStat/TemplateSet.h>
-
+// TopLoop
+#include <TopLoop/spdlog/fmt/fmt.h>
+// WtLoop
+#include <WtLoop/Externals/CLI11.hpp>
 
 int main(int argc, char *argv[]) {
   CLI::App app{"Make histograms for the tW fit"};
   std::vector<std::string> inputFiles;
   std::string treePref = "WtTMVA";
+  std::string treeSuff = "nominal";
   std::string templateSetName;
   std::string outFileName;
-  auto inputFiles_o = app.add_option("-i,--input-files", inputFiles, "input ROOT files")->required()->check(CLI::ExistingFile);
-  auto treeName_o = app.add_option("-t,--tree-pref", treePref, "tree prefix");
-  auto templateSetName_o = app.add_option("-n,--name", templateSetName, "template set name")->required();
-  auto outFile_o = app.add_option("-o,--out-file", outFileName, "output file name")->required();
+  bool doWeights;
+  app.add_option("-i,--input-files", inputFiles, "input ROOT files")->required()->check(CLI::ExistingFile);
+  app.add_option("-t,--tree-pref", treePref, "tree prefix");
+  app.add_option("-s,--tree-suff", treeSuff, "tree suffix");
+  app.add_option("-n,--name", templateSetName, "template set name")->required();
+  app.add_option("-o,--out-file", outFileName, "output file name")->required();
+  app.add_flag("-w,--do-weights", doWeights, "process systematic weights");
+
   CLI11_PARSE(app, argc, argv);
 
   ROOT::EnableImplicitMT();
@@ -32,7 +39,7 @@ int main(int argc, char *argv[]) {
     {"VR_2j0b",     "reg2j0b && elmu && OS"}
   };
 
-  wts::TemplateSet templateSet(templateSetName, treePref, true, false);
+  wts::TemplateSet templateSet(templateSetName, treePref, treeSuff, doWeights);
   templateSet.setFiles(inputFiles);
   templateSet.addHTemplate({50, 27., 277., "pT_lep1"});
   templateSet.addHTemplate({50, 20., 170., "pT_lep2"});
