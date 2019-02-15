@@ -28,6 +28,9 @@ def sort_for_nominal_tree(file_list):
         files[title] = []
 
     for f in file_list:
+        if "nominal" not in f:
+            continue
+
         if "MCNP" in f:
             files["MCNP"].append(f)
         elif "Data" in f:
@@ -54,21 +57,19 @@ def sort_for_systematic_trees(file_list):
             continue
         else:
             if "tW_DR" in f:
-                if not re_tW_sys_FS.search(f):
-                    continue
-                sys_tree_name = f.split(re_tW_sys_FS.search(f)[0])[-1].split(".")[0]
-                if ("tW_DR_FS", sys_tree_name) not in files:
-                    files[("tW_DR_FS", sys_tree_name)] = [f]
-                else:
-                    files[("tW_DR_FS", sys_tree_name)].apend(f)
+                if re_tW_sys_FS.search(f):
+                    sys_tree_name = f.split(re_tW_sys_FS.search(f).group(0))[-1].split(".")[0]
+                    if ("tW_DR_FS", sys_tree_name) not in files:
+                        files[("tW_DR_FS", sys_tree_name)] = [f]
+                    else:
+                        files[("tW_DR_FS", sys_tree_name)].append(f)
             elif "ttbar" in f:
-                if not re_tt_sys_FS.search(f):
-                    continue
-                sys_tree_name = f.split(re_tt_sys_FS.search(f)[0])[-1].split(".")[0]
-                if ("ttbar_FS", sys_tree_name) not in files:
-                    files[("ttbar_FS", sys_tree_name)] = [f]
-                else:
-                    files[("ttbar_FS", sys_tree_name)].append(f)
+                if re_tt_sys_FS.search(f):
+                    sys_tree_name = f.split(re_tt_sys_FS.search(f).group(0))[-1].split(".")[0]
+                    if ("ttbar_FS", sys_tree_name) not in files:
+                        files[("ttbar_FS", sys_tree_name)] = [f]
+                    else:
+                        files[("ttbar_FS", sys_tree_name)].append(f)
     return files
 
 
@@ -77,6 +78,8 @@ def create_nominal_executions(
 ):
     exe_list = []
     for title, files in sorted_files.items():
+        if not files:
+            continue
         spaced_files = "-i {}".format(" ".join(files))
         exe = "wt-stat-hist-gen -o {ofile} -t {tp} -s nominal -n {title} {files}".format(
             ofile=outfile, tp=tree_prefix, title=title, files=spaced_files
@@ -93,6 +96,8 @@ def create_systtree_executions(
 ):
     exe_list = []
     for k, files in sorted_files.items():
+        if not files:
+            continue
         title = k[0]
         suff = k[1]
         spaced_files = "-i {}".format(" ".join(files))
