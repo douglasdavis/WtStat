@@ -1,0 +1,54 @@
+#!/usr/bin/env python
+
+from WtStat.sorting import create_nominal_executions
+from WtStat.sorting import sort_for_nominal_tree
+from WtStat.sorting import sort_for_systematic_trees
+from WtStat.sorting import create_systtree_executions
+import subprocess
+import argparse
+
+def main():
+    parser = argparse.ArgumentParser(description="quick checker")
+
+    subcommands = parser.add_subparsers(dest='command')
+
+    histgen = subcommands.add_parser('histgen')
+    histgen.add_argument(
+        "--files",
+        dest="files",
+        type=str,
+        nargs="+",
+        help="file list to sort and histogram",
+        required=True,
+    )
+    histgen.add_argument(
+        "--run-sys-weights",
+        dest="sys_weights",
+        action="store_true",
+        help="run systematic weights",
+    )
+    histgen.add_argument(
+        "--out-file",
+        dest="outfile_name",
+        default="histograms.root",
+        required=False,
+        help="output file name",
+    )
+
+    confgen = subcommands.add_parser('confgen')
+
+    args = parser.parse_args()
+
+    if args.command == "histgen":
+        nominal_sorted = sort_for_nominal_tree(args.files)
+        sys_sorted = sort_for_systematic_trees(args.files)
+        nom_exes = create_nominal_executions(
+            nominal_sorted, outfile=args.outfile_name, sys_weights=args.sys_weights
+        )
+        sys_exes = create_systtree_executions(sys_sorted, outfile=args.outfile_name)
+        for exe in (nom_exes + sys_exes):
+            subprocess.call(exe, shell=True)
+        return 0
+
+if __name__ == '__main__':
+    main()
