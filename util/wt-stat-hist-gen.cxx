@@ -23,10 +23,10 @@ int main(int argc, char *argv[]) {
     {"SR_2j1b",     "reg2j1b && elmu && OS"},
     {"SR_2j2b",     "reg2j2b && elmu && OS"},
     {"SR_2j2bmblc", "reg2j2b && elmu && OS && minimaxmbl<150"},
-    {"CR_3j",       "reg3j && elmu && OS"},
-    {"CR_4j",       "reg4j && elmu && OS"},
-    {"CR_3j1b",     "reg3j1b && elmu && OS"},
-    {"CR_4j1b",     "reg4j1b && elmu && OS"},
+    {"CR_3j",       "njets==3 && elmu && OS"},
+    {"CR_4j",       "njets==3 && elmu && OS"},
+    {"CR_3j1b",     "njets==3 && nbjets==1 && elmu && OS"},
+    {"CR_4j1b",     "njets==4 && nbjets==1 && elmu && OS"},
     {"VR_ALL",      "elmu && OS"},
     {"VR_1j0b",     "reg1j0b && elmu && OS"},
     {"VR_2j0b",     "reg2j0b && elmu && OS"}
@@ -36,6 +36,9 @@ int main(int argc, char *argv[]) {
   templateSet.setFiles(inputFiles);
   templateSet.addHTemplate({50, 27., 277., "pT_lep1"});
   templateSet.addHTemplate({50, 20., 170., "pT_lep2"});
+  templateSet.addHTemplate({50, 25., 270., "pT_jet1"});
+  templateSet.addHTemplate({50, 25., 175., "pT_jet2"});
+  templateSet.addHTemplate({100, -1.0, 1.0, "bdt_response"});
 
   auto outFile = TFile::Open(outFileName.c_str(), "UPDATE");
   templateSet.flowThroughFilters(filters, outFile);

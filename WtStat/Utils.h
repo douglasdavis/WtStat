@@ -1,6 +1,7 @@
 #ifndef WTSTAT_UTILS_H
 #define WTSTAT_UTILS_H
 
+#include <TopLoop/json/json.hpp>
 #include <TH1D.h>
 #include <ROOT/RResultPtr.hxx>
 #include <ROOT/RDFInterface.hxx>
@@ -25,6 +26,7 @@ namespace wts {
 
   void saveToFile(ROOT::RDF::RResultPtr<TH1D>& h, TFile* f);
   void shiftOverflowAndScale(TH1D* h, float lumi = 1.0);
+  nlohmann::json getSystematicJson();
 }
 
 #endif

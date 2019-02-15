@@ -38,6 +38,6 @@ atlas_install_python_modules( python/* )
 # Install scripts
 atlas_install_scripts( scripts/* )
 
-atlas_add_executable( wt-fit-create-hists
-  util/wt-fit-create-hists.cxx
-  LINK_LIBRARIES ${ROOT_LIBRARIES} WtStat TopLoop )
+atlas_add_executable( wt-stat-hist-gen
+  util/wt-stat-hist-gen.cxx
+  LINK_LIBRARIES ${ROOT_LIBRARIES} WtStat )

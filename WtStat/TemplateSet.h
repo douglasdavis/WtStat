@@ -2,10 +2,12 @@
 #define WTSTAT_TEMPLATESET_H
 
 #include <WtStat/Utils.h>
+#include <TopLoop/spdlog/spdlog.h>
 
 #include <TChain.h>
 
 #include <vector>
+#include <memory>
 
 namespace wts {
   class TemplateSet {
@@ -17,6 +19,7 @@ namespace wts {
     std::vector<std::string> m_fileNames;
     std::vector<std::string> m_extraWeights;
     std::vector<wts::HTemplate> m_histTemplates;
+    std::shared_ptr<spdlog::logger> m_logger;
 
   public:
     TemplateSet() = delete;
