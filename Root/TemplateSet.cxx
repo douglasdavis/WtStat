@@ -46,7 +46,8 @@ void wts::TemplateSet::flowThroughFilters(const wts::FilterDefs_t& filters,
     auto filterName = std::get<0>(ifilter);
     auto filter = std::get<1>(ifilter);
     for (const auto& htemplate : m_histTemplates) {
-      std::string hname = fmt::format("{}_{}_{}{}", filterName, htemplate.var, m_name, exsuff);
+      std::string hname =
+          fmt::format("{}_{}_{}{}", filterName, htemplate.var, m_name, exsuff);
       histograms.push_back(
           filter.Histo1D(ROOT::RDF::TH1DModel(hname.c_str(), hname.c_str(), htemplate.nbins,
                                               htemplate.xmin, htemplate.xmax),

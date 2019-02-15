@@ -5,31 +5,36 @@
 #include <TopLoop/json/json.hpp>
 // ROOT
 #include <TH1D.h>
-#include <ROOT/RResultPtr.hxx>
 #include <ROOT/RDFInterface.hxx>
+#include <ROOT/RResultPtr.hxx>
 // C++
 #include <map>
 #include <string>
 
 namespace wts {
 
-  using FilterDefs_t = std::map<std::string, std::string>;
-  using Filter_t = ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void>;
-  using FilterTable_t = std::map<std::string, wts::Filter_t>;
-  using HResult_t = ROOT::RDF::RResultPtr<TH1D>;
+using FilterDefs_t = std::map<std::string, std::string>;
+using Filter_t = ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void>;
+using FilterTable_t = std::map<std::string, wts::Filter_t>;
+using HResult_t = ROOT::RDF::RResultPtr<TH1D>;
 
-  struct HTemplate {
-    HTemplate(int n, float min, float max, std::string v)
+/// simple struct to define a template histogram
+struct HTemplate {
+  HTemplate(int n, float min, float max, std::string v)
       : nbins(n), xmin(min), xmax(max), var(v) {}
-    int nbins;
-    double xmin;
-    double xmax;
-    std::string var;
-  };
+  int nbins;
+  double xmin;
+  double xmax;
+  std::string var;
+};
 
-  void saveToFile(ROOT::RDF::RResultPtr<TH1D>& h, TFile* f);
-  void shiftOverflowAndScale(TH1D* h, float lumi = 1.0);
-  nlohmann::json getSystematicJson();
-}
+/// save a histogram \p h from RDF Filter to file \p f
+void saveToFile(ROOT::RDF::RResultPtr<TH1D>& h, TFile* f);
+/// shift under and overflow bins of \p h and scale to \p lumi
+void shiftOverflowAndScale(TH1D* h, float lumi = 1.0);
+/// clean helper function for grabbing systematic json info
+nlohmann::json getSystematicJson();
+
+}  // namespace wts
 
 #endif
