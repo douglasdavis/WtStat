@@ -16,7 +16,7 @@ int main(int argc, char* argv[]) {
   std::string outFileName;
   std::string jsonFileName;
   bool doWeights;
-  bool multithreaded;
+  bool singlethreaded = false;
   std::vector<std::string> extraWeights{};
   app.add_option("-i,--input-files", inputFiles, "input ROOT files")
       ->required()
@@ -31,11 +31,11 @@ int main(int argc, char* argv[]) {
                  "json file defining templates and filters")
       ->required()
       ->check(CLI::ExistingFile);
-  app.add_option("-m,--multithread", multithreaded, "run ROOT::EnableImplicitMT()");
+  app.add_flag("--no-multithread", singlethreaded, "run ROOT::EnableImplicitMT()");
 
   CLI11_PARSE(app, argc, argv);
 
-  if (multithreaded) {
+  if (!singlethreaded) {
     ROOT::EnableImplicitMT();
   }
 
