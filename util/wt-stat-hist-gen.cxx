@@ -3,17 +3,20 @@
 #include <WtStat/Utils.h>
 // TopLoop
 #include <TopLoop/spdlog/fmt/fmt.h>
+#include <TopLoop/json/json.hpp>
 // WtLoop
 #include <WtLoop/Externals/CLI11.hpp>
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
   CLI::App app{"Make histograms for the tW fit"};
   std::vector<std::string> inputFiles;
   std::string treePref = "WtTMVA";
   std::string treeSuff = "nominal";
   std::string templateSetName;
   std::string outFileName;
+  std::string jsonFileName;
   bool doWeights;
+  bool multithreaded;
   std::vector<std::string> extraWeights{};
   app.add_option("-i,--input-files", inputFiles, "input ROOT files")
       ->required()
@@ -24,31 +27,36 @@ int main(int argc, char *argv[]) {
   app.add_option("-o,--out-file", outFileName, "output file name")->required();
   app.add_flag("-w,--do-weights", doWeights, "process systematic weights");
   app.add_option("-x,--extra-weights", extraWeights, "extra weights to process");
+  app.add_option("-j,--json-config", jsonFileName,
+                 "json file defining templates and filters")
+      ->required()
+      ->check(CLI::ExistingFile);
+  app.add_option("-m,--multithread", multithreaded, "run ROOT::EnableImplicitMT()");
 
   CLI11_PARSE(app, argc, argv);
 
-  ROOT::EnableImplicitMT();
+  if (multithreaded) {
+    ROOT::EnableImplicitMT();
+  }
 
-  wts::FilterDefs_t filters = {{"SR_1j1b", "reg1j1b && elmu && OS"},
-                               {"SR_2j1b", "reg2j1b && elmu && OS"},
-                               {"SR_2j2b", "reg2j2b && elmu && OS"},
-                               {"SR_2j2bmblc", "reg2j2b && elmu && OS && minimaxmbl<150"},
-                               {"CR_3j", "njets==3 && elmu && OS"},
-                               {"CR_4j", "njets==3 && elmu && OS"},
-                               {"CR_3j1b", "njets==3 && nbjets==1 && elmu && OS"},
-                               {"CR_4j1b", "njets==4 && nbjets==1 && elmu && OS"},
-                               {"VR_ALL", "elmu && OS"},
-                               {"VR_1j0b", "reg1j0b && elmu && OS"},
-                               {"VR_2j0b", "reg2j0b && elmu && OS"}};
+  std::ifstream in(jsonFileName.c_str());
+  auto j = nlohmann::json::parse(in);
+
+  wts::FilterDefs_t filters;
+  for (const auto& filt : j["filters"]) {
+    filters.emplace(
+        std::make_pair(filt["name"].get<std::string>(), filt["filter"].get<std::string>()));
+  }
 
   wts::TemplateSet templateSet(templateSetName, treePref, treeSuff, doWeights);
   templateSet.setFiles(inputFiles);
   templateSet.setExtraWeights(extraWeights);
-  templateSet.addHTemplate({50, 27., 277., "pT_lep1"});
-  templateSet.addHTemplate({50, 20., 170., "pT_lep2"});
-  templateSet.addHTemplate({50, 25., 270., "pT_jet1"});
-  templateSet.addHTemplate({50, 25., 175., "pT_jet2"});
-  templateSet.addHTemplate({100, -1.0, 1.0, "bdt_response"});
+
+  for (const auto& htemplate : j["templates"]) {
+    templateSet.addHTemplate({htemplate["nbins"].get<int>(), htemplate["xmin"].get<float>(),
+                              htemplate["xmax"].get<float>(),
+                              htemplate["var"].get<std::string>()});
+  }
 
   auto outFile = TFile::Open(outFileName.c_str(), "UPDATE");
   templateSet.flowThroughFilters(filters, outFile);
