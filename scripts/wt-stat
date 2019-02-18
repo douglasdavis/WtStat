@@ -34,6 +34,12 @@ def main():
         required=False,
         help="output file name",
     )
+    histgen.add_argument(
+        "--dry",
+        dest="dry",
+        action="store_true",
+        help="don't execute, just print commands"
+    )
 
     confgen = subcommands.add_parser('confgen')
 
@@ -47,7 +53,10 @@ def main():
         )
         sys_exes = create_systtree_executions(sys_sorted, outfile=args.outfile_name)
         for exe in (nom_exes + sys_exes):
-            subprocess.call(exe, shell=True)
+            if args.dry:
+                print(exe)
+            else:
+                subprocess.call(exe, shell=True)
         return 0
 
 if __name__ == '__main__':

@@ -67,7 +67,6 @@ void wts::TemplateSet::flowThroughFilters(const wts::FilterDefs_t& filters,
           std::string removethis = "weight_sys_";
           auto findws = xwshort.find(removethis);
           xwshort.erase(findws, removethis.length());
-          std::cout << xwshort << " " << xw << std::endl;
           std::string hname =
               fmt::format("{}_{}_{}_{}", filterName, htemplate.var, m_name, xwshort);
           histograms.push_back(filter.Histo1D(
