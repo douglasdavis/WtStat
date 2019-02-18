@@ -18,12 +18,7 @@ def sort_for_nominal_tree(file_list):
         "tW_MCaNLO_AFII": re.compile("tW_412003_AFII"),
     }
 
-    files = {
-        "Data": [],
-        "Diboson": [],
-        "Zjets": [],
-        "MCNP": [],
-    }
+    files = {"Data": [], "Diboson": [], "Zjets": [], "MCNP": []}
     for title in regexes:
         files[title] = []
 
@@ -58,14 +53,18 @@ def sort_for_systematic_trees(file_list):
         else:
             if "tW_DR" in f:
                 if re_tW_sys_FS.search(f):
-                    sys_tree_name = f.split(re_tW_sys_FS.search(f).group(0))[-1].split(".")[0]
+                    sys_tree_name = f.split(re_tW_sys_FS.search(f).group(0))[-1].split(
+                        "."
+                    )[0]
                     if ("tW_DR_FS", sys_tree_name) not in files:
                         files[("tW_DR_FS", sys_tree_name)] = [f]
                     else:
                         files[("tW_DR_FS", sys_tree_name)].append(f)
             elif "ttbar" in f:
                 if re_tt_sys_FS.search(f):
-                    sys_tree_name = f.split(re_tt_sys_FS.search(f).group(0))[-1].split(".")[0]
+                    sys_tree_name = f.split(re_tt_sys_FS.search(f).group(0))[-1].split(
+                        "."
+                    )[0]
                     if ("ttbar_FS", sys_tree_name) not in files:
                         files[("ttbar_FS", sys_tree_name)] = [f]
                     else:
@@ -87,7 +86,17 @@ def create_nominal_executions(
         if sys_weights:
             if title == "tW_DR_FS" or title == "ttbar_FS":
                 exe = "{} -w".format(exe)
+
+        if (
+            "ttbar_RU" in title
+            or "ttbar_FS" in title
+            or "ttbar_AFII" in title
+            or "tW_DR_FS" in title
+        ):
+            exe = "{} -x weight_sys_radLo weight_sys_radHi".format(exe)
+
         exe_list.append(exe)
+
     return exe_list
 
 

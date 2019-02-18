@@ -53,8 +53,29 @@ void wts::TemplateSet::flowThroughFilters(const wts::FilterDefs_t& filters,
                                               htemplate.xmin, htemplate.xmax),
                          htemplate.var, "weight_nominal"));
     }
-    if (doSysWeights()) {
-      flowOnSysWeights(filter, filterName, histograms);
+
+    // only do extra weight stuff if nominal
+    if (m_treeSuff == "nominal") {
+      // do the systematic weights
+      if (doSysWeights()) {
+        flowOnSysWeights(filter, filterName, histograms);
+      }
+      // do extra weights
+      for (auto const& xw : m_extraWeights) {
+        for (const auto& htemplate : m_histTemplates) {
+          std::string xwshort = xw;
+          std::string removethis = "weight_sys_";
+          auto findws = xwshort.find(removethis);
+          xwshort.erase(findws, removethis.length());
+          std::cout << xwshort << " " << xw << std::endl;
+          std::string hname =
+              fmt::format("{}_{}_{}_{}", filterName, htemplate.var, m_name, xwshort);
+          histograms.push_back(filter.Histo1D(
+              ROOT::RDF::TH1DModel(hname.c_str(), hname.c_str(), htemplate.nbins,
+                                   htemplate.xmin, htemplate.xmax),
+              htemplate.var, xw));
+        }
+      }
     }
   }
 

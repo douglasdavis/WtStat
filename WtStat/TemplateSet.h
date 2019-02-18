@@ -39,6 +39,7 @@ class TemplateSet {
   void addFile(const std::string& fname) { m_fileNames.emplace_back(fname); }
   void setFiles(const std::vector<std::string>& files) { m_fileNames = files; }
   void addExtraWeight(const std::string& wname) { m_extraWeights.emplace_back(wname); }
+  void setExtraWeights(const std::vector<std::string>& names) { m_extraWeights = names; }
   void addHTemplate(wts::HTemplate&& htemplate) { m_histTemplates.emplace_back(htemplate); }
 
   const std::string& name() const { return m_name; }
