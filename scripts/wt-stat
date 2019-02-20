@@ -35,6 +35,13 @@ def main():
         help="output file name",
     )
     histgen.add_argument(
+        "--json-config",
+        dest="json_config",
+        type=str,
+        required=True,
+        help="JSON filter and template config",
+    )
+    histgen.add_argument(
         "--dry",
         dest="dry",
         action="store_true",
@@ -54,9 +61,9 @@ def main():
         sys_exes = create_systtree_executions(sys_sorted, outfile=args.outfile_name)
         for exe in (nom_exes + sys_exes):
             if args.dry:
-                print(exe)
+                print('{} -j {}'.format(exe, args.json_config))
             else:
-                subprocess.call(exe, shell=True)
+                subprocess.call('{} -j {}'.format(exe, args.json_config), shell=True)
         return 0
 
 if __name__ == '__main__':
