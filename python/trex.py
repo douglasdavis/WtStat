@@ -8,13 +8,15 @@ def block(block_type, block_title, **options):
     return "{}\n".format(ret)
 
 
-def Job(name, hpath, hfile):
+def Job(name, hpath, hfile, lumi):
     bk = block(
         "Job",
         name,
         CmeLabel='"13 TeV"',
         POI='"SigXsecOverSM"',
         ReadFrom="HIST",
+        Lumi=lumi,
+        LumiLabel='"{} fb^{{-1}}"'.format(lumi),
         HistoPath=hpath,
         HistoFile=hfile,
         DebugLevel=1,
@@ -30,6 +32,7 @@ def Job(name, hpath, hfile):
         DoTables="TRUE",
         DoSignalRegionsPlot="TRUE",
         DoPieChartPlot="True",
+        PlotOptions="YIELDS,NOXERR",
     )
     return bk
 
@@ -215,7 +218,7 @@ sys_zjets_norm_1j1b = block(
     Title='"Norm Zjets 1j1b"',
     OverallUp=0.5,
     OverallDown=-0.5,
-    Samples="Diboson",
+    Samples="Zjets",
     Regions="reg1j1b",
     Category='"Norms"',
 )
@@ -227,7 +230,7 @@ sys_zjets_norm_2j1b = block(
     Title='"Norm Zjets 2j1b"',
     OverallUp=0.5,
     OverallDown=-0.5,
-    Samples="Diboson",
+    Samples="Zjets",
     Regions="reg2j1b",
     Category='"Norms"',
 )
@@ -239,7 +242,7 @@ sys_zjets_norm_2j2b = block(
     Title='"Norm Zjets 2j2b"',
     OverallUp=0.5,
     OverallDown=-0.5,
-    Samples="Diboson",
+    Samples="Zjets",
     Regions="reg2j2b",
     Category='"Norms"',
 )
@@ -289,3 +292,128 @@ sys_tW_DRDS = block(
     Symmetrisation="ONESIDED",
     Category='"Modeling"',
 )
+
+sys_tW_HS = block(
+    "Systematic",
+    "tW_HS",
+    Title='"tW Hard Scatter"',
+    Samples="tW",
+    HistoNameSufUp='"_MCaNLO_AFII"',
+    ReferenceSample="tWghost",
+    Symmetrisation="ONESIDED",
+    Category='"Modeling"',
+)
+
+sys_tW_PS = block(
+    "Systematic",
+    "tW_PS",
+    Title='"tW Parton Shower"',
+    Samples="tW",
+    HistoNameSufUp='"_H7_AFII"',
+    ReferenceSample="tWghost",
+    Symmetrisation="ONESIDED",
+    Category='"Modeling"'
+)
+
+sys_tW_AR = block(
+    "Systematic",
+    "tW_AR",
+    Title='"tW Add. Radiation"',
+    Samples="tW",
+    HistoNameSufUp="_radHi",
+    HistoNameSufDown="_radLo",
+    Symmetrisation="TWOSIDED",
+    Category="Modeling",
+)
+
+sys_ttbar_HS = block(
+    "Systematic",
+    "ttbar_HS",
+    Title='"ttbar Hard Scatter"',
+    Samples="ttbar",
+    HistoNameSufUp='"_MCaNLO_AFII"',
+    ReferenceSample="ttbarghost",
+    Symmetrisation="ONESIDED",
+    Category='"Modeling"',
+)
+
+sys_ttbar_PS = block(
+    "Systematic",
+    "ttbar_PS",
+    Title='"ttbar Parton Shower"',
+    Samples="ttbar",
+    HistoNameSufUp='"_H7_AFII"',
+    ReferenceSample="ttbarghost",
+    Symmetrisation="ONESIDED",
+    Category='"Modeling"'
+)
+
+sys_ttbar_AR = block(
+    "Systematic",
+    "ttbar_AR",
+    Title='"ttbar Add. Radiation"',
+    Samples="ttbar",
+    HistoNameSufUp="_RU_AFII_radHi",
+    HistoNameSufDown="_AFII_radLo",
+    Symmetrisation="TWOSIDED",
+    ReferenceSample="ttbarghost",
+    Category='"Modeling"',
+)
+
+def get_sys_weights():
+    sys_weight_blocks = []
+    for title, options in WtStat.systematics.SYS_WEIGHTS.items():
+        upw = options[0],
+        downw = options[1]
+        category = options[2]
+        smoothing = options[3]
+        sysblock = block(
+            "Systematic",
+            title,
+            Title='"{}"'.format(title),
+            Samples="tW,ttbar",
+            HistoNameSufUp='"_{}_Up"'.format(title),
+            HistoNameSufDown='"_{}_Down"'.format(title),
+            Symmetrisation="TWOSIDED",
+            Category='"{}"'.format(category)
+        )
+        sys_weight_blocks.append(sysblock)
+    return '\n'.join(sys_weight_blocks)
+
+def get_sys_trees2s():
+    sys_tree_blocks = []
+    for title, options in WtStat.systematics.SYS_TREES_TWOSIDED.items():
+        upt = options[0]
+        downt = options[1]
+        category = options[2]
+        smoothing = options[3]
+        sysblock = block(
+            "Systematic",
+            title,
+            Title='"{}"'.format(title),
+            Samples="tW,ttbar",
+            HistoNameSufUp='"_{}"'.format(upt),
+            HistoNameSufDown='"_{}"'.format(downt),
+            Symmetrisation="TWOSIDED",
+            Category='"{}"'.format(category)
+        )
+        sys_tree_blocks.append(sysblock)
+    return '\n'.join(sys_tree_blocks)
+
+def get_sys_trees1s():
+    sys_tree_blocks = []
+    for title, options in WtStat.systematics.SYS_TREES_ONESIDED.items():
+        upt = options[0]
+        category = options[1]
+        smoothing = options[2]
+        sysblock = block(
+            "Systematic",
+            title,
+            Title='"{}"'.format(title),
+            Samples="tW,ttbar",
+            HistoNameSufUp='"_{}"'.format(upt),
+            Symmetrisation="ONESIDED",
+            Category='"{}"'.format(category)
+        )
+        sys_tree_blocks.append(sysblock)
+    return '\n'.join(sys_tree_blocks)
