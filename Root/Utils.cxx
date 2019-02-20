@@ -33,6 +33,11 @@ void wts::shiftOverflowAndScale(TH1D* h, float lumi) {
   h->SetBinError(1, std::sqrt(e_under * e_under + e_first * e_first));
   h->SetBinError(nb, std::sqrt(e_over * e_over + e_last * e_last));
 
+  h->SetBinContent(0, 0.0);
+  h->SetBinContent(nb + 1, 0,0);
+  h->SetBinError(0, 0.0);
+  h->SetBinError(nb + 1, 0.0);
+
   h->Scale(lumi);
 }
 
@@ -42,7 +47,7 @@ void wts::saveToFile(ROOT::RDF::RResultPtr<TH1D>& h, TFile* f) {
     std::cout << msg << std::endl;
     return;
   }
-  shiftOverflowAndScale(h.GetPtr(), 140.5);
+  shiftOverflowAndScale(h.GetPtr(), 1.0);
   h->SetDirectory(f);
   h->Write();
 }
