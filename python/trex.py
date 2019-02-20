@@ -58,6 +58,7 @@ def Region_1j1b_TransfoD(zs=5, zb=5):
         Label="1j1b",
         ShortLabel="1j1b",
         HistoName='"SR_1j1b_bdt_response"',
+        VariableTitle="Classifier Response",
         Binning='"AutoBin","TransfoD",{zs},{zb}'.format(zs=zs, zb=zb),
     )
     return bk
@@ -71,6 +72,7 @@ def Region_2j1b_TransfoD(zs=5, zb=5):
         Label="2j1b",
         ShortLabel="2j1b",
         HistoName='"SR_2j1b_bdt_response"',
+        VariableTitle="Classifier Response",
         Binning='"AutoBin","TransfoD",{zs},{zb}'.format(zs=zs, zb=zb),
     )
     return bk
@@ -84,6 +86,7 @@ def Region_2j2b_TransfoD(zs=5, zb=5):
         Label="2j2b",
         ShortLabel="2j2b",
         HistoName='"SR_2j2b_bdt_response"',
+        VariableTitle="Classifier Response",
         Binning='"AutoBin","TransfoD",{zs},{zb}'.format(zs=zs, zb=zb),
     )
     return bk
@@ -97,20 +100,93 @@ def Region_2j2bmblc_TransfoD(zs=5, zb=5):
         Label="2j2b",
         ShortLabel="2j2b",
         HistoName='"SR_2j2bmblc_bdt_response"',
+        VariableTitle="Classifier Response",
         Binning='"AutoBin","TransfoD",{zs},{zb}'.format(zs=zs, zb=zb),
     )
     return bk
 
+def Region_1j1b(rebin=5):
+    bk = block(
+        "Region",
+        "reg1j1b",
+        Type="SIGNAL",
+        Label="1j1b",
+        ShortLabel="1j1b",
+        HistoName='"SR_1j1b_bdt_response"',
+        VariableTitle="Classifier Response",
+        Rebin=rebin,
+    )
+    return bk
 
-def Region_3j():
+
+def Region_2j1b(rebin=5):
+    bk = block(
+        "Region",
+        "reg2j1b",
+        Type="SIGNAL",
+        Label="2j1b",
+        ShortLabel="2j1b",
+        HistoName='"SR_2j1b_bdt_response"',
+        VariableTitle="Classifier Response",
+        Rebin=rebin,
+    )
+    return bk
+
+
+def Region_2j2b(rebin=5):
+    bk = block(
+        "Region",
+        "reg2j2b",
+        Type="SIGNAL",
+        Label="2j2b",
+        ShortLabel="2j2b",
+        HistoName='"SR_2j2b_bdt_response"',
+        VariableTitle="Classifier Response",
+        Rebin=rebin,
+    )
+    return bk
+
+
+def Region_2j2bmblc(rebin=5):
+    bk = block(
+        "Region",
+        "reg2j2b",
+        Type="SIGNAL",
+        Label="2j2b",
+        ShortLabel="2j2b",
+        VariableTitle="Classifier Response",
+        HistoName='"SR_2j2bmblc_bdt_response"',
+        Rebin=rebin,
+    )
+    return bk
+
+
+def Region_3j(rebin=2):
     bk = block(
         "Region",
         "reg3j",
         Type="CONTROL",
         Label="3j",
         ShortLabel="3j",
+        VariableTitle='"#it{p}_{T}^{jet2} [GeV]"',
         HistoName='"CR_3j_pT_jet2"',
     )
+    if rebin > 0:
+        bk = "{}  Rebin: {}\n".format(bk, rebin)
+    return bk
+
+def Region_3j1b(rebin=2):
+    bk = block(
+        "Region",
+        "reg3j1b",
+        Type="CONTROL",
+        VariableTitle='"#it{p}_{T}^{jet2} [GeV]"',
+        Label="3j1b",
+        ShortLabel="3j1b",
+        HistoName='"CR_3j1b_pT_jet2"',
+    )
+    if rebin > 0:
+        bk = "{}  Rebin: {}\n".format(bk, rebin)
     return bk
 
 
@@ -360,7 +436,7 @@ sys_ttbar_AR = block(
     Category='"Modeling"',
 )
 
-def get_sys_weights():
+def get_sys_weights(do_smoothing=False):
     sys_weight_blocks = []
     for title, options in WtStat.systematics.SYS_WEIGHTS.items():
         upw = options[0],
@@ -375,12 +451,14 @@ def get_sys_weights():
             HistoNameSufUp='"_{}_Up"'.format(title),
             HistoNameSufDown='"_{}_Down"'.format(title),
             Symmetrisation="TWOSIDED",
-            Category='"{}"'.format(category)
+            Category='"{}"'.format(category),
         )
+        if do_smoothing and smoothing != 0:
+            sysblock = ('{}\n  Smoothing: {}', sysblock, smoothing)
         sys_weight_blocks.append(sysblock)
     return '\n'.join(sys_weight_blocks)
 
-def get_sys_trees2s():
+def get_sys_trees2s(do_smoothing=False):
     sys_tree_blocks = []
     for title, options in WtStat.systematics.SYS_TREES_TWOSIDED.items():
         upt = options[0]
@@ -395,12 +473,14 @@ def get_sys_trees2s():
             HistoNameSufUp='"_{}"'.format(upt),
             HistoNameSufDown='"_{}"'.format(downt),
             Symmetrisation="TWOSIDED",
-            Category='"{}"'.format(category)
+            Category='"{}"'.format(category),
         )
+        if do_smoothing and smoothing != 0:
+            sysblock = ('{}\n  Smoothing: {}', sysblock, smoothing)
         sys_tree_blocks.append(sysblock)
     return '\n'.join(sys_tree_blocks)
 
-def get_sys_trees1s():
+def get_sys_trees1s(do_smoothing=False):
     sys_tree_blocks = []
     for title, options in WtStat.systematics.SYS_TREES_ONESIDED.items():
         upt = options[0]
@@ -413,7 +493,9 @@ def get_sys_trees1s():
             Samples="tW,ttbar",
             HistoNameSufUp='"_{}"'.format(upt),
             Symmetrisation="ONESIDED",
-            Category='"{}"'.format(category)
+            Category='"{}"'.format(category),
         )
+        if do_smoothing and smoothing != 0:
+            sysblock = ('{}\n  Smoothing: {}', sysblock, smoothing)
         sys_tree_blocks.append(sysblock)
     return '\n'.join(sys_tree_blocks)

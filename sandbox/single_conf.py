@@ -5,9 +5,12 @@ print WtStat.trex.Fit("tWfit", blind="TRUE")
 
 print WtStat.trex.Region_1j1b_TransfoD(7,7)
 print WtStat.trex.Region_2j1b_TransfoD(4,4)
-#print WtStat.trex.Region_2j2b_TransfoD(4,10)
 print WtStat.trex.Region_2j2bmblc_TransfoD(6,6)
+print WtStat.trex.Region_3j(rebin=0)
 
+#print WtStat.trex.Region_1j1b()
+#print WtStat.trex.Region_2j1b()
+#print WtStat.trex.Region_2j2bmblc()
 #print WtStat.trex.Region_3j()
 
 print WtStat.trex.ghost_samples
@@ -40,6 +43,6 @@ print WtStat.trex.sys_ttbar_HS
 print WtStat.trex.sys_ttbar_PS
 print WtStat.trex.sys_ttbar_AR
 
-print WtStat.trex.get_sys_weights()
-print WtStat.trex.get_sys_trees2s()
-print WtStat.trex.get_sys_trees1s()
+print WtStat.trex.get_sys_weights(do_smoothing=False)
+print WtStat.trex.get_sys_trees2s(do_smoothing=False)
+print WtStat.trex.get_sys_trees1s(do_smoothing=False)
