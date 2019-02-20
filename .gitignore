@@ -1,3 +1,5 @@
 .DS_Store
 sandbox/test*conf
 sandbox/tWfit
+__pycache__
+*.pyc
