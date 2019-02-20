@@ -5,7 +5,7 @@ def block(block_type, block_title, **options):
     ret = '{}: "{}"'.format(block_type, block_title)
     for k, v in options.items():
         ret = "{}\n  {}: {}".format(ret, k, v)
-    return "{}\n".format(ret)
+    return "{}\n\n".format(ret)
 
 
 def Job(name, hpath, hfile, lumi):
@@ -456,7 +456,7 @@ def get_sys_weights(do_smoothing=False):
         if do_smoothing and smoothing != 0:
             sysblock = ('{}\n  Smoothing: {}', sysblock, smoothing)
         sys_weight_blocks.append(sysblock)
-    return '\n'.join(sys_weight_blocks)
+    return ''.join(sys_weight_blocks)
 
 def get_sys_trees2s(do_smoothing=False):
     sys_tree_blocks = []
@@ -478,7 +478,7 @@ def get_sys_trees2s(do_smoothing=False):
         if do_smoothing and smoothing != 0:
             sysblock = ('{}\n  Smoothing: {}', sysblock, smoothing)
         sys_tree_blocks.append(sysblock)
-    return '\n'.join(sys_tree_blocks)
+    return ''.join(sys_tree_blocks)
 
 def get_sys_trees1s(do_smoothing=False):
     sys_tree_blocks = []
@@ -498,4 +498,4 @@ def get_sys_trees1s(do_smoothing=False):
         if do_smoothing and smoothing != 0:
             sysblock = ('{}\n  Smoothing: {}', sysblock, smoothing)
         sys_tree_blocks.append(sysblock)
-    return '\n'.join(sys_tree_blocks)
+    return ''.join(sys_tree_blocks)
