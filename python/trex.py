@@ -106,12 +106,12 @@ def Region_3j():
         Type="CONTROL",
         Label="3j",
         ShortLabel="3j",
-        HistoName='"CR_3j_jet2_pT"',
+        HistoName='"CR_3j_pT_jet2"',
     )
     return bk
 
 
-_tWghost = block("Sample", "tWghost", Type="GHOST", HistoNameSuff='"_tW_DR_AFII"')
+_tWghost = block("Sample", "tWghost", Type="GHOST", HistoNameSuff='"_tW_AFII"')
 _ttbarghost = block("Sample", "ttbarghost", Type="GHOST", HistoNameSuff='"_ttbar_AFII"')
 
 ghost_samples = "{}\n{}".format(_tWghost, _ttbarghost)
@@ -128,7 +128,7 @@ tW_sample = block(
     FillColor=861,
     LineColor=1,
     Type="SIGNAL",
-    HistoNameSuff='"_tW_DR_FS"',
+    HistoNameSuff='"_tW"',
 )
 
 
@@ -140,7 +140,7 @@ ttbar_sample = block(
     FillColor=633,
     LineColor=1,
     Type="BACKGROUND",
-    HistoNameSuff='"_ttbar_FS"',
+    HistoNameSuff='"_ttbar"',
 )
 
 Zjets_sample = block(
@@ -285,7 +285,7 @@ sys_tW_DRDS = block(
     "tW_DRDS",
     Title='"tW DR vs DS"',
     Samples="tW",
-    HistoNameSufUp='"_tW_DS_FS"',
+    HistoNameSufUp='"_DS_FS"',
     Symmetrisation="ONESIDED",
     Category='"Modeling"',
 )
