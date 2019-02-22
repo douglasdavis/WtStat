@@ -2,17 +2,13 @@
 
 from __future__ import print_function
 import argparse
+import os
 import WtStat.trex
 
-try:
-    import pathlib
-except ImportError:
-    import pathlib2 as pathlib
 
 def hist_args(path):
-    p = pathlib.Path(path).resolve()
-    arg1 = str(p.parent)
-    arg2 = p.name.split('.root')[0]
+    arg1 = '/'.join(os.path.abspath(path).split('/')[:-1])
+    arg2 = os.path.abspath(path).split('/')[-1].split('.root')[0]
     return '"{}"'.format(arg1), '"{}"'.format(arg2)
 
 def main():
@@ -74,8 +70,8 @@ def main():
     outtext.append(WtStat.trex.get_sys_trees2s(do_smoothing=False))
     outtext.append(WtStat.trex.get_sys_trees1s(do_smoothing=False))
 
-    outfile = pathlib.Path(args.outname)
-    outfile.write_text(''.join(outtext))
+    with open(args.outname, 'w') as f:
+        f.write(''.join(outtext))
 
 if __name__ == '__main__':
     main()
