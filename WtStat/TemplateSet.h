@@ -48,7 +48,8 @@ class TemplateSet {
 
   void flowThroughFilters(const wts::FilterDefs_t& filters, TFile* outFile) const;
   void flowOnSysWeights(wts::Filter_t& filter, const std::string& filterName,
-                        std::vector<HResult_t>& histograms) const;
+                        std::vector<HResult_t>& histograms,
+                        double filterXmin, double filterXmax) const;
 };
 }  // namespace wts
 

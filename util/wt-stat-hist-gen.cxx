@@ -44,8 +44,15 @@ int main(int argc, char* argv[]) {
 
   wts::FilterDefs_t filters;
   for (const auto& filt : j["filters"]) {
+    double xmin = 0;
+    double xmax = 0;
+    if (filt.find("xmin") != filt.end() && filt.find("xmax") != filt.end()) {
+      xmin = filt["xmin"].get<double>();
+      xmax = filt["xmax"].get<double>();
+    }
     filters.emplace(
-        std::make_pair(filt["name"].get<std::string>(), filt["filter"].get<std::string>()));
+        std::make_pair(filt["name"].get<std::string>(),
+                       std::make_tuple(filt["filter"].get<std::string>(), xmin, xmax)));
   }
 
   wts::TemplateSet templateSet(templateSetName, treePref, treeSuff, doWeights);
@@ -55,7 +62,8 @@ int main(int argc, char* argv[]) {
   for (const auto& htemplate : j["templates"]) {
     templateSet.addHTemplate({htemplate["nbins"].get<int>(), htemplate["xmin"].get<float>(),
                               htemplate["xmax"].get<float>(),
-                              htemplate["var"].get<std::string>()});
+                              htemplate["var"].get<std::string>(),
+                              htemplate["use_filter_extrema"].get<bool>()});
   }
 
   auto outFile = TFile::Open(outFileName.c_str(), "UPDATE");

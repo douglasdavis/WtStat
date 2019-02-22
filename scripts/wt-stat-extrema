@@ -1,0 +1,47 @@
+#!/usr/bin/env python
+
+"""
+This script just checks the extrema of the bdt_response given some
+input files. Useful to run this before processing the ntuples to
+create the templates.
+"""
+
+
+import argparse
+import uproot
+import pandas as pd
+
+
+def load_files(files):
+    frames = [
+        uproot.open(f)["WtTMVA_nominal"].pandas.df(
+            branches=["reg*", "OS", "elmu", "bdt_response"], namedecode="utf"
+        )
+        for f in files
+    ]
+    combo = pd.concat(frames)
+    OSelmu = combo["OS"] & combo["elmu"]
+    r1j1b = combo[combo["reg1j1b"] & OSelmu]
+    r2j1b = combo[combo["reg2j1b"] & OSelmu]
+    r2j2b = combo[combo["reg2j2b"] & OSelmu]
+    r2j2bc = combo[combo["reg2j2bLmm"] & OSelmu]
+    return ("1j1b", r1j1b), ("2j1b", r2j1b), ("2j2b", r2j2b), ("2j2bc", r2j2bc)
+
+
+def get_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-f", "--files", nargs="+", type=str, required=True)
+    args = parser.parse_args()
+    return args
+
+
+def main():
+    args = get_args()
+    frames = load_files(args.files)
+
+    for n, f in frames:
+        print(n, f.bdt_response.min(), f.bdt_response.max())
+
+
+if __name__ == "__main__":
+    main()
