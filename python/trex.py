@@ -43,7 +43,7 @@ def Fit(name, blind="TRUE"):
         name,
         FitType="SPLUSB",
         FitRegion="CRSR",
-        NumCPU="12",
+        NumCPU="2",
         POIAsimov=1,
         FitBlind=blind,
     )

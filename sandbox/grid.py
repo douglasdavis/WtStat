@@ -4,8 +4,9 @@ from __future__ import print_function
 import argparse
 import os
 from itertools import product
+import subprocess
 import WtStat.trex
-
+import time
 
 def hist_args(path):
     arg1 = "/".join(os.path.abspath(path).split("/")[:-1])
@@ -14,6 +15,8 @@ def hist_args(path):
 
 
 def make_combs(path):
+
+    loe = []
 
     fileinfo = hist_args(path)
 
@@ -74,7 +77,9 @@ def make_combs(path):
                 with open(conffilename, 'w') as f:
                     f.write(''.join(outtext))
 
+                loe.append("trex-fitter hwdf {}".format(conffilename))
 
+    return list(reversed(loe))
 
 def main():
     parser = argparse.ArgumentParser(description="sandbox")
@@ -83,7 +88,43 @@ def main():
     )
     args = parser.parse_args()
 
-    make_combs(args.hfile)
+    loe = make_combs(args.hfile)
+    total_jobs = len(loe)
+    total_done = 0
+
+    def done(p):
+        return p.poll() is not None
+    def success(p):
+        return p.returncode == 0
+    def fail():
+        sys.exit(1)
+
+    max_task = 4
+    processes = []
+
+    while True:
+        while loe and len(processes) < max_task:
+            ex = loe.pop()
+            print(ex)
+            nameroot = ex.split('hwdf ')[-1].split('.conf')[0]
+            stdoutname = '{}.stdout.log'.format(nameroot)
+            stderrname ='{}.stderr.log'.format(nameroot)
+            with open(stdoutname, 'w') as sout, open(stderrname, 'w') as serr:
+                processes.append(subprocess.Popen(ex, shell=True, stdout=sout, stderr=serr))
+
+        for p in processes:
+            if done(p):
+                if success(p):
+                    total_done += 1
+                    print('{}/{}'.format(total_done, total_jobs))
+                    processes.remove(p)
+
+        if not processes and not loe:
+            break
+        else:
+            time.sleep(0.05)
+
+    return 0
 
 
 if __name__ == "__main__":
