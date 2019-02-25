@@ -26,11 +26,11 @@
         },
         {
             "name": "CR_3j",
-            "filter": "njets==3 && elmu && OS"
+            "filter": "reg3j && elmu && OS"
         },
         {
             "name": "CR_4j",
-            "filter": "njets==3 && elmu && OS"
+            "filter": "reg4j && elmu && OS"
         },
         {
             "name": "CR_3j1b",
