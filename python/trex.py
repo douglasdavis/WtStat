@@ -43,7 +43,7 @@ def Fit(name, blind="TRUE"):
         name,
         FitType="SPLUSB",
         FitRegion="CRSR",
-        NumCPU="4",
+        NumCPU="12",
         POIAsimov=1,
         FitBlind=blind,
     )
@@ -58,7 +58,7 @@ def Region_1j1b_TransfoD(zs=5, zb=5):
         Label="1j1b",
         ShortLabel="1j1b",
         HistoName='"SR_1j1b_bdt_response"',
-        VariableTitle="Classifier Response",
+        VariableTitle='"Classifier Response"',
         Binning='"AutoBin","TransfoD",{zs},{zb}'.format(zs=zs, zb=zb),
     )
     return bk
@@ -72,7 +72,7 @@ def Region_2j1b_TransfoD(zs=5, zb=5):
         Label="2j1b",
         ShortLabel="2j1b",
         HistoName='"SR_2j1b_bdt_response"',
-        VariableTitle="Classifier Response",
+        VariableTitle='"Classifier Response"',
         Binning='"AutoBin","TransfoD",{zs},{zb}'.format(zs=zs, zb=zb),
     )
     return bk
@@ -86,7 +86,7 @@ def Region_2j2b_TransfoD(zs=5, zb=5):
         Label="2j2b",
         ShortLabel="2j2b",
         HistoName='"SR_2j2b_bdt_response"',
-        VariableTitle="Classifier Response",
+        VariableTitle='"Classifier Response"',
         Binning='"AutoBin","TransfoD",{zs},{zb}'.format(zs=zs, zb=zb),
     )
     return bk
@@ -100,12 +100,13 @@ def Region_2j2bmblc_TransfoD(zs=5, zb=5):
         Label="2j2b",
         ShortLabel="2j2b",
         HistoName='"SR_2j2bmblc_bdt_response"',
-        VariableTitle="Classifier Response",
+        VariableTitle='"Classifier Response"',
         Binning='"AutoBin","TransfoD",{zs},{zb}'.format(zs=zs, zb=zb),
     )
     return bk
 
-def Region_1j1b(rebin=5):
+
+def Region_1j1b(rebin=0):
     bk = block(
         "Region",
         "reg1j1b",
@@ -113,13 +114,14 @@ def Region_1j1b(rebin=5):
         Label="1j1b",
         ShortLabel="1j1b",
         HistoName='"SR_1j1b_bdt_response"',
-        VariableTitle="Classifier Response",
-        Rebin=rebin,
+        VariableTitle='"Classifier Response"',
     )
+    if rebin > 0:
+        bk = "{}\n  Rebin: {}\n\n".format(bk.strip(), rebin)
     return bk
 
 
-def Region_2j1b(rebin=5):
+def Region_2j1b(rebin=0):
     bk = block(
         "Region",
         "reg2j1b",
@@ -127,13 +129,14 @@ def Region_2j1b(rebin=5):
         Label="2j1b",
         ShortLabel="2j1b",
         HistoName='"SR_2j1b_bdt_response"',
-        VariableTitle="Classifier Response",
-        Rebin=rebin,
+        VariableTitle='"Classifier Response"',
     )
+    if rebin > 0:
+        bk = "{}\n  Rebin: {}\n\n".format(bk.strip(), rebin)
     return bk
 
 
-def Region_2j2b(rebin=5):
+def Region_2j2b(rebin=0):
     bk = block(
         "Region",
         "reg2j2b",
@@ -141,27 +144,29 @@ def Region_2j2b(rebin=5):
         Label="2j2b",
         ShortLabel="2j2b",
         HistoName='"SR_2j2b_bdt_response"',
-        VariableTitle="Classifier Response",
-        Rebin=rebin,
+        VariableTitle='"Classifier Response"',
     )
+    if rebin > 0:
+        bk = "{}\n  Rebin: {}\n\n".format(bk.strip(), rebin)
     return bk
 
 
-def Region_2j2bmblc(rebin=5):
+def Region_2j2bmblc(rebin=0):
     bk = block(
         "Region",
         "reg2j2b",
         Type="SIGNAL",
         Label="2j2b",
         ShortLabel="2j2b",
-        VariableTitle="Classifier Response",
+        VariableTitle='"Classifier Response"',
         HistoName='"SR_2j2bmblc_bdt_response"',
-        Rebin=rebin,
     )
+    if rebin > 0:
+        bk = "{}\n  Rebin: {}\n\n".format(bk.strip(), rebin)
     return bk
 
 
-def Region_3j(rebin=2):
+def Region_3j(rebin=0):
     bk = block(
         "Region",
         "reg3j",
@@ -172,10 +177,25 @@ def Region_3j(rebin=2):
         HistoName='"CR_3j_pT_jet2"',
     )
     if rebin > 0:
-        bk = "{}  Rebin: {}\n".format(bk, rebin)
+        bk = "{}\n  Rebin: {}\n\n".format(bk.strip(), rebin)
     return bk
 
-def Region_3j1b(rebin=2):
+def Region_4j(rebin=0):
+    bk = block(
+        "Region",
+        "reg4j",
+        Type="CONTROL",
+        Label="4j",
+        ShortLabel="4j",
+        VariableTitle='"#it{p}_{T}^{jet2} [GeV]"',
+        HistoName='"CR_4j_pT_jet2"',
+    )
+    if rebin > 0:
+        bk = "{}\n  Rebin: {}\n\n".format(bk.strip(), rebin)
+    return bk
+
+
+def Region_3j1b(rebin=0):
     bk = block(
         "Region",
         "reg3j1b",
@@ -186,7 +206,7 @@ def Region_3j1b(rebin=2):
         HistoName='"CR_3j1b_pT_jet2"',
     )
     if rebin > 0:
-        bk = "{}  Rebin: {}\n".format(bk, rebin)
+        bk = "{}\n  Rebin: {}\n\n".format(bk.strip(), rebin)
     return bk
 
 
@@ -254,6 +274,16 @@ MCNP_sample = block(
     Type="BACKGROUND",
     HistoNameSuff='"_MCNP"',
 )
+
+all_samples = [
+    ghost_samples,
+    data_sample,
+    tW_sample,
+    ttbar_sample,
+    Zjets_sample,
+    Diboson_sample,
+    MCNP_sample,
+]
 
 tW_NF = block(
     "NormFactor",
@@ -359,6 +389,14 @@ sys_diboson_norm_2j2b = block(
     Category='"Norms"',
 )
 
+sys_zjets_norms = [sys_zjets_norm_1j1b, sys_zjets_norm_2j1b, sys_zjets_norm_2j2b]
+
+sys_diboson_norms = [
+    sys_diboson_norm_1j1b,
+    sys_diboson_norm_2j1b,
+    sys_diboson_norm_2j2b,
+]
+
 sys_tW_DRDS = block(
     "Systematic",
     "tW_DRDS",
@@ -388,7 +426,7 @@ sys_tW_PS = block(
     HistoNameSufUp='"_H7_AFII"',
     ReferenceSample="tWghost",
     Symmetrisation="ONESIDED",
-    Category='"Modeling"'
+    Category='"Modeling"',
 )
 
 sys_tW_AR = block(
@@ -421,7 +459,7 @@ sys_ttbar_PS = block(
     HistoNameSufUp='"_H7_AFII"',
     ReferenceSample="ttbarghost",
     Symmetrisation="ONESIDED",
-    Category='"Modeling"'
+    Category='"Modeling"',
 )
 
 sys_ttbar_AR = block(
@@ -436,10 +474,15 @@ sys_ttbar_AR = block(
     Category='"Modeling"',
 )
 
+
+sys_tW_modeling = [sys_tW_DRDS, sys_tW_HS, sys_tW_PS, sys_tW_AR]
+sys_ttbar_modeling = [sys_ttbar_HS, sys_ttbar_PS, sys_ttbar_AR]
+
+
 def get_sys_weights(do_smoothing=False):
     sys_weight_blocks = []
     for title, options in WtStat.systematics.SYS_WEIGHTS.items():
-        upw = options[0],
+        upw = (options[0],)
         downw = options[1]
         category = options[2]
         smoothing = options[3]
@@ -454,9 +497,10 @@ def get_sys_weights(do_smoothing=False):
             Category='"{}"'.format(category),
         )
         if do_smoothing and smoothing != 0:
-            sysblock = ('{}\n  Smoothing: {}', sysblock, smoothing)
+            sysblock = ("{}\n  Smoothing: {}", sysblock, smoothing)
         sys_weight_blocks.append(sysblock)
-    return ''.join(sys_weight_blocks)
+    return "".join(sys_weight_blocks)
+
 
 def get_sys_trees2s(do_smoothing=False):
     sys_tree_blocks = []
@@ -476,9 +520,10 @@ def get_sys_trees2s(do_smoothing=False):
             Category='"{}"'.format(category),
         )
         if do_smoothing and smoothing != 0:
-            sysblock = ('{}\n  Smoothing: {}', sysblock, smoothing)
+            sysblock = ("{}\n  Smoothing: {}", sysblock, smoothing)
         sys_tree_blocks.append(sysblock)
-    return ''.join(sys_tree_blocks)
+    return "".join(sys_tree_blocks)
+
 
 def get_sys_trees1s(do_smoothing=False):
     sys_tree_blocks = []
@@ -496,6 +541,6 @@ def get_sys_trees1s(do_smoothing=False):
             Category='"{}"'.format(category),
         )
         if do_smoothing and smoothing != 0:
-            sysblock = ('{}\n  Smoothing: {}', sysblock, smoothing)
+            sysblock = ("{}\n  Smoothing: {}", sysblock, smoothing)
         sys_tree_blocks.append(sysblock)
-    return ''.join(sys_tree_blocks)
+    return "".join(sys_tree_blocks)
