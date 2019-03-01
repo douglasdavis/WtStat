@@ -31,6 +31,11 @@ void wts::TemplateSet::flowThroughFilters(const wts::FilterDefs_t& filters,
   double customXmin;
   double customXmax;
 
+  m_logger->info("Registering the following filters:");
+  std::string table_hline = fmt::format("+-{:-^20}-+-{:-^50}-+", "", "");
+  m_logger->info(table_hline);
+  m_logger->info("| {0:^20} | {1:^50} |", "Filter", "Cut");
+  m_logger->info(table_hline);
   FilterTable_t filterTable;
   for (const auto& ifd : filters) {
     auto fname = std::get<0>(ifd);
@@ -40,7 +45,9 @@ void wts::TemplateSet::flowThroughFilters(const wts::FilterDefs_t& filters,
     customXmax = std::get<2>(filttup);
     filterTable.emplace(std::make_pair(
         fname, std::make_tuple(nom_df.Filter(filt, fname), customXmin, customXmax)));
+    m_logger->info("| {0:^20} | {1:^50} |", fname, filt);
   }
+  m_logger->info(table_hline);
 
   std::string exsuff = "";
   if (m_treeSuff != "nominal") {
