@@ -44,8 +44,8 @@ def main():
     ## `Region` blocks
     outtext.append(WtStat.trex.Region_1j1b(rebin=2))
     outtext.append(WtStat.trex.Region_2j1b(rebin=2))
-    outtext.append(WtStat.trex.Region_2j2b(rebin=2))
-    outtext.append(WtStat.trex.Region_3j(rebin=2, filtername="SR_2j2b_mbl150"))
+    outtext.append(WtStat.trex.Region_2j2b(rebin=2, filtername="SR_2j2b_mbl150"))
+    outtext.append(WtStat.trex.Region_3j(rebin=2))
 
     ## shortcut for all `Samples` blocks
     outtext += WtStat.trex.all_samples
