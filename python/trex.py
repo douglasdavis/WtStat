@@ -20,30 +20,32 @@ def Job(name, hpath, hfile, lumi):
         HistoPath=hpath,
         HistoFile=hfile,
         DebugLevel=1,
-        MCstatThreshold=0.001,
+        MCstatThreshold=0.005,
         SystControlPlots="TRUE",
         SystPruningShape=0.005,
         SystPruningNorm=0.005,
         ImageFormat='"pdf"',
         SystCategoryTables="TRUE",
-        RankingPlot="all",
+        RankingPlot="Systs",
         RankingMaxNP=15,
         DoSummaryPlot="TRUE",
         DoTables="TRUE",
         DoSignalRegionsPlot="TRUE",
-        DoPieChartPlot="True",
-        PlotOptions="YIELDS,NOXERR",
+        DoPieChartPlot="TRUE",
+        PlotOptions="NOXERR",
+        UseATLASRoundingTxt="TRUE",
+        UseATLASRoundingTex="TRUE",
     )
     return bk
 
 
-def Fit(name, blind="TRUE"):
+def Fit(name, blind="TRUE", NumCPU=6):
     bk = block(
         "Fit",
         name,
         FitType="SPLUSB",
         FitRegion="CRSR",
-        NumCPU="2",
+        NumCPU=NumCPU,
         POIAsimov=1,
         FitBlind=blind,
     )
@@ -78,28 +80,14 @@ def Region_2j1b_TransfoD(zs=5, zb=5):
     return bk
 
 
-def Region_2j2b_TransfoD(zs=5, zb=5):
+def Region_2j2b_TransfoD(zs=5, zb=5, filtername="SR_reg2j2b"):
     bk = block(
         "Region",
         "reg2j2b",
         Type="SIGNAL",
         Label="2j2b",
         ShortLabel="2j2b",
-        HistoName='"SR_2j2b_bdt_response"',
-        VariableTitle='"Classifier Response"',
-        Binning='"AutoBin","TransfoD",{zs},{zb}'.format(zs=zs, zb=zb),
-    )
-    return bk
-
-
-def Region_2j2bmblc_TransfoD(zs=5, zb=5):
-    bk = block(
-        "Region",
-        "reg2j2b",
-        Type="SIGNAL",
-        Label="2j2b",
-        ShortLabel="2j2b",
-        HistoName='"SR_2j2bmblc_bdt_response"',
+        HistoName='"{}_bdt_response"'.format(filtername),
         VariableTitle='"Classifier Response"',
         Binning='"AutoBin","TransfoD",{zs},{zb}'.format(zs=zs, zb=zb),
     )
@@ -136,30 +124,15 @@ def Region_2j1b(rebin=0):
     return bk
 
 
-def Region_2j2b(rebin=0):
+def Region_2j2b(rebin=0, filtername="SR_2j2b"):
     bk = block(
         "Region",
         "reg2j2b",
         Type="SIGNAL",
         Label="2j2b",
         ShortLabel="2j2b",
-        HistoName='"SR_2j2b_bdt_response"',
+        HistoName='"{}_bdt_response"'.format(filtername),
         VariableTitle='"Classifier Response"',
-    )
-    if rebin > 0:
-        bk = "{}\n  Rebin: {}\n\n".format(bk.strip(), rebin)
-    return bk
-
-
-def Region_2j2bmblc(rebin=0):
-    bk = block(
-        "Region",
-        "reg2j2b",
-        Type="SIGNAL",
-        Label="2j2b",
-        ShortLabel="2j2b",
-        VariableTitle='"Classifier Response"',
-        HistoName='"SR_2j2bmblc_bdt_response"',
     )
     if rebin > 0:
         bk = "{}\n  Rebin: {}\n\n".format(bk.strip(), rebin)
@@ -213,7 +186,7 @@ def Region_3j1b(rebin=0):
 _tWghost = block("Sample", "tWghost", Type="GHOST", HistoNameSuff='"_tW_AFII"')
 _ttbarghost = block("Sample", "ttbarghost", Type="GHOST", HistoNameSuff='"_ttbar_AFII"')
 
-ghost_samples = "{}\n{}".format(_tWghost, _ttbarghost)
+ghost_samples = "{}{}".format(_tWghost, _ttbarghost)
 
 data_sample = block(
     "Sample", "Data", Type="DATA", Title='"Data"', HistoNameSuff='"_Data"'
@@ -427,6 +400,7 @@ sys_tW_PS = block(
     ReferenceSample="tWghost",
     Symmetrisation="ONESIDED",
     Category='"Modeling"',
+    NuisanceParameter='"PartonShower"',
 )
 
 sys_tW_AR = block(
@@ -460,6 +434,7 @@ sys_ttbar_PS = block(
     ReferenceSample="ttbarghost",
     Symmetrisation="ONESIDED",
     Category='"Modeling"',
+    NuisanceParameter='"PartonShower"',
 )
 
 sys_ttbar_AR = block(

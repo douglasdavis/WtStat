@@ -42,9 +42,9 @@ def main():
     outtext.append(WtStat.trex.Fit(args.name, blind="TRUE"))
 
     ## `Region` blocks
-    outtext.append(WtStat.trex.Region_1j1b(rebin=2))
-    outtext.append(WtStat.trex.Region_2j1b(rebin=2))
-    outtext.append(WtStat.trex.Region_2j2bmblc(rebin=2))
+    outtext.append(WtStat.trex.Region_1j1b(rebin=4))
+    outtext.append(WtStat.trex.Region_2j1b(rebin=4))
+    outtext.append(WtStat.trex.Region_2j2b(rebin=4))
     outtext.append(WtStat.trex.Region_3j(rebin=2))
 
     ## shortcut for all `Samples` blocks
