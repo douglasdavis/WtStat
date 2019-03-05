@@ -20,10 +20,10 @@ atlas_add_library( WtStat
   PUBLIC_HEADERS WtStat
   SHARED
   LINK_LIBRARIES TopLoop
-  PRIVATE_LINK_LIBRARIES ${ROOT_LIBRARIES}
-  PRIVATE_INCLUDE_DIRS ${ROOT_INCLUDE_DIRS} )
+  PRIVATE_LINK_LIBRARIES ${ROOT_LIBRARIES} YamlCppInterfaceLib
+  PRIVATE_INCLUDE_DIRS ${ROOT_INCLUDE_DIRS} YamlCppInterfaceLib )
 
-#add_dependencies( WtStat yaml-cpp )
+add_dependencies( WtStat yaml-cpp )
 
 #atlas_add_dictionary( WtStatDict
 #  WtStat/WtStatDict.h WtStat/selection.xml
@@ -40,4 +40,6 @@ atlas_install_scripts( scripts/* )
 
 atlas_add_executable( wt-stat-hist-gen
   util/wt-stat-hist-gen.cxx
-  LINK_LIBRARIES ${ROOT_LIBRARIES} WtStat )
+  LINK_LIBRARIES ${ROOT_LIBRARIES} WtStat YamlCppInterfaceLib )
+
+add_dependencies( wt-stat-hist-gen yaml-cpp )

@@ -1,11 +1,15 @@
+// yaml-cpp
+#include <yaml-cpp/yaml.h>
 // WtStat
 #include <WtStat/TemplateSet.h>
 #include <WtStat/Utils.h>
 // TopLoop
 #include <TopLoop/spdlog/fmt/fmt.h>
-#include <TopLoop/json/json.hpp>
 // WtLoop
 #include <WtLoop/Externals/CLI11.hpp>
+// C++
+#include <map>
+
 
 int main(int argc, char* argv[]) {
   CLI::App app{"Make histograms for the tW fit"};
@@ -14,7 +18,7 @@ int main(int argc, char* argv[]) {
   std::string treeSuff = "nominal";
   std::string templateSetName;
   std::string outFileName;
-  std::string jsonFileName;
+  std::string yamlFileName;
   bool doWeights;
   bool singlethreaded = false;
   std::vector<std::string> extraWeights{};
@@ -27,8 +31,8 @@ int main(int argc, char* argv[]) {
   app.add_option("-o,--out-file", outFileName, "output file name")->required();
   app.add_flag("-w,--do-weights", doWeights, "process systematic weights");
   app.add_option("-x,--extra-weights", extraWeights, "extra weights to process");
-  app.add_option("-j,--json-config", jsonFileName,
-                 "json file defining templates and filters")
+  app.add_option("-y,--yaml-config", yamlFileName,
+                 "yaml file defining templates and filters")
       ->required()
       ->check(CLI::ExistingFile);
   app.add_flag("--no-multithread", singlethreaded, "run ROOT::EnableImplicitMT()");
@@ -39,31 +43,32 @@ int main(int argc, char* argv[]) {
     ROOT::EnableImplicitMT();
   }
 
-  std::ifstream in(jsonFileName.c_str());
-  auto j = nlohmann::json::parse(in);
+  YAML::Node yaml_top = YAML::LoadFile(yamlFileName);
+  auto yaml_filters = yaml_top["filters"];
+  auto yaml_templates = yaml_top["templates"];
 
   wts::FilterDefs_t filters;
-  for (const auto& filt : j["filters"]) {
+  for (const auto& filt : yaml_filters) {
     double xmin = 0;
     double xmax = 0;
-    if (filt.find("xmin") != filt.end() && filt.find("xmax") != filt.end()) {
-      xmin = filt["xmin"].get<double>();
-      xmax = filt["xmax"].get<double>();
+    std::string y_name = filt["name"].as<std::string>();
+    std::string y_filt = filt["filter"].as<std::string>();
+    if (filt["xmin"] && filt["xmax"]) {
+      xmin = filt["xmin"].as<float>();
+      xmax = filt["xmax"].as<float>();
     }
-    filters.emplace(
-        std::make_pair(filt["name"].get<std::string>(),
-                       std::make_tuple(filt["filter"].get<std::string>(), xmin, xmax)));
+    filters.emplace(std::make_pair(y_name, std::make_tuple(y_filt, xmin, xmax)));
   }
 
   wts::TemplateSet templateSet(templateSetName, treePref, treeSuff, doWeights);
   templateSet.setFiles(inputFiles);
   templateSet.setExtraWeights(extraWeights);
 
-  for (const auto& htemplate : j["templates"]) {
-    templateSet.addHTemplate({htemplate["nbins"].get<int>(), htemplate["xmin"].get<float>(),
-                              htemplate["xmax"].get<float>(),
-                              htemplate["var"].get<std::string>(),
-                              htemplate["use_filter_extrema"].get<bool>()});
+  for (const auto& htemplate : yaml_templates) {
+    templateSet.addHTemplate({htemplate["nbins"].as<int>(), htemplate["xmin"].as<float>(),
+                              htemplate["xmax"].as<float>(),
+                              htemplate["var"].as<std::string>(),
+                              htemplate["use_filter_extrema"].as<bool>()});
   }
 
   auto outFile = TFile::Open(outFileName.c_str(), "UPDATE");

@@ -2,6 +2,7 @@
 #include <WtStat/TemplateSet.h>
 // TopLoop
 #include <TopLoop/spdlog/fmt/fmt.h>
+// avoid clang-format reorder
 #include <TopLoop/spdlog/sinks/stdout_color_sinks.h>
 // ROOT
 #include <TChain.h>
