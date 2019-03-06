@@ -1,28 +1,28 @@
 filters:
   - name: "SR_1j1b"
     filter: "reg1j1b && elmu && OS"
-    xmin: -1
-    xmax: 1
+    xmin: -0.83
+    xmax: 0.82
 
   - name: "SR_2j1b"
     filter: "reg2j1b && elmu && OS"
-    xmin: -1
-    xmax: 1
+    xmin: -0.81
+    xmax: 0.81
 
   - name: "SR_2j2b"
     filter: "reg2j2b && elmu && OS"
-    xmin: -1
-    xmax: 1
+    xmin: -0.90
+    xmax: 0.96
 
   - name: "SR_2j2b_mbl130"
     filter: "reg2j2b && elmu && OS && minimaxmbl <= 130.0"
-    xmin: -1
-    xmax: 1
+    xmin: -0.90
+    xmax: 0.96
 
   - name: "SR_2j2b_mbl150"
     filter: "reg2j2b && elmu && OS && minimaxmbl <= 150.0"
-    xmin: -1
-    xmax: 1
+    xmin: -0.90
+    xmax: 0.96
 
   - name: "CR_3j"
     filter: "reg3j && elmu && OS"
@@ -31,6 +31,12 @@ filters:
     filter: "reg4j && elmu && OS"
 
 templates:
+  - var: "minimaxmbl"
+    nbins: 50
+    xmin: 25
+    xmax: 325
+    use_filter_extrema: false
+
   - var: "pT_jet2"
     nbins: 50
     xmin: 25
