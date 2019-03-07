@@ -14,37 +14,27 @@ filters:
     xmin: -0.90
     xmax: 0.96
 
-  - name: "SR_2j2b_mbl130"
-    filter: "reg2j2b && elmu && OS && minimaxmbl <= 130.0"
-    xmin: -0.90
-    xmax: 0.96
-
-  - name: "SR_2j2b_mbl150"
-    filter: "reg2j2b && elmu && OS && minimaxmbl <= 150.0"
-    xmin: -0.90
-    xmax: 0.96
-
   - name: "CR_3j"
     filter: "reg3j && elmu && OS"
-
-  - name: "CR_4j"
-    filter: "reg4j && elmu && OS"
 
 templates:
   - var: "minimaxmbl"
     nbins: 50
     xmin: 25
     xmax: 325
-    use_filter_extrema: false
+    use_filter_minmax: false
+    filters: ["SR_2j1b", "SR_2j2b"]
 
   - var: "pT_jet2"
     nbins: 50
     xmin: 25
     xmax: 175
-    use_filter_extrema: false
+    use_filter_minmax: false
+    filters: ["SR_1j1b", "SR_2j1b", "SR_2j2b", "CR_3j", "CR_4j"]
 
   - var: "bdt_response"
     nbins: 50
     xmin: -1
     xmax: 1
-    use_filter_extrema: true
+    use_filter_minmax: true
+    filters: ["SR_1j1b", "SR_2j1b", "SR_2j2b"]

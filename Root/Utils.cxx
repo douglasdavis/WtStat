@@ -42,9 +42,11 @@ void wts::shiftOverflowAndScale(TH1D* h, float lumi) {
 }
 
 void wts::saveToFile(ROOT::RDF::RResultPtr<TH1D>& h, TFile* f) {
+  if (spdlog::get("WtStat") == nullptr) {
+    spdlog::stdout_color_st("WtStat");
+  }
   if (f->GetListOfKeys()->Contains(h->GetName())) {
-    auto msg = fmt::format("File contains {}, skipping", h->GetName());
-    std::cout << msg << std::endl;
+    spdlog::get("WtStat")->warn("File contains {}, skipping", h->GetName());
     return;
   }
   shiftOverflowAndScale(h.GetPtr(), 1.0);
@@ -53,14 +55,13 @@ void wts::saveToFile(ROOT::RDF::RResultPtr<TH1D>& h, TFile* f) {
 }
 
 nlohmann::json wts::getSystematicJson() {
-  if (spdlog::get("WtStat Utils") == nullptr) {
-    spdlog::stdout_color_st("WtStat Utils");
+  if (spdlog::get("WtStat") == nullptr) {
+    spdlog::stdout_color_st("WtStat");
   }
   std::string filepath = PathResolverFindCalibFile("WtStat/systematics.json");
   std::ifstream in(filepath.c_str());
   if (in.bad()) {
-    spdlog::get("WtStat Utils")
-        ->error("cannot get systematic info {} cannot be found", filepath);
+    spdlog::get("WtStat")->error("cannot get systematic info {} cannot be found", filepath);
   }
   auto j = nlohmann::json::parse(in);
   return j;

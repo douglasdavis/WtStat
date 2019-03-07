@@ -22,12 +22,12 @@ using HResult_t = ROOT::RDF::RResultPtr<TH1D>;
 struct HTemplate {
   HTemplate(int n, float min, float max, std::string v, bool ufe,
             const std::vector<std::string>& filts)
-      : nbins(n), xmin(min), xmax(max), var(v), use_filter_extrema(ufe), filters(filts) {}
+      : nbins(n), xmin(min), xmax(max), var(v), use_filter_minmax(ufe), filters(filts) {}
   int nbins;
   double xmin;
   double xmax;
   std::string var;
-  bool use_filter_extrema;
+  bool use_filter_minmax;
   std::vector<std::string> filters;
 };
 

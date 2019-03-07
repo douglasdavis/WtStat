@@ -72,7 +72,7 @@ int main(int argc, char* argv[]) {
     templateSet.addHTemplate({htemplate["nbins"].as<int>(), htemplate["xmin"].as<float>(),
                               htemplate["xmax"].as<float>(),
                               htemplate["var"].as<std::string>(),
-                              htemplate["use_filter_extrema"].as<bool>(),
+                              htemplate["use_filter_minmax"].as<bool>(),
                               filtersfortemplate});
   }
 
