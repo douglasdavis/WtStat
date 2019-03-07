@@ -30,6 +30,7 @@ def Job(name, hpath, hfile, lumi):
         RankingMaxNP=15,
         DoSummaryPlot="TRUE",
         DoTables="TRUE",
+        CorrelationThreshold=0.15,
         DoSignalRegionsPlot="TRUE",
         DoPieChartPlot="TRUE",
         PlotOptions="NOXERR",
@@ -394,7 +395,7 @@ sys_tW_HS = block(
 sys_tW_PS = block(
     "Systematic",
     "tW_PS",
-    Title='"tW Parton Shower"',
+    Title='"Parton Shower"',
     Samples="tW",
     HistoNameSufUp='"_H7_AFII"',
     ReferenceSample="tWghost",
@@ -428,7 +429,7 @@ sys_ttbar_HS = block(
 sys_ttbar_PS = block(
     "Systematic",
     "ttbar_PS",
-    Title='"ttbar Parton Shower"',
+    Title='"Parton Shower"',
     Samples="ttbar",
     HistoNameSufUp='"_H7_AFII"',
     ReferenceSample="ttbarghost",

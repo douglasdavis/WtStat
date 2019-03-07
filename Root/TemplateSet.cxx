@@ -65,6 +65,7 @@ void wts::TemplateSet::flowThroughFilters(const wts::FilterDefs_t& filters,
     auto filterXmax = std::get<2>(filterTuple);
 
     for (const auto& htemplate : m_histTemplates) {
+      if (!wts::inVec(htemplate.filters, filterName)) continue;
       float xmin = htemplate.xmin;
       float xmax = htemplate.xmax;
       if (htemplate.use_filter_extrema) {
@@ -88,6 +89,7 @@ void wts::TemplateSet::flowThroughFilters(const wts::FilterDefs_t& filters,
       // do extra weights
       for (auto const& xw : m_extraWeights) {
         for (const auto& htemplate : m_histTemplates) {
+          if (!wts::inVec(htemplate.filters, filterName)) continue;
           float xmin = htemplate.xmin;
           float xmax = htemplate.xmax;
           if (htemplate.use_filter_extrema) {
@@ -128,6 +130,7 @@ void wts::TemplateSet::flowOnSysWeights(wts::Filter_t& filter,
   auto sysWeightNode = m_sysJson["SYS_WEIGHTS"];
 
   for (const auto& htemplate : m_histTemplates) {
+    if (!wts::inVec(htemplate.filters, filterName)) continue;
     std::string hname = fmt::format("{}_{}_{}", filterName, htemplate.var, m_name);
 
     for (const auto& entry : sysWeightNode.items()) {

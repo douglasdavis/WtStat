@@ -65,10 +65,15 @@ int main(int argc, char* argv[]) {
   templateSet.setExtraWeights(extraWeights);
 
   for (const auto& htemplate : yaml_templates) {
+    std::vector<std::string> filtersfortemplate;
+    for (const auto& filtname : htemplate["filters"] ) {
+      filtersfortemplate.push_back(filtname.as<std::string>());
+    }
     templateSet.addHTemplate({htemplate["nbins"].as<int>(), htemplate["xmin"].as<float>(),
                               htemplate["xmax"].as<float>(),
                               htemplate["var"].as<std::string>(),
-                              htemplate["use_filter_extrema"].as<bool>()});
+                              htemplate["use_filter_extrema"].as<bool>(),
+                              filtersfortemplate});
   }
 
   auto outFile = TFile::Open(outFileName.c_str(), "UPDATE");

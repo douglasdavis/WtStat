@@ -34,7 +34,7 @@ void wts::shiftOverflowAndScale(TH1D* h, float lumi) {
   h->SetBinError(nb, std::sqrt(e_over * e_over + e_last * e_last));
 
   h->SetBinContent(0, 0.0);
-  h->SetBinContent(nb + 1, 0,0);
+  h->SetBinContent(nb + 1, 0, 0);
   h->SetBinError(0, 0.0);
   h->SetBinError(nb + 1, 0.0);
 

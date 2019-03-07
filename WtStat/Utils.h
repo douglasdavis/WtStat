@@ -20,13 +20,15 @@ using HResult_t = ROOT::RDF::RResultPtr<TH1D>;
 
 /// simple struct to define a template histogram
 struct HTemplate {
-  HTemplate(int n, float min, float max, std::string v, bool ufe)
-      : nbins(n), xmin(min), xmax(max), var(v), use_filter_extrema(ufe) {}
+  HTemplate(int n, float min, float max, std::string v, bool ufe,
+            const std::vector<std::string>& filts)
+      : nbins(n), xmin(min), xmax(max), var(v), use_filter_extrema(ufe), filters(filts) {}
   int nbins;
   double xmin;
   double xmax;
   std::string var;
   bool use_filter_extrema;
+  std::vector<std::string> filters;
 };
 
 /// save a histogram \p h from RDF Filter to file \p f
@@ -35,6 +37,13 @@ void saveToFile(ROOT::RDF::RResultPtr<TH1D>& h, TFile* f);
 void shiftOverflowAndScale(TH1D* h, float lumi = 1.0);
 /// clean helper function for grabbing systematic json info
 nlohmann::json getSystematicJson();
+
+/// check for entry in vector
+template <class T>
+bool inVec(const std::vector<T>& v, const T& val) {
+  if (std::find(std::begin(v), std::end(v), val) != std::end(v)) return true;
+  return false;
+}
 
 }  // namespace wts
 
