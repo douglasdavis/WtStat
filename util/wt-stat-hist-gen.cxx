@@ -10,7 +10,6 @@
 // C++
 #include <map>
 
-
 int main(int argc, char* argv[]) {
   CLI::App app{"Make histograms for the tW fit"};
   std::vector<std::string> inputFiles;
@@ -66,14 +65,22 @@ int main(int argc, char* argv[]) {
 
   for (const auto& htemplate : yaml_templates) {
     std::vector<std::string> filtersfortemplate;
-    for (const auto& filtname : htemplate["filters"] ) {
-      filtersfortemplate.push_back(filtname.as<std::string>());
+    for (const auto& filtname : htemplate["filters"]) {
+      std::string n = filtname.as<std::string>();
+      if (n == "ALL") {
+        for (const auto& filterentry : filters) {
+          filtersfortemplate.push_back(filterentry.first);
+        }
+      }
+      else {
+        filtersfortemplate.push_back(n);
+      }
     }
-    templateSet.addHTemplate({htemplate["nbins"].as<int>(), htemplate["xmin"].as<float>(),
-                              htemplate["xmax"].as<float>(),
-                              htemplate["var"].as<std::string>(),
-                              htemplate["use_filter_minmax"].as<bool>(),
-                              filtersfortemplate});
+
+    templateSet.addHTemplate(
+        {htemplate["nbins"].as<int>(), htemplate["xmin"].as<float>(),
+         htemplate["xmax"].as<float>(), htemplate["var"].as<std::string>(),
+         htemplate["use_filter_minmax"].as<bool>(), filtersfortemplate});
   }
 
   auto outFile = TFile::Open(outFileName.c_str(), "UPDATE");
