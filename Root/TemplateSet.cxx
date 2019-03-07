@@ -60,14 +60,14 @@ void wts::TemplateSet::flowThroughFilters(const wts::FilterDefs_t& filters,
   }
 
   m_logger->info("Registering the following histogram templates:");
-  table_hline = fmt::format("+-{:-^15}-+-{:-^17}-+-{:-^17}-+-{:-^12}-+", "", "", "", "");
+  table_hline = fmt::format("+-{:-^15}-+-{:-^19}-+-{:-^17}-+-{:-^12}-+", "", "", "", "");
   m_logger->info(table_hline);
-  m_logger->info("| {0:^15} | {1:^17} | {2:^17} | {3:^12} |", "Variable", "Binning",
+  m_logger->info("| {0:^15} | {1:^19} | {2:^17} | {3:^12} |", "Variable", "Binning",
                  "Use Filter MinMax", "Filter");
   m_logger->info(table_hline);
   for (const auto& htemplate : m_histTemplates) {
     for (const auto& hft : htemplate.filters) {
-      m_logger->info("| {0:^15} | [{1:>3}, {2:>4}, {3:>4}] | {4:^17} | {5:^12} |",
+      m_logger->info("| {0:^15} | [{1:>3}, {2:>5}, {3:>5}] | {4:^17} | {5:^12} |",
                      htemplate.var, htemplate.nbins, htemplate.xmin, htemplate.xmax,
                      htemplate.use_filter_minmax, hft);
     }
