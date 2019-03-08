@@ -363,12 +363,55 @@ sys_diboson_norm_2j2b = block(
     Category='"Norms"',
 )
 
+
+sys_mcnp_norm_1j1b = block(
+    "Systematic",
+    "Norm_MCNP_1j1b",
+    Type="OVERALL",
+    Title='"Norm MCNP 1j1b"',
+    OverallUp=0.5,
+    OverallDown=-0.5,
+    Samples="MCNP",
+    Regions="reg1j1b",
+    Category='"Norms"',
+)
+
+sys_mcnp_norm_2j1b = block(
+    "Systematic",
+    "Norm_MCNP_2j1b",
+    Type="OVERALL",
+    Title='"Norm MCNP 2j1b"',
+    OverallUp=0.5,
+    OverallDown=-0.5,
+    Samples="MCNP",
+    Regions="reg2j1b",
+    Category='"Norms"',
+)
+
+sys_mcnp_norm_2j2b = block(
+    "Systematic",
+    "Norm_MCNP_2j2b",
+    Type="OVERALL",
+    Title='"Norm MCNP 2j2b"',
+    OverallUp=0.5,
+    OverallDown=-0.5,
+    Samples="MCNP",
+    Regions="reg2j2b",
+    Category='"Norms"',
+)
+
 sys_zjets_norms = [sys_zjets_norm_1j1b, sys_zjets_norm_2j1b, sys_zjets_norm_2j2b]
 
 sys_diboson_norms = [
     sys_diboson_norm_1j1b,
     sys_diboson_norm_2j1b,
     sys_diboson_norm_2j2b,
+]
+
+sys_mcnp_norms = [
+    sys_mcnp_norm_1j1b,
+    sys_mcnp_norm_2j1b,
+    sys_mcnp_norm_2j2b,
 ]
 
 sys_tW_DRDS = block(

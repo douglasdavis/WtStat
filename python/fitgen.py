@@ -32,6 +32,7 @@ def fit_workspace(name, hfile, outdir, lumi=140.5, ncpu=2, blind=True):
     outtext += WtStat.trex.sys_ttbar_modeling
     outtext += WtStat.trex.sys_diboson_norms
     outtext += WtStat.trex.sys_zjets_norms
+    outtext += WtStat.trex.sys_mcnp_norms
 
     ## Shortcuts for all tree/weight `Systematic` blocks
     outtext.append(WtStat.trex.get_sys_weights(do_smoothing=False))
