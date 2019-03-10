@@ -1,8 +1,12 @@
 import os
 import WtStat.trex
+import WtStat.extras
 from WtStat.utils import hfilesplit
 
-def fit_workspace(name, hfile, outdir, lumi=140.5, ncpu=2, blind=True):
+
+def fit_workspace(
+    name, hfile, outdir, lumi=140.5, ncpu=2, blind=True, do_vrplots=False
+):
     fileinfo = hfilesplit(hfile)
 
     outtext = []
@@ -16,6 +20,9 @@ def fit_workspace(name, hfile, outdir, lumi=140.5, ncpu=2, blind=True):
     outtext.append(WtStat.trex.Region_2j1b(rebin=2))
     outtext.append(WtStat.trex.Region_2j2b(rebin=2))
     outtext.append(WtStat.trex.Region_3j(rebin=2))
+
+    if do_vrplots:
+        outtext.append(WtStat.extras.obj_kin_vrs)
 
     ## shortcut for all `Samples` blocks
     outtext += WtStat.trex.all_samples

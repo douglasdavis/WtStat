@@ -108,7 +108,7 @@ void wts::TemplateSet::flowThroughFilters(const wts::FilterDefs_t& filters,
     if (m_treeSuff == "nominal") {
       // do the systematic weights
       if (doSysWeights()) {
-        flowOnSysWeights(filter, filterName, histograms, filterXmin, filterXmax);
+        flowOnSysWeights(filter, filterName, histograms, filterXmin, filterXmax, outFile);
       }
       // do extra weights
       for (auto const& xw : m_extraWeights) {
@@ -127,10 +127,15 @@ void wts::TemplateSet::flowThroughFilters(const wts::FilterDefs_t& filters,
           xwshort.erase(findws, removethis.length());
           std::string hname =
               fmt::format("{}_{}_{}_{}", filterName, htemplate.var, m_name, xwshort);
-          histograms.push_back(
-              filter.Histo1D(ROOT::RDF::TH1DModel(hname.c_str(), hname.c_str(),
-                                                  htemplate.nbins, xmin, xmax),
-                             htemplate.var, xw));
+          if (outFile->GetListOfKeys()->Contains(hname.c_str())) {
+            m_logger->warn("Skipping {} because it's already in the output file", hname);
+          }
+          else {
+            histograms.push_back(
+                filter.Histo1D(ROOT::RDF::TH1DModel(hname.c_str(), hname.c_str(),
+                                                    htemplate.nbins, xmin, xmax),
+                               htemplate.var, xw));
+          }
         }
       }
     }
@@ -147,7 +152,8 @@ void wts::TemplateSet::flowThroughFilters(const wts::FilterDefs_t& filters,
 void wts::TemplateSet::flowOnSysWeights(wts::Filter_t& filter,
                                         const std::string& filterName,
                                         std::vector<HResult_t>& histograms,
-                                        double filterXmin, double filterXmax) const {
+                                        double filterXmin, double filterXmax,
+                                        TFile* outFile) const {
   if (m_treeSuff != "nominal") {
     m_logger->warn(
         "You asked for weight systematics on a systematic tree. Nope. "
@@ -172,14 +178,24 @@ void wts::TemplateSet::flowOnSysWeights(wts::Filter_t& filter,
         xmax = filterXmax;
       }
 
-      histograms.push_back(
-          filter.Histo1D(ROOT::RDF::TH1DModel(hname_up.c_str(), hname_up.c_str(),
-                                              htemplate.nbins, xmin, xmax),
-                         htemplate.var, wn_up));
-      histograms.push_back(
-          filter.Histo1D(ROOT::RDF::TH1DModel(hname_down.c_str(), hname_down.c_str(),
-                                              htemplate.nbins, xmin, xmax),
-                         htemplate.var, wn_down));
+      if (outFile->GetListOfKeys()->Contains(hname_up.c_str())) {
+        m_logger->warn("Skipping {} because it's already in the output file", hname);
+      }
+      else {
+        histograms.push_back(
+            filter.Histo1D(ROOT::RDF::TH1DModel(hname_up.c_str(), hname_up.c_str(),
+                                                htemplate.nbins, xmin, xmax),
+                           htemplate.var, wn_up));
+      }
+      if (outFile->GetListOfKeys()->Contains(hname_down.c_str())) {
+        m_logger->warn("Skipping {} because it's already in the output file", hname);
+      }
+      else {
+        histograms.push_back(
+            filter.Histo1D(ROOT::RDF::TH1DModel(hname_down.c_str(), hname_down.c_str(),
+                                                htemplate.nbins, xmin, xmax),
+                           htemplate.var, wn_down));
+      }
     }
   }
 }
