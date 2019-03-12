@@ -36,6 +36,8 @@ def Job(name, hpath, hfile, lumi):
         PlotOptions="NOXERR",
         UseATLASRoundingTxt="TRUE",
         UseATLASRoundingTex="TRUE",
+        HistoChecks="NOCRASH",
+        LegendNColumns=1,
     )
     return bk
 
@@ -580,16 +582,22 @@ def get_vrplots():
     obj_kin_vrs.append(vrplot("SR_1j1b", "pT_lep1", "1j1b", "#it{p}_{T}^{lep1} [GeV]"))
     obj_kin_vrs.append(vrplot("SR_1j1b", "pT_lep2", "1j1b", "#it{p}_{T}^{lep2} [GeV]"))
     obj_kin_vrs.append(vrplot("SR_1j1b", "pT_jet1", "1j1b", "#it{p}_{T}^{jet1} [GeV]"))
+    obj_kin_vrs.append(vrplot("SR_1j1b", "met", "1j1b", "#it{E}_{T}^{miss} [GeV]"))
+    obj_kin_vrs.append(vrplot("SR_1j1b", "sumet", "1j1b", "#sum#it{E}_{T} [GeV]"))
 
     obj_kin_vrs.append(vrplot("SR_2j1b", "pT_lep1", "2j1b", "#it{p}_{T}^{lep1} [GeV]"))
     obj_kin_vrs.append(vrplot("SR_2j1b", "pT_lep2", "2j1b", "#it{p}_{T}^{lep2} [GeV]"))
     obj_kin_vrs.append(vrplot("SR_2j1b", "pT_jet1", "2j1b", "#it{p}_{T}^{jet1} [GeV]"))
     obj_kin_vrs.append(vrplot("SR_2j1b", "pT_jet2", "2j1b", "#it{p}_{T}^{jet2} [GeV]"))
+    obj_kin_vrs.append(vrplot("SR_2j1b", "met", "2j1b", "#it{E}_{T}^{miss} [GeV]"))
+    obj_kin_vrs.append(vrplot("SR_2j1b", "sumet", "2j1b", "#sum#it{E}_{T} [GeV]"))
 
     obj_kin_vrs.append(vrplot("SR_2j2b", "pT_lep1", "2j2b", "#it{p}_{T}^{lep1} [GeV]"))
     obj_kin_vrs.append(vrplot("SR_2j2b", "pT_lep2", "2j2b", "#it{p}_{T}^{lep2} [GeV]"))
     obj_kin_vrs.append(vrplot("SR_2j2b", "pT_jet1", "2j2b", "#it{p}_{T}^{jet1} [GeV]"))
     obj_kin_vrs.append(vrplot("SR_2j2b", "pT_jet2", "2j2b", "#it{p}_{T}^{jet2} [GeV]"))
+    obj_kin_vrs.append(vrplot("SR_2j2b", "met", "2j2b", "#it{E}_{T}^{miss} [GeV]"))
+    obj_kin_vrs.append(vrplot("SR_2j2b", "sumet", "2j2b", "#sum#it{E}_{T} [GeV]"))
 
     ####### pTsys_lep1lep2jet1met
     obj_kin_vrs.append(
@@ -649,6 +657,32 @@ def get_vrplots():
     obj_kin_vrs.append(
         vrplot(
             "SR_2j2b", "pTsys_lep1lep2", "2j2b", "#it{p}_{T}^{sys}(l_{1}l_{2}) [GeV]"
+        )
+    )
+
+    ####### pTsys_lep1lep2jet1
+    obj_kin_vrs.append(
+        vrplot(
+            "SR_1j1b",
+            "pTsys_lep1lep2jet1",
+            "1j1b",
+            "#it{p}_{T}^{sys}(l_{1}l_{2}j_{1}) [GeV]",
+        )
+    )
+    obj_kin_vrs.append(
+        vrplot(
+            "SR_2j1b",
+            "pTsys_lep1lep2jet1",
+            "2j1b",
+            "#it{p}_{T}^{sys}(l_{1}l_{2}j_{1}) [GeV]",
+        )
+    )
+    obj_kin_vrs.append(
+        vrplot(
+            "SR_2j2b",
+            "pTsys_lep1lep2jet1",
+            "2j2b",
+            "#it{p}_{T}^{sys}(l_{1}l_{2}j_{1}) [GeV]",
         )
     )
 
