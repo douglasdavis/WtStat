@@ -144,18 +144,6 @@ def to_json():
             'smoothing': smooth
         }
 
-    for k, v in PDF_WEIGHTS.items():
-        name = k
-        up = v[0]
-        var = v[1],
-        smooth = v[2]
-        entries['PDF_WEIGHTS'][name] = {
-            'name': name,
-            'up': up,
-            'cat': cat,
-            'smoothing': smooth
-        }
-
     for k, v in SYS_TREES_TWOSIDED.items():
         name = k
         up = v[0]
@@ -182,6 +170,17 @@ def to_json():
             'smoothing': smooth
         }
 
+    for k, v in PDF_WEIGHTS.items():
+        name = k
+        up = v[0]
+        var = v[1],
+        smooth = v[2]
+        entries['PDF_WEIGHTS'][name] = {
+            'name': name,
+            'up': up,
+            'cat': cat,
+            'smoothing': smooth
+        }
 
     print(json.dumps(entries, indent=2))
 
