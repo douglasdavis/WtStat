@@ -161,6 +161,7 @@ void wts::TemplateSet::flowOnSysWeights(wts::Filter_t& filter,
     return;
   }
   auto sysWeightNode = m_sysJson["SYS_WEIGHTS"];
+  auto pdfWeightNode = m_sysJson["PDF_WEIGHTS"];
 
   for (const auto& htemplate : m_histTemplates) {
     if (!wts::inVec(htemplate.filters, filterName)) continue;
@@ -195,6 +196,27 @@ void wts::TemplateSet::flowOnSysWeights(wts::Filter_t& filter,
             filter.Histo1D(ROOT::RDF::TH1DModel(hname_down.c_str(), hname_down.c_str(),
                                                 htemplate.nbins, xmin, xmax),
                            htemplate.var, wn_down));
+      }
+    }
+
+    for (const auto& entry : pdfWeightNode.items()) {
+      auto hname_up = fmt::format("{}_{}", hname, entry.key());
+      auto wn_up = entry.value()["up"].get<std::string>();
+      float xmin = htemplate.xmin;
+      float xmax = htemplate.xmax;
+      if (htemplate.use_filter_minmax) {
+        xmin = filterXmin;
+        xmax = filterXmax;
+      }
+
+      if (outFile->GetListOfKeys()->Contains(hname_up.c_str())) {
+        m_logger->warn("Skipping {} because it's already in the output file", hname);
+      }
+      else {
+        histograms.push_back(
+            filter.Histo1D(ROOT::RDF::TH1DModel(hname_up.c_str(), hname_up.c_str(),
+                                                htemplate.nbins, xmin, xmax),
+                           htemplate.var, wn_up));
       }
     }
   }

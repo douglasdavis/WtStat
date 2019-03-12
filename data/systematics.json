@@ -547,5 +547,193 @@
       "name": "Jet_EtaIntercal_NonClosure_negEta",
       "up": "JET_CategoryReduction_JET_EtaIntercalibration_NonClosure_negEta__1up"
     }
+  },
+  "PDF_WEIGHTS": {
+    "PDFset90900": {
+      "name": "PDFset90900",
+      "up": "weight_sys_PDFset=90900",
+      "cat": "WeightBTag",
+      "smoothing": "40"
+    },
+    "PDFset90901": {
+      "name": "PDFset90901",
+      "up": "weight_sys_PDFset=90901",
+      "cat": "WeightBTag",
+      "smoothing": "40"
+    },
+    "PDFset90902": {
+      "name": "PDFset90902",
+      "up": "weight_sys_PDFset=90902",
+      "cat": "WeightBTag",
+      "smoothing": "40"
+    },
+    "PDFset90903": {
+      "name": "PDFset90903",
+      "up": "weight_sys_PDFset=90903",
+      "cat": "WeightBTag",
+      "smoothing": "40"
+    },
+    "PDFset90904": {
+      "name": "PDFset90904",
+      "up": "weight_sys_PDFset=90904",
+      "cat": "WeightBTag",
+      "smoothing": "40"
+    },
+    "PDFset90905": {
+      "name": "PDFset90905",
+      "up": "weight_sys_PDFset=90905",
+      "cat": "WeightBTag",
+      "smoothing": "40"
+    },
+    "PDFset90906": {
+      "name": "PDFset90906",
+      "up": "weight_sys_PDFset=90906",
+      "cat": "WeightBTag",
+      "smoothing": "40"
+    },
+    "PDFset90907": {
+      "name": "PDFset90907",
+      "up": "weight_sys_PDFset=90907",
+      "cat": "WeightBTag",
+      "smoothing": "40"
+    },
+    "PDFset90908": {
+      "name": "PDFset90908",
+      "up": "weight_sys_PDFset=90908",
+      "cat": "WeightBTag",
+      "smoothing": "40"
+    },
+    "PDFset90909": {
+      "name": "PDFset90909",
+      "up": "weight_sys_PDFset=90909",
+      "cat": "WeightBTag",
+      "smoothing": "40"
+    },
+    "PDFset90910": {
+      "name": "PDFset90910",
+      "up": "weight_sys_PDFset=90910",
+      "cat": "WeightBTag",
+      "smoothing": "40"
+    },
+    "PDFset90911": {
+      "name": "PDFset90911",
+      "up": "weight_sys_PDFset=90911",
+      "cat": "WeightBTag",
+      "smoothing": "40"
+    },
+    "PDFset90912": {
+      "name": "PDFset90912",
+      "up": "weight_sys_PDFset=90912",
+      "cat": "WeightBTag",
+      "smoothing": "40"
+    },
+    "PDFset90913": {
+      "name": "PDFset90913",
+      "up": "weight_sys_PDFset=90913",
+      "cat": "WeightBTag",
+      "smoothing": "40"
+    },
+    "PDFset90914": {
+      "name": "PDFset90914",
+      "up": "weight_sys_PDFset=90914",
+      "cat": "WeightBTag",
+      "smoothing": "40"
+    },
+    "PDFset90915": {
+      "name": "PDFset90915",
+      "up": "weight_sys_PDFset=90915",
+      "cat": "WeightBTag",
+      "smoothing": "40"
+    },
+    "PDFset90916": {
+      "name": "PDFset90916",
+      "up": "weight_sys_PDFset=90916",
+      "cat": "WeightBTag",
+      "smoothing": "40"
+    },
+    "PDFset90917": {
+      "name": "PDFset90917",
+      "up": "weight_sys_PDFset=90917",
+      "cat": "WeightBTag",
+      "smoothing": "40"
+    },
+    "PDFset90918": {
+      "name": "PDFset90918",
+      "up": "weight_sys_PDFset=90918",
+      "cat": "WeightBTag",
+      "smoothing": "40"
+    },
+    "PDFset90919": {
+      "name": "PDFset90919",
+      "up": "weight_sys_PDFset=90919",
+      "cat": "WeightBTag",
+      "smoothing": "40"
+    },
+    "PDFset90920": {
+      "name": "PDFset90920",
+      "up": "weight_sys_PDFset=90920",
+      "cat": "WeightBTag",
+      "smoothing": "40"
+    },
+    "PDFset90921": {
+      "name": "PDFset90921",
+      "up": "weight_sys_PDFset=90921",
+      "cat": "WeightBTag",
+      "smoothing": "40"
+    },
+    "PDFset90922": {
+      "name": "PDFset90922",
+      "up": "weight_sys_PDFset=90922",
+      "cat": "WeightBTag",
+      "smoothing": "40"
+    },
+    "PDFset90923": {
+      "name": "PDFset90923",
+      "up": "weight_sys_PDFset=90923",
+      "cat": "WeightBTag",
+      "smoothing": "40"
+    },
+    "PDFset90924": {
+      "name": "PDFset90924",
+      "up": "weight_sys_PDFset=90924",
+      "cat": "WeightBTag",
+      "smoothing": "40"
+    },
+    "PDFset90925": {
+      "name": "PDFset90925",
+      "up": "weight_sys_PDFset=90925",
+      "cat": "WeightBTag",
+      "smoothing": "40"
+    },
+    "PDFset90926": {
+      "name": "PDFset90926",
+      "up": "weight_sys_PDFset=90926",
+      "cat": "WeightBTag",
+      "smoothing": "40"
+    },
+    "PDFset90927": {
+      "name": "PDFset90927",
+      "up": "weight_sys_PDFset=90927",
+      "cat": "WeightBTag",
+      "smoothing": "40"
+    },
+    "PDFset90928": {
+      "name": "PDFset90928",
+      "up": "weight_sys_PDFset=90928",
+      "cat": "WeightBTag",
+      "smoothing": "40"
+    },
+    "PDFset90929": {
+      "name": "PDFset90929",
+      "up": "weight_sys_PDFset=90929",
+      "cat": "WeightBTag",
+      "smoothing": "40"
+    },
+    "PDFset90930": {
+      "name": "PDFset90930",
+      "up": "weight_sys_PDFset=90930",
+      "cat": "WeightBTag",
+      "smoothing": "40"
+    }
   }
 }

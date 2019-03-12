@@ -34,6 +34,38 @@ SYS_WEIGHTS['B_ev_L_1'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_
 SYS_WEIGHTS['B_ev_L_2'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_2_up' , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_2_down' , 'WeightBTag'   , '40' ]
 SYS_WEIGHTS['B_ev_L_3'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_3_up' , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_3_down' , 'WeightBTag'   , '40' ]
 
+PDF_WEIGHTS = OrderedDict()
+PDF_WEIGHTS['PDFset90900'] = ['weight_sys_PDFset=90900', 'PDF', '40' ]
+PDF_WEIGHTS['PDFset90901'] = ['weight_sys_PDFset=90901', 'PDF', '40' ]
+PDF_WEIGHTS['PDFset90902'] = ['weight_sys_PDFset=90902', 'PDF', '40' ]
+PDF_WEIGHTS['PDFset90903'] = ['weight_sys_PDFset=90903', 'PDF', '40' ]
+PDF_WEIGHTS['PDFset90904'] = ['weight_sys_PDFset=90904', 'PDF', '40' ]
+PDF_WEIGHTS['PDFset90905'] = ['weight_sys_PDFset=90905', 'PDF', '40' ]
+PDF_WEIGHTS['PDFset90906'] = ['weight_sys_PDFset=90906', 'PDF', '40' ]
+PDF_WEIGHTS['PDFset90907'] = ['weight_sys_PDFset=90907', 'PDF', '40' ]
+PDF_WEIGHTS['PDFset90908'] = ['weight_sys_PDFset=90908', 'PDF', '40' ]
+PDF_WEIGHTS['PDFset90909'] = ['weight_sys_PDFset=90909', 'PDF', '40' ]
+PDF_WEIGHTS['PDFset90910'] = ['weight_sys_PDFset=90910', 'PDF', '40' ]
+PDF_WEIGHTS['PDFset90911'] = ['weight_sys_PDFset=90911', 'PDF', '40' ]
+PDF_WEIGHTS['PDFset90912'] = ['weight_sys_PDFset=90912', 'PDF', '40' ]
+PDF_WEIGHTS['PDFset90913'] = ['weight_sys_PDFset=90913', 'PDF', '40' ]
+PDF_WEIGHTS['PDFset90914'] = ['weight_sys_PDFset=90914', 'PDF', '40' ]
+PDF_WEIGHTS['PDFset90915'] = ['weight_sys_PDFset=90915', 'PDF', '40' ]
+PDF_WEIGHTS['PDFset90916'] = ['weight_sys_PDFset=90916', 'PDF', '40' ]
+PDF_WEIGHTS['PDFset90917'] = ['weight_sys_PDFset=90917', 'PDF', '40' ]
+PDF_WEIGHTS['PDFset90918'] = ['weight_sys_PDFset=90918', 'PDF', '40' ]
+PDF_WEIGHTS['PDFset90919'] = ['weight_sys_PDFset=90919', 'PDF', '40' ]
+PDF_WEIGHTS['PDFset90920'] = ['weight_sys_PDFset=90920', 'PDF', '40' ]
+PDF_WEIGHTS['PDFset90921'] = ['weight_sys_PDFset=90921', 'PDF', '40' ]
+PDF_WEIGHTS['PDFset90922'] = ['weight_sys_PDFset=90922', 'PDF', '40' ]
+PDF_WEIGHTS['PDFset90923'] = ['weight_sys_PDFset=90923', 'PDF', '40' ]
+PDF_WEIGHTS['PDFset90924'] = ['weight_sys_PDFset=90924', 'PDF', '40' ]
+PDF_WEIGHTS['PDFset90925'] = ['weight_sys_PDFset=90925', 'PDF', '40' ]
+PDF_WEIGHTS['PDFset90926'] = ['weight_sys_PDFset=90926', 'PDF', '40' ]
+PDF_WEIGHTS['PDFset90927'] = ['weight_sys_PDFset=90927', 'PDF', '40' ]
+PDF_WEIGHTS['PDFset90928'] = ['weight_sys_PDFset=90928', 'PDF', '40' ]
+PDF_WEIGHTS['PDFset90929'] = ['weight_sys_PDFset=90929', 'PDF', '40' ]
+PDF_WEIGHTS['PDFset90930'] = ['weight_sys_PDFset=90930', 'PDF', '40' ]
 
 SYS_TREES_TWOSIDED = OrderedDict()
 SYS_TREES_TWOSIDED['EG_RES_ALL'                        ] = ['EG_RESOLUTION_ALL__1up'                                               , 'EG_RESOLUTION_ALL__1down'                                               , 'Egamma' , '40' ]
@@ -95,6 +127,7 @@ def to_json():
         'SYS_WEIGHTS' : {},
         'SYS_TREES_TWOSIDED': {},
         'SYS_TREES_ONESIDED': {},
+        'PDF_WEIGHTS' : {},
     }
 
     for k, v in SYS_WEIGHTS.items():
@@ -107,6 +140,18 @@ def to_json():
             'name': name,
             'up': up,
             'down': down,
+            'cat': cat,
+            'smoothing': smooth
+        }
+
+    for k, v in PDF_WEIGHTS.items():
+        name = k
+        up = v[0]
+        var = v[1],
+        smooth = v[2]
+        entries['PDF_WEIGHTS'][name] = {
+            'name': name,
+            'up': up,
             'cat': cat,
             'smoothing': smooth
         }
