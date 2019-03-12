@@ -1,0 +1,70 @@
+filters:
+  - name: SR_1j1b
+    filter: "reg1j1b && elmu && OS"
+    xmin: -0.83
+    xmax: 0.82
+
+  - name: SR_2j1b
+    filter: "reg2j1b && elmu && OS"
+    xmin: -0.81
+    xmax: 0.81
+
+  - name: SR_2j2b
+    filter: "reg2j2b && elmu && OS"
+    xmin: -0.90
+    xmax: 0.96
+
+  - name: CR_3j
+    filter: "reg3j && elmu && OS"
+
+  - name: CR_4j
+    filter: "reg4j && elmu && OS"
+
+templates:
+  - { var: bdt_response, nbins: 50, xmin: -1, xmax: 1, use_filter_minmax: true, filters: [SR_1j1b, SR_2j1b, SR_2j2b] }
+  - { var: minimaxmbl, nbins: 50, xmin: 25,  xmax: 325, use_filter_minmax: false, filters: [SR_2j1b, SR_2j2b] }
+
+  - { var: pT_jet1, nbins: 50, xmin: 25, xmax: 275, use_filter_minmax: false, filters: [ALL] }
+  - { var: pT_jet2, nbins: 50, xmin: 25, xmax: 175, use_filter_minmax: false, filters: [SR_2j1b, SR_2j2b, CR_3j, CR_4j] }
+  - { var: pT_lep1, nbins: 50, xmin: 27, xmax: 227, use_filter_minmax: false, filters: [ALL] }
+  - { var: pT_lep2, nbins: 50, xmin: 20, xmax: 140, use_filter_minmax: false, filters: [ALL] }
+
+  - { var: eta_jet1, nbins: 50, xmin: -2.5, xmax: 2.5, use_filter_minmax: false, filters: [ALL] }
+  - { var: eta_jet2, nbins: 50, xmin: -2.5, xmax: 2.5, use_filter_minmax: false, filters: [SR_2j1b, SR_2j2b, CR_3j, CR_4j] }
+  - { var: eta_lep1, nbins: 50, xmin: -2.5, xmax: 2.5, use_filter_minmax: false, filters: [ALL] }
+  - { var: eta_lep2, nbins: 50, xmin: -2.5, xmax: 2.5, use_filter_minmax: false, filters: [ALL] }
+
+  - { var: phi_jet1, nbins: 50, xmin: -3.14, xmax: 3.14, use_filter_minmax: false, filters: [ALL] }
+  - { var: phi_jet2, nbins: 50, xmin: -3.14, xmax: 3.14, use_filter_minmax: false, filters: [SR_2j1b, SR_2j2b, CR_3j, CR_4j] }
+  - { var: phi_lep1, nbins: 50, xmin: -3.14, xmax: 3.14, use_filter_minmax: false, filters: [ALL] }
+  - { var: phi_lep2, nbins: 50, xmin: -3.14, xmax: 3.14, use_filter_minmax: false, filters: [ALL] }
+
+  - { var: met, nbins: 50, xmin: 0, xmax: 250, use_filter_minmax: false, filters: [ALL] }
+  - { var: sumet, nbins: 50, xmin: 200, xmax: 1200, use_filter_minmax: false, filters: [ALL] }
+
+  - { var: pTsys_lep1lep2jet1met, nbins: 50, xmin: 0, xmax: 200, use_filter_minmax: false, filters: [SR_1j1b, SR_2j1b, SR_2j2b] }
+  - { var: pTsys_lep1lep2, nbins: 50, xmin: 0, xmax: 250, use_filter_minmax: false, filters: [SR_1j1b, SR_2j1b, SR_2j2b] }
+  - { var: pTsys_lep1lep2jet1, nbins: 50, xmin: 0, xmax: 250, use_filter_minmax: false, filters: [SR_1j1b, SR_2j1b, SR_2j2b] }
+  - { var: pTsys_lep1lep2jet1jet2met, nbins: 50, xmin: 0, xmax: 200, use_filter_minmax: false, filters: [SR_1j1b, SR_2j1b, SR_2j2b] }
+  - { var: pTsys_lep1lep2met, nbins: 50, xmin: 0, xmax: 250, use_filter_minmax: false, filters: [SR_1j1b, SR_2j1b, SR_2j2b] }
+
+  - { var: mass_lep2jet1, nbins: 50, xmin: 0, xmax: 450, use_filter_minmax: false, filters: [SR_1j1b, SR_2j1b, SR_2j2b] }
+  - { var: mass_lep1jet1, nbins: 50, xmin: 0, xmax: 450, use_filter_minmax: false, filters: [SR_1j1b, SR_2j1b, SR_2j2b] }
+  - { var: mass_lep1jet2, nbins: 50, xmin: 0, xmax: 450, use_filter_minmax: false, filters: [SR_1j1b, SR_2j1b, SR_2j2b] }
+  - { var: mass_lep2jet2, nbins: 50, xmin: 0, xmax: 400, use_filter_minmax: false, filters: [SR_1j1b, SR_2j1b, SR_2j2b] }
+
+  - { var: deltaR_lep2_jet1, nbins: 50, xmin: 0, xmax: 6, use_filter_minmax: false, filters: [SR_1j1b, SR_2j1b, SR_2j2b] }
+  - { var: deltaR_lep1_lep2, nbins: 50, xmin: 0, xmax: 6, use_filter_minmax: false, filters: [SR_1j1b, SR_2j1b, SR_2j2b] }
+  - { var: deltaR_lep1_jet1, nbins: 50, xmin: 0, xmax: 6, use_filter_minmax: false, filters: [SR_1j1b, SR_2j1b, SR_2j2b] }
+
+  - { var: nloosejets, nbins: 4, xmin: -0.5, xmax: 3.5, use_filter_minmax: false, filters: [SR_1j1b, SR_2j1b, SR_2j2b] }
+  - { var: nloosebjets, nbins: 4, xmin: -0.5, xmax: 3.5, use_filter_minmax: false, filters: [SR_1j1b, SR_2j1b, SR_2j2b] }
+
+  - { var: deltapT_lep1_jet1, nbins: 50, xmin: -150, xmax: 150, use_filter_minmax: false, filters: [SR_1j1b, SR_2j1b, SR_2j2b] }
+
+  - { var: mT_lep2met, nbins: 50, xmin: 0, xmax: 250, use_filter_minmax: false, filters: [SR_1j1b, SR_2j1b, SR_2j2b] }
+
+  - { var: cent_lep1lep2, nbins: 50, xmin: 0, xmax: 1, use_filter_minmax: false, filters: [SR_1j1b, SR_2j1b, SR_2j2b] }
+
+  - { var: psuedoContTagBin_jet1, nbins: 6, xmin: -0.5, xmax: 5.5, use_filter_minmax: false, filters: [SR_1j1b, SR_2j1b, SR_2j2b] }
+  - { var: psuedoContTagBin_jet2, nbins: 6, xmin: -0.5, xmax: 5.5, use_filter_minmax: false, filters: [SR_1j1b, SR_2j1b, SR_2j2b] }
