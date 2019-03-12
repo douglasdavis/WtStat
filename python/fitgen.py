@@ -1,11 +1,18 @@
 import os
 import WtStat.trex
-import WtStat.extras
 from WtStat.utils import hfilesplit
 
 
 def fit_workspace(
-    name, hfile, outdir, lumi=140.5, ncpu=2, blind=True, do_vrplots=False
+    name,
+    hfile,
+    outdir,
+    lumi=140.5,
+    ncpu=2,
+    blind=True,
+    skip_treesys=False,
+    skip_weightsys=False,
+    skip_vrplots=True,
 ):
     fileinfo = hfilesplit(hfile)
 
@@ -21,8 +28,8 @@ def fit_workspace(
     outtext.append(WtStat.trex.Region_2j2b(rebin=2))
     outtext.append(WtStat.trex.Region_3j(rebin=2))
 
-    if do_vrplots:
-        outtext.append(WtStat.extras.obj_kin_vrs)
+    if not skip_vrplots:
+        outtext.append(WtStat.trex.get_vrplots())
 
     ## shortcut for all `Samples` blocks
     outtext += WtStat.trex.all_samples
@@ -42,9 +49,11 @@ def fit_workspace(
     outtext += WtStat.trex.sys_mcnp_norms
 
     ## Shortcuts for all tree/weight `Systematic` blocks
-    outtext.append(WtStat.trex.get_sys_weights(do_smoothing=False))
-    outtext.append(WtStat.trex.get_sys_trees2s(do_smoothing=False))
-    outtext.append(WtStat.trex.get_sys_trees1s(do_smoothing=False))
+    if not skip_weightsys:
+        outtext.append(WtStat.trex.get_sys_weights(do_smoothing=False))
+    if not skip_treesys:
+        outtext.append(WtStat.trex.get_sys_trees2s(do_smoothing=False))
+        outtext.append(WtStat.trex.get_sys_trees1s(do_smoothing=False))
 
     os.mkdir(outdir)
 
