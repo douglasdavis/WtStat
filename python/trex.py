@@ -569,7 +569,7 @@ def get_vrplots():
             "VR_{}_{}".format(region, variable),
             Type="VALIDATION",
             Label='"{}"'.format(label),
-            ShortLabel='"{}"'.format(lable),
+            ShortLabel='"{}"'.format(label),
             HistoName='"{}_{}"'.format(region, variable),
             VariableTitle='"{}"'.format(vtitle),
         )
@@ -597,7 +597,7 @@ def get_vrplots():
             "SR_1j1b",
             "pTsys_lep1lep2jet1met",
             "1j1b",
-            "#it{p}_{T}^{sys}(l_{1}l_{2}_j_{1}#it{E}_{T}^{miss}) [GeV]",
+            "#it{p}_{T}^{sys}(l_{1}l_{2}j_{1}#it{E}_{T}^{miss}) [GeV]",
         )
     )
     obj_kin_vrs.append(
@@ -605,7 +605,7 @@ def get_vrplots():
             "SR_2j1b",
             "pTsys_lep1lep2jet1met",
             "2j1b",
-            "#it{p}_{T}^{sys}(l_{1}l_{2}_j_{1}#it{E}_{T}^{miss}) [GeV]",
+            "#it{p}_{T}^{sys}(l_{1}l_{2}j_{1}#it{E}_{T}^{miss}) [GeV]",
         )
     )
     obj_kin_vrs.append(
@@ -613,7 +613,7 @@ def get_vrplots():
             "SR_2j2b",
             "pTsys_lep1lep2jet1met",
             "2j2b",
-            "#it{p}_{T}^{sys}(l_{1}l_{2}_j_{1}#it{E}_{T}^{miss}) [GeV]",
+            "#it{p}_{T}^{sys}(l_{1}l_{2}j_{1}#it{E}_{T}^{miss}) [GeV]",
         )
     )
 
@@ -623,7 +623,7 @@ def get_vrplots():
             "SR_2j1b",
             "pTsys_lep1lep2jet1jet2met",
             "2j1b",
-            "#it{p}_{T}^{sys}(l_{1}l_{2}_j_{1}j_{2}#it{E}_{T}^{miss}) [GeV]",
+            "#it{p}_{T}^{sys}(l_{1}l_{2}j_{1}j_{2}#it{E}_{T}^{miss}) [GeV]",
         )
     )
     obj_kin_vrs.append(
@@ -631,7 +631,7 @@ def get_vrplots():
             "SR_2j2b",
             "pTsys_lep1lep2jet1jet2met",
             "2j2b",
-            "#it{p}_{T}^{sys}(l_{1}l_{2}_j_{1}j_{2}#it{E}_{T}^{miss}) [GeV]",
+            "#it{p}_{T}^{sys}(l_{1}l_{2}j_{1}j_{2}#it{E}_{T}^{miss}) [GeV]",
         )
     )
 

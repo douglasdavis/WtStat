@@ -129,7 +129,7 @@ def main():
             args.outdir,
             args.lumi,
             args.ncpu,
-            do_vrplots=args.dovrplots,
+            skip_vrplots=(not args.dovrplots),
         )
 
 
