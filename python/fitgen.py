@@ -12,6 +12,7 @@ def fit_workspace(
     blind=True,
     skip_treesys=False,
     skip_weightsys=False,
+    skip_pdfs=False,
     skip_vrplots=True,
 ):
     fileinfo = hfilesplit(hfile)
@@ -51,6 +52,8 @@ def fit_workspace(
     ## Shortcuts for all tree/weight `Systematic` blocks
     if not skip_weightsys:
         outtext.append(WtStat.trex.get_sys_weights(do_smoothing=False))
+    if not skip_pdfs:
+        outtext.append(WtStat.trex.get_pdf_weights(do_smoothing=False))
     if not skip_treesys:
         outtext.append(WtStat.trex.get_sys_trees2s(do_smoothing=False))
         outtext.append(WtStat.trex.get_sys_trees1s(do_smoothing=False))

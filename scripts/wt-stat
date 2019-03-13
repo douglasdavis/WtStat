@@ -98,6 +98,12 @@ def parseargs():
         action="store_true",
         help="Include blocks which will request the generation of VR plots",
     )
+    confgen.add_argument(
+        "--skip-pdfs",
+        dest="skip_pdfs",
+        action="store_true",
+        help="Skip PDF uncertainties",
+    )
     return parser.parse_args()
 
 
@@ -130,6 +136,7 @@ def main():
             args.lumi,
             args.ncpu,
             skip_vrplots=(not args.dovrplots),
+            skip_pdfs=args.skip_pdfs,
         )
 
 

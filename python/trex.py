@@ -187,10 +187,10 @@ def Region_3j1b(rebin=0):
     return bk
 
 
-_tWghost = block("Sample", "tWghost", Type="GHOST", HistoNameSuff='"_tW_AFII"')
-_ttbarghost = block("Sample", "ttbarghost", Type="GHOST", HistoNameSuff='"_ttbar_AFII"')
+tWghost = block("Sample", "tWghost", Type="GHOST", HistoNameSuff='"_tW_AFII"')
+ttbarghost = block("Sample", "ttbarghost", Type="GHOST", HistoNameSuff='"_ttbar_AFII"')
 
-ghost_samples = "{}{}".format(_tWghost, _ttbarghost)
+ghost_samples = "{}{}".format(tWghost, ttbarghost)
 
 data_sample = block(
     "Sample", "Data", Type="DATA", Title='"Data"', HistoNameSuff='"_Data"'
@@ -500,7 +500,7 @@ sys_ttbar_modeling = [sys_ttbar_HS, sys_ttbar_PS, sys_ttbar_AR]
 def get_sys_weights(do_smoothing=False):
     sys_weight_blocks = []
     for title, options in WtStat.systematics.SYS_WEIGHTS.items():
-        upw = (options[0],)
+        upw = options[0]
         downw = options[1]
         category = options[2]
         smoothing = options[3]
@@ -515,9 +515,36 @@ def get_sys_weights(do_smoothing=False):
             Category='"{}"'.format(category),
         )
         if do_smoothing and smoothing != 0:
-            sysblock = ("{}\n  Smoothing: {}", sysblock, smoothing)
+            sysblock = "{}\n  Smoothing: {}".format(sysblock, smoothing)
         sys_weight_blocks.append(sysblock)
     return "".join(sys_weight_blocks)
+
+
+def get_pdf_weights(do_smoothing=False):
+    pdf_blocks = []
+    for title, options in WtStat.systematics.PDF_WEIGHTS.items():
+        if "90900" in title:
+            continue
+        upw = options[0]
+        category = options[1]
+        smoothing = options[2]
+        sysblock = block(
+            "Systematic",
+            "{}".format(title),
+            Title='"{}"'.format(title),
+            Samples="tW,ttbar",
+            HistoNameSufUp="_{}".format(title),
+            Symmetrisation="ONESIDED",
+            HistoNameSufUpRefSample="_PDFset90900",
+            Category="PDF",
+            NuisanceParameter='"{}"'.format(title),
+        )
+        if do_smoothing and smoothing != 0:
+            sysblock = "{}\n  Smoothing: {}".format(sysblock, smoothing)
+
+        pdf_blocks.append(sysblock)
+
+    return "".join(pdf_blocks)
 
 
 def get_sys_trees2s(do_smoothing=False):
@@ -538,7 +565,7 @@ def get_sys_trees2s(do_smoothing=False):
             Category='"{}"'.format(category),
         )
         if do_smoothing and smoothing != 0:
-            sysblock = ("{}\n  Smoothing: {}", sysblock, smoothing)
+            sysblock = "{}\n  Smoothing: {}".format(sysblock, smoothing)
         sys_tree_blocks.append(sysblock)
     return "".join(sys_tree_blocks)
 
@@ -559,7 +586,7 @@ def get_sys_trees1s(do_smoothing=False):
             Category='"{}"'.format(category),
         )
         if do_smoothing and smoothing != 0:
-            sysblock = ("{}\n  Smoothing: {}", sysblock, smoothing)
+            sysblock = "{}\n  Smoothing: {}".format(sysblock, smoothing)
         sys_tree_blocks.append(sysblock)
     return "".join(sys_tree_blocks)
 
