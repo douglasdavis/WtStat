@@ -52,7 +52,7 @@ templates:
   - { var: nloosejets, nbins: 4, xmin: -0.5, xmax: 3.5, use_filter_minmax: false, filters: [SR_1j1b, SR_2j1b, SR_2j2b], axis_title: "N_{loose jets}" }
   - { var: nloosebjets, nbins: 4, xmin: -0.5, xmax: 3.5, use_filter_minmax: false, filters: [SR_1j1b, SR_2j1b, SR_2j2b], axis_title: "N_{loose b-jets}" }
   - { var: deltapT_lep1_jet1, nbins: 50, xmin: -150, xmax: 150, use_filter_minmax: false, filters: [SR_1j1b, SR_2j1b, SR_2j2b], axis_title: "#Delta #it{p}_{T}(lep1, jet1) [GeV]" }
-  - { var: mT_lep2met, nbins: 50, xmin: 0, xmax: 250, use_filter_minmax: false, filters: [SR_1j1b, SR_2j1b, SR_2j2b], axis_title: "#it{m}_{lep2, #it{E}_{T}^{miss} [GeV]" }
+  - { var: mT_lep2met, nbins: 50, xmin: 0, xmax: 250, use_filter_minmax: false, filters: [SR_1j1b, SR_2j1b, SR_2j2b], axis_title: "#it{m}_{T}^{lep2, #it{E}_{T}^{miss}} [GeV]" }
   - { var: cent_lep1lep2, nbins: 50, xmin: 0, xmax: 1, use_filter_minmax: false, filters: [SR_1j1b, SR_2j1b, SR_2j2b], axis_title: "Centrality(lep1lep2)" }
   - { var: psuedoContTagBin_jet1, nbins: 6, xmin: -0.5, xmax: 5.5, use_filter_minmax: false, filters: [SR_1j1b, SR_2j1b, SR_2j2b], axis_title: "PsuedoCont b-tag bin (jet1)" }
   - { var: psuedoContTagBin_jet2, nbins: 6, xmin: -0.5, xmax: 5.5, use_filter_minmax: false, filters: [SR_2j1b, SR_2j2b], axis_title: "PsuedoCont b-tag bin (jet2)" }
