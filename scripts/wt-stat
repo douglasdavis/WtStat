@@ -93,10 +93,11 @@ def parseargs():
         default=2,
     )
     confgen.add_argument(
-        "--dovrplots",
-        dest="dovrplots",
-        action="store_true",
-        help="Include blocks which will request the generation of VR plots",
+        "--vrplots",
+        dest="vrplots",
+        type=str,
+        required=False,
+        help="YAML config for blocks which will request the generation of VR plots",
     )
     confgen.add_argument(
         "--skip-pdfs",
@@ -135,8 +136,8 @@ def main():
             args.outdir,
             args.lumi,
             args.ncpu,
-            skip_vrplots=(not args.dovrplots),
             skip_pdfs=args.skip_pdfs,
+            vrplots=args.vrplots,
         )
 
 

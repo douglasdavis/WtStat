@@ -13,7 +13,7 @@ def fit_workspace(
     skip_treesys=False,
     skip_weightsys=False,
     skip_pdfs=False,
-    skip_vrplots=True,
+    vrplots=None,
 ):
     fileinfo = hfilesplit(hfile)
 
@@ -29,8 +29,8 @@ def fit_workspace(
     outtext.append(WtStat.trex.Region_2j2b(rebin=2))
     outtext.append(WtStat.trex.Region_3j(rebin=2))
 
-    if not skip_vrplots:
-        outtext.append(WtStat.trex.get_vrplots())
+    if vrplots is not None:
+        outtext.append(WtStat.trex.get_vrplots(vrplots))
 
     ## shortcut for all `Samples` blocks
     outtext += WtStat.trex.all_samples
