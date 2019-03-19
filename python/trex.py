@@ -617,7 +617,7 @@ def get_vrplots(yaml_file):
                 continue
             filters = entry["filters"]
             if entry["filters"] == ["ALL"]:
-                filters = ["SR_1j1b", "SR_2j1b", "SR_2j2b"]
+                filters = ["SR_1j1b", "SR_2j1b", "SR_2j2b", "CR_3j"]
             for filt in filters:
                 slabel = filt.split("_")[-1]
                 var2plot = entry["var"]
