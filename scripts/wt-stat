@@ -8,7 +8,6 @@ from WtStat.fitgen import fit_workspace
 import subprocess
 import argparse
 
-
 def parseargs():
     parser = argparse.ArgumentParser(description="WtStat executions")
 
@@ -42,6 +41,14 @@ def parseargs():
         type=str,
         required=True,
         help="YAML filter and template config",
+    )
+    histgen.add_argument(
+        "--tree-prefix",
+        dest="tree_prefix",
+        type=str,
+        required=False,
+        default="WtTMVA",
+        help="ROOT Tree prefix (WtLoop or WtTMVA)",
     )
     histgen.add_argument(
         "--dry",
@@ -112,14 +119,20 @@ def histgen(args):
     nominal_sorted = sort_for_nominal_tree(args.files)
     sys_sorted = sort_for_systematic_trees(args.files)
     nom_exes = create_nominal_executions(
-        nominal_sorted, outfile=args.outfile_name, sys_weights=args.sys_weights
+        nominal_sorted,
+        outfile=args.outfile_name,
+        sys_weights=args.sys_weights,
+        tree_prefix=args.tree_prefix,
     )
-    sys_exes = create_systtree_executions(sys_sorted, outfile=args.outfile_name)
-    for exe in nom_exes + sys_exes:
+    sys_exes = create_systtree_executions(
+        sys_sorted, outfile=args.outfile_name, tree_prefix=args.tree_prefix
+    )
+    for i, exe in enumerate(nom_exes + sys_exes):
         if args.dry:
             print("{} -y {}".format(exe, args.yaml_config))
         else:
             subprocess.call("{} -y {}".format(exe, args.yaml_config), shell=True)
+        print("{}/{}".format(i+1, len(nom_exes) + len(sys_exes)))
     return 0
 
 

@@ -18,7 +18,7 @@ def sort_for_nominal_tree(file_list):
         "tW_MCaNLO_AFII": re.compile("tW_412003_AFII"),
     }
 
-    files = {"Data": [], "Diboson": [], "Zjets": [], "MCNP": []}
+    files = {"Data": [], "Diboson": [], "Zjets": [], "MCNP": [], "ttV": []}
     for title in regexes:
         files[title] = []
 
@@ -34,6 +34,8 @@ def sort_for_nominal_tree(file_list):
             files["Zjets"].append(f)
         elif "Diboson" in f:
             files["Diboson"].append(f)
+        elif "ttV" in f:
+            files["ttV"].append(f)
 
         elif "nominal" in f:
             for k, v in regexes.items():
