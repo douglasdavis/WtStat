@@ -24,10 +24,16 @@ def fit_workspace(
     outtext.append(WtStat.trex.Fit(name, blind="TRUE" if blind else "FALSE"))
 
     ## `Region` blocks
+
+    ## All BDTs
     outtext.append(WtStat.trex.Region_1j1b(rebin=2))
     outtext.append(WtStat.trex.Region_2j1b(rebin=2))
     outtext.append(WtStat.trex.Region_2j2b(rebin=2))
     outtext.append(WtStat.trex.Region_3j(rebin=2))
+
+    # potential pT distribution regions
+    #outtext.append(WtStat.trex.Region_3j_pT_jet2(rebin=2))
+    #outtext.append(WtStat.trex.Region_4j_pT_jet2(rebin=2))
 
     if vrplots is not None:
         outtext.append(WtStat.trex.get_vrplots(vrplots))

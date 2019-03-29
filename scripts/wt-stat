@@ -8,6 +8,13 @@ from WtStat.fitgen import fit_workspace
 import subprocess
 import argparse
 
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="{:20}  %(levelname)s  %(message)s".format("[WtStat:%(name)s]"),
+)
+
 def parseargs():
     parser = argparse.ArgumentParser(description="WtStat executions")
 
@@ -116,6 +123,7 @@ def parseargs():
 
 
 def histgen(args):
+    log = logging.getLogger("wt-stat histgen")
     nominal_sorted = sort_for_nominal_tree(args.files)
     sys_sorted = sort_for_systematic_trees(args.files)
     nom_exes = create_nominal_executions(
@@ -132,9 +140,21 @@ def histgen(args):
             print("{} -y {}".format(exe, args.yaml_config))
         else:
             subprocess.call("{} -y {}".format(exe, args.yaml_config), shell=True)
-        print("{}/{}".format(i+1, len(nom_exes) + len(sys_exes)))
+        log.info("{}/{}".format(i+1, len(nom_exes) + len(sys_exes)))
     return 0
 
+def fitgen(args):
+    log = logging.getLogger("wt-stat fitgen")
+    fit_workspace(
+        args.name,
+        args.hfile,
+        args.outdir,
+        args.lumi,
+        args.ncpu,
+        skip_pdfs=args.skip_pdfs,
+        vrplots=args.vrplots,
+    )
+    return 0
 
 def main():
     args = parseargs()
@@ -143,16 +163,7 @@ def main():
         return histgen(args)
 
     if args.topcommand == "fitgen":
-        fit_workspace(
-            args.name,
-            args.hfile,
-            args.outdir,
-            args.lumi,
-            args.ncpu,
-            skip_pdfs=args.skip_pdfs,
-            vrplots=args.vrplots,
-        )
-
+        return fitgen(args)
 
 if __name__ == "__main__":
     main()

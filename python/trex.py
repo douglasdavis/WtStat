@@ -3,6 +3,7 @@ from __future__ import print_function
 import WtStat.systematics
 import yaml
 
+
 def block(block_type, block_title, **options):
     ret = '{}: "{}"'.format(block_type, block_title)
     for k, v in options.items():
@@ -65,7 +66,7 @@ def Region_1j1b_TransfoD(zs=5, zb=5):
         Type="SIGNAL",
         Label="1j1b",
         ShortLabel="1j1b",
-        HistoName='"SR_1j1b_bdt_response"',
+        HistoName='"reg1j1b_bdt_response"',
         VariableTitle='"Classifier Response"',
         Binning='"AutoBin","TransfoD",{zs},{zb}'.format(zs=zs, zb=zb),
     )
@@ -79,21 +80,21 @@ def Region_2j1b_TransfoD(zs=5, zb=5):
         Type="SIGNAL",
         Label="2j1b",
         ShortLabel="2j1b",
-        HistoName='"SR_2j1b_bdt_response"',
+        HistoName='"reg2j1b_bdt_response"',
         VariableTitle='"Classifier Response"',
         Binning='"AutoBin","TransfoD",{zs},{zb}'.format(zs=zs, zb=zb),
     )
     return bk
 
 
-def Region_2j2b_TransfoD(zs=5, zb=5, filtername="SR_reg2j2b"):
+def Region_2j2b_TransfoD(zs=5, zb=5):
     bk = block(
         "Region",
         "reg2j2b",
         Type="SIGNAL",
         Label="2j2b",
         ShortLabel="2j2b",
-        HistoName='"{}_bdt_response"'.format(filtername),
+        HistoName='"reg2j2b_bdt_response"',
         VariableTitle='"Classifier Response"',
         Binning='"AutoBin","TransfoD",{zs},{zb}'.format(zs=zs, zb=zb),
     )
@@ -107,7 +108,7 @@ def Region_1j1b(rebin=0):
         Type="SIGNAL",
         Label="1j1b",
         ShortLabel="1j1b",
-        HistoName='"SR_1j1b_bdt_response"',
+        HistoName='"reg1j1b_bdt_response"',
         VariableTitle='"Classifier Response"',
     )
     if rebin > 0:
@@ -122,7 +123,7 @@ def Region_2j1b(rebin=0):
         Type="SIGNAL",
         Label="2j1b",
         ShortLabel="2j1b",
-        HistoName='"SR_2j1b_bdt_response"',
+        HistoName='"reg2j1b_bdt_response"',
         VariableTitle='"Classifier Response"',
     )
     if rebin > 0:
@@ -130,14 +131,14 @@ def Region_2j1b(rebin=0):
     return bk
 
 
-def Region_2j2b(rebin=0, filtername="SR_2j2b"):
+def Region_2j2b(rebin=0):
     bk = block(
         "Region",
         "reg2j2b",
         Type="SIGNAL",
         Label="2j2b",
         ShortLabel="2j2b",
-        HistoName='"{}_bdt_response"'.format(filtername),
+        HistoName='"reg2j2b_bdt_response"',
         VariableTitle='"Classifier Response"',
     )
     if rebin > 0:
@@ -152,15 +153,30 @@ def Region_3j(rebin=0):
         Type="SIGNAL",
         Label="3j",
         ShortLabel="3j",
-        VariableTitle='"#it{p}_{T}^{jet2} [GeV]"',
-        HistoName='"CR_3j_pT_jet2"',
+        VariableTitle='"Classifier Response"',
+        HistoName='"reg3j_bdt_response"',
     )
     if rebin > 0:
         bk = "{}\n  Rebin: {}\n\n".format(bk.strip(), rebin)
     return bk
 
 
-def Region_4j(rebin=0):
+def Region_3j_pT_jet2(rebin=0):
+    bk = block(
+        "Region",
+        "reg3j",
+        Type="SIGNAL",
+        Label="3j",
+        ShortLabel="3j",
+        VariableTitle='"#it{p}_{T}^{jet2} [GeV]"',
+        HistoName='"reg3j_pT_jet2"',
+    )
+    if rebin > 0:
+        bk = "{}\n  Rebin: {}\n\n".format(bk.strip(), rebin)
+    return bk
+
+
+def Region_4j_pT_jet2(rebin=0):
     bk = block(
         "Region",
         "reg4j",
@@ -168,7 +184,7 @@ def Region_4j(rebin=0):
         Label="4j",
         ShortLabel="4j",
         VariableTitle='"#it{p}_{T}^{jet2} [GeV]"',
-        HistoName='"CR_4j_pT_jet2"',
+        HistoName='"reg4j_pT_jet2"',
     )
     if rebin > 0:
         bk = "{}\n  Rebin: {}\n\n".format(bk.strip(), rebin)
@@ -183,7 +199,7 @@ def Region_3j1b(rebin=0):
         VariableTitle='"#it{p}_{T}^{jet2} [GeV]"',
         Label="3j1b",
         ShortLabel="3j1b",
-        HistoName='"CR_3j1b_pT_jet2"',
+        HistoName='"reg3j1b_pT_jet2"',
     )
     if rebin > 0:
         bk = "{}\n  Rebin: {}\n\n".format(bk.strip(), rebin)
@@ -540,7 +556,7 @@ def get_pdf_weights(do_smoothing=False):
             HistoNameSufUp="_{}".format(title),
             Symmetrisation="ONESIDED",
             HistoNameSufUpRefSample="_PDFset90900",
-            Category="PDF",
+            Category="PDFs",
             NuisanceParameter='"{}"'.format(title),
         )
         if do_smoothing and smoothing != 0:
@@ -609,7 +625,7 @@ def get_vrplots(yaml_file):
         return bk
 
     obj_kin_vrs = []
-    with open(yaml_file, 'r') as f:
+    with open(yaml_file, "r") as f:
         vr_yaml = yaml.load(f)
         vr_yaml = vr_yaml["templates"]
         for entry in vr_yaml:
@@ -617,7 +633,7 @@ def get_vrplots(yaml_file):
                 continue
             filters = entry["filters"]
             if entry["filters"] == ["ALL"]:
-                filters = ["SR_1j1b", "SR_2j1b", "SR_2j2b", "CR_3j"]
+                filters = ["reg1j1b", "reg2j1b", "reg2j2b", "reg3j"]
             for filt in filters:
                 slabel = filt.split("_")[-1]
                 var2plot = entry["var"]
