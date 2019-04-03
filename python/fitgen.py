@@ -31,7 +31,7 @@ def fit_workspace(
     outtext.append(WtStat.trex.Region_2j2b(rebin=2))
     outtext.append(WtStat.trex.Region_3j(rebin=2))
 
-    # potential pT distribution regions
+    # pT distribution regions
     #outtext.append(WtStat.trex.Region_3j_pT_jet2(rebin=2))
     #outtext.append(WtStat.trex.Region_4j_pT_jet2(rebin=2))
 

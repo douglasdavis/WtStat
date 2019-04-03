@@ -34,7 +34,7 @@ def Job(name, hpath, hfile, lumi):
         DoSummaryPlot="TRUE",
         DoTables="TRUE",
         TableOptions="STANDALONE",
-        CorrelationThreshold=0.20,
+        CorrelationThreshold=0.35,
         DoSignalRegionsPlot="TRUE",
         DoPieChartPlot="TRUE",
         PlotOptions="NOXERR",
@@ -55,6 +55,7 @@ def Fit(name, blind="TRUE", NumCPU=6):
         NumCPU=NumCPU,
         POIAsimov=1,
         FitBlind=blind,
+        #UseMinos='"ttbar_HS"',
     )
     return bk
 
@@ -180,7 +181,7 @@ def Region_4j_pT_jet2(rebin=0):
     bk = block(
         "Region",
         "reg4j",
-        Type="SIGNAL",
+        Type="CONTROL",
         Label="4j",
         ShortLabel="4j",
         VariableTitle='"#it{p}_{T}^{jet2} [GeV]"',
@@ -225,7 +226,6 @@ tW_sample = block(
     Type="SIGNAL",
     HistoNameSuff='"_tW"',
 )
-
 
 ttbar_sample = block(
     "Sample",
@@ -456,13 +456,13 @@ sys_tW_HS = block(
 sys_tW_PS = block(
     "Systematic",
     "tW_PS",
-    Title='"Parton Shower"',
+    Title='"tW Parton Shower"',
     Samples="tW",
     HistoNameSufUp='"_H7_AFII"',
     ReferenceSample="tWghost",
     Symmetrisation="ONESIDED",
     Category='"Modeling"',
-    NuisanceParameter='"PartonShower"',
+    #NuisanceParameter='"PartonShower"',
 )
 
 sys_tW_AR = block(
@@ -490,13 +490,13 @@ sys_ttbar_HS = block(
 sys_ttbar_PS = block(
     "Systematic",
     "ttbar_PS",
-    Title='"Parton Shower"',
+    Title='"ttbar Parton Shower"',
     Samples="ttbar",
     HistoNameSufUp='"_H7_AFII"',
     ReferenceSample="ttbarghost",
     Symmetrisation="ONESIDED",
     Category='"Modeling"',
-    NuisanceParameter='"PartonShower"',
+    #NuisanceParameter='"PartonShower"',
 )
 
 sys_ttbar_AR = block(

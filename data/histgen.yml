@@ -2,12 +2,12 @@ filters:
   - name: reg1j1b
     filter: "reg1j1b && elmu && OS"
     xmin: -0.60
-    xmax: 0.60
+    xmax: 0.70
 
   - name: reg2j1b
     filter: "reg2j1b && elmu && OS"
     xmin: -0.60
-    xmax: 0.60
+    xmax: 0.70
 
   - name: reg2j2b
     filter: "reg2j2b && elmu && OS"
@@ -16,8 +16,8 @@ filters:
 
   - name: reg3j
     filter: "reg3j && elmu && OS"
-    xmin: -0.60
-    xmax: 0.65
+    xmin: -0.70
+    xmax: 0.70
 
   - name: reg4j
     filter: "reg4j && elmu && OS"
@@ -26,43 +26,43 @@ filters:
 
 templates:
   - { var: bdt_response, nbins: 60, xmin: -1, xmax: 1, use_filter_minmax: true, filters: [reg1j1b, reg2j1b, reg2j2b, reg3j], axis_title: "Classifier Response" }
-  - { var: pT_jet2, nbins: 60, xmin: 25, xmax: 175, use_filter_minmax: false, filters: [reg2j1b, reg2j2b, reg3j, reg4j], axis_title: "#it{p}_{T}^{jet2} [GeV]" }
-  # - { var: minimaxmbl, nbins: 60, xmin: 25,  xmax: 325, use_filter_minmax: false, filters: [reg2j2b], axis_title: "m_{bl}^{minimax}" }
-  # - { var: pT_jet1, nbins: 60, xmin: 25, xmax: 275, use_filter_minmax: false, filters: [ALL], axis_title: "#it{p}_{T}^{jet1} [GeV]" }
-  # - { var: pT_lep1, nbins: 60, xmin: 27, xmax: 227, use_filter_minmax: false, filters: [ALL], axis_title: "#it{p}_{T}^{lep1} [GeV]" }
-  # - { var: pT_lep2, nbins: 60, xmin: 20, xmax: 140, use_filter_minmax: false, filters: [ALL], axis_title: "#it{p}_{T}^{lep2} [GeV]" }
-  # - { var: eta_jet1, nbins: 60, xmin: -2.5, xmax: 2.5, use_filter_minmax: false, filters: [ALL], axis_title: "#eta (jet1)" }
-  # - { var: eta_jet2, nbins: 60, xmin: -2.5, xmax: 2.5, use_filter_minmax: false, filters: [reg2j1b, reg2j2b, reg3j, reg4j], axis_title: "#eta (jet2)" }
-  # - { var: eta_lep1, nbins: 60, xmin: -2.5, xmax: 2.5, use_filter_minmax: false, filters: [ALL], axis_title: "#eta (lep1)" }
-  # - { var: eta_lep2, nbins: 60, xmin: -2.5, xmax: 2.5, use_filter_minmax: false, filters: [ALL], axis_title: "#eta (lep2)" }
-  # - { var: phi_jet1, nbins: 60, xmin: -3.14, xmax: 3.14, use_filter_minmax: false, filters: [ALL], axis_title: "#phi (jet1)" }
-  # - { var: phi_jet2, nbins: 60, xmin: -3.14, xmax: 3.14, use_filter_minmax: false, filters: [reg2j1b, reg2j2b, reg3j, reg4j], axis_title: "#phi (jet2)" }
-  # - { var: phi_lep1, nbins: 60, xmin: -3.14, xmax: 3.14, use_filter_minmax: false, filters: [ALL], axis_title: "#phi (lep1)" }
-  # - { var: phi_lep2, nbins: 60, xmin: -3.14, xmax: 3.14, use_filter_minmax: false, filters: [ALL], axis_title: "#phi (lep2)" }
-  # - { var: met, nbins: 60, xmin: 0, xmax: 250, use_filter_minmax: false, filters: [ALL], axis_title: "#it{E}_{T}^{miss} [GeV]" }
-  # - { var: sumet, nbins: 60, xmin: 200, xmax: 1200, use_filter_minmax: false, filters: [ALL], axis_title: "#sum #it{E}_{T} [GeV]" }
-  # - { var: pTsys_lep1lep2jet1met, nbins: 60, xmin: 0, xmax: 200, use_filter_minmax: false, filters: [ALL], axis_title: "#it{p}_{T}^{sys}(lep1lep2jet1#it{E}_{T}^{miss}) [GeV]" }
-  # - { var: pTsys_lep1lep2, nbins: 60, xmin: 0, xmax: 250, use_filter_minmax: false, filters: [ALL], axis_title: "#it{p}_{T}^{sys}(lep1lep2) [GeV]" }
-  # - { var: pTsys_lep1lep2jet1, nbins: 60, xmin: 0, xmax: 250, use_filter_minmax: false, filters: [ALL], axis_title: "#it{p}_{T}^{sys}(lep1lep2jet1) [GeV]" }
-  # - { var: pTsys_lep1lep2jet1jet2met, nbins: 60, xmin: 0, xmax: 200, use_filter_minmax: false, filters: [reg2j1b, reg2j2b, reg3j, reg4j], axis_title: "#it{p}_{T}^{sys}(lep1lep2jet1jet2#it{E}_{T}^{miss}) [GeV]" }
-  # - { var: pTsys_lep1lep2met, nbins: 60, xmin: 0, xmax: 250, use_filter_minmax: false, filters: [ALL], axis_title: "#it{p}_{T}^{sys}(lep1lep2#it{E}_{T}^{miss}) [GeV]" }
-  # - { var: pTsys_jet1jet2, nbins: 60, xmin: 0, xmax: 250, use_filter_minmax: false, filters: [reg2j1b, reg2j2b, reg3j, reg4j], axis_title: "#it{p}_{T}^{sys}(jet1jet2) [GeV]" }
-  # - { var: mass_lep2jet1, nbins: 60, xmin: 0, xmax: 450, use_filter_minmax: false, filters: [ALL], axis_title: "#it{m}_{lep2jet1}" }
-  # - { var: mass_lep1jet1, nbins: 60, xmin: 0, xmax: 450, use_filter_minmax: false, filters: [ALL], axis_title: "#it{m}_{lep1jet1}" }
-  # - { var: mass_lep1jet2, nbins: 60, xmin: 0, xmax: 450, use_filter_minmax: false, filters: [reg2j1b, reg2j2b, reg3j, reg4j], axis_title: "#it{m}_{lep1jet2}" }
-  # - { var: mass_lep2jet2, nbins: 60, xmin: 0, xmax: 400, use_filter_minmax: false, filters: [reg2j1b, reg2j2b, reg3j, reg4j], axis_title: "#it{m}_{lep2jet2}" }
-  # - { var: mass_lep2jet1met, nbins: 60, xmin: 0, xmax: 400, use_filter_minmax: false, filters: [ALL], axis_title: "#it{m}_{lep2jet1met}" }
-  # - { var: deltaR_lep2_jet1, nbins: 60, xmin: 0, xmax: 6, use_filter_minmax: false, filters: [ALL], axis_title: "#Delta R(lep2,jet1)" }
-  # - { var: deltaR_lep1_lep2, nbins: 60, xmin: 0, xmax: 6, use_filter_minmax: false, filters: [ALL], axis_title: "#Delta R(lep1,lep2)" }
-  # - { var: deltaR_lep1_jet1, nbins: 60, xmin: 0, xmax: 6, use_filter_minmax: false, filters: [ALL], axis_title: "#Delta R(lep1,jet1)" }
+  - { var: pT_jet2, nbins: 50, xmin: 25, xmax: 175, use_filter_minmax: false, filters: [reg2j1b, reg2j2b, reg3j, reg4j], axis_title: "#it{p}_{T}^{jet2} [GeV]" }
+  # - { var: minimaxmbl, nbins: 50, xmin: 25,  xmax: 325, use_filter_minmax: false, filters: [reg2j2b], axis_title: "m_{bl}^{minimax}" }
+  # - { var: pT_jet1, nbins: 50, xmin: 25, xmax: 275, use_filter_minmax: false, filters: [ALL], axis_title: "#it{p}_{T}^{jet1} [GeV]" }
+  # - { var: pT_lep1, nbins: 50, xmin: 27, xmax: 227, use_filter_minmax: false, filters: [ALL], axis_title: "#it{p}_{T}^{lep1} [GeV]" }
+  # - { var: pT_lep2, nbins: 50, xmin: 20, xmax: 140, use_filter_minmax: false, filters: [ALL], axis_title: "#it{p}_{T}^{lep2} [GeV]" }
+  # - { var: eta_jet1, nbins: 50, xmin: -2.5, xmax: 2.5, use_filter_minmax: false, filters: [ALL], axis_title: "#eta (jet1)" }
+  # - { var: eta_jet2, nbins: 50, xmin: -2.5, xmax: 2.5, use_filter_minmax: false, filters: [reg2j1b, reg2j2b, reg3j, reg4j], axis_title: "#eta (jet2)" }
+  # - { var: eta_lep1, nbins: 50, xmin: -2.5, xmax: 2.5, use_filter_minmax: false, filters: [ALL], axis_title: "#eta (lep1)" }
+  # - { var: eta_lep2, nbins: 50, xmin: -2.5, xmax: 2.5, use_filter_minmax: false, filters: [ALL], axis_title: "#eta (lep2)" }
+  # - { var: phi_jet1, nbins: 50, xmin: -3.14, xmax: 3.14, use_filter_minmax: false, filters: [ALL], axis_title: "#phi (jet1)" }
+  # - { var: phi_jet2, nbins: 50, xmin: -3.14, xmax: 3.14, use_filter_minmax: false, filters: [reg2j1b, reg2j2b, reg3j, reg4j], axis_title: "#phi (jet2)" }
+  # - { var: phi_lep1, nbins: 50, xmin: -3.14, xmax: 3.14, use_filter_minmax: false, filters: [ALL], axis_title: "#phi (lep1)" }
+  # - { var: phi_lep2, nbins: 50, xmin: -3.14, xmax: 3.14, use_filter_minmax: false, filters: [ALL], axis_title: "#phi (lep2)" }
+  # - { var: met, nbins: 50, xmin: 0, xmax: 250, use_filter_minmax: false, filters: [ALL], axis_title: "#it{E}_{T}^{miss} [GeV]" }
+  # - { var: sumet, nbins: 50, xmin: 200, xmax: 1200, use_filter_minmax: false, filters: [ALL], axis_title: "#sum #it{E}_{T} [GeV]" }
+  # - { var: pTsys_lep1lep2jet1met, nbins: 50, xmin: 0, xmax: 200, use_filter_minmax: false, filters: [ALL], axis_title: "#it{p}_{T}^{sys}(lep1lep2jet1#it{E}_{T}^{miss}) [GeV]" }
+  # - { var: pTsys_lep1lep2, nbins: 50, xmin: 0, xmax: 250, use_filter_minmax: false, filters: [ALL], axis_title: "#it{p}_{T}^{sys}(lep1lep2) [GeV]" }
+  # - { var: pTsys_lep1lep2jet1, nbins: 50, xmin: 0, xmax: 250, use_filter_minmax: false, filters: [ALL], axis_title: "#it{p}_{T}^{sys}(lep1lep2jet1) [GeV]" }
+  # - { var: pTsys_lep1lep2jet1jet2met, nbins: 50, xmin: 0, xmax: 200, use_filter_minmax: false, filters: [reg2j1b, reg2j2b, reg3j, reg4j], axis_title: "#it{p}_{T}^{sys}(lep1lep2jet1jet2#it{E}_{T}^{miss}) [GeV]" }
+  # - { var: pTsys_lep1lep2met, nbins: 50, xmin: 0, xmax: 250, use_filter_minmax: false, filters: [ALL], axis_title: "#it{p}_{T}^{sys}(lep1lep2#it{E}_{T}^{miss}) [GeV]" }
+  # - { var: pTsys_jet1jet2, nbins: 50, xmin: 0, xmax: 250, use_filter_minmax: false, filters: [reg2j1b, reg2j2b, reg3j, reg4j], axis_title: "#it{p}_{T}^{sys}(jet1jet2) [GeV]" }
+  # - { var: mass_lep2jet1, nbins: 50, xmin: 0, xmax: 450, use_filter_minmax: false, filters: [ALL], axis_title: "#it{m}_{lep2jet1}" }
+  # - { var: mass_lep1jet1, nbins: 50, xmin: 0, xmax: 450, use_filter_minmax: false, filters: [ALL], axis_title: "#it{m}_{lep1jet1}" }
+  # - { var: mass_lep1jet2, nbins: 50, xmin: 0, xmax: 450, use_filter_minmax: false, filters: [reg2j1b, reg2j2b, reg3j, reg4j], axis_title: "#it{m}_{lep1jet2}" }
+  # - { var: mass_lep2jet2, nbins: 50, xmin: 0, xmax: 400, use_filter_minmax: false, filters: [reg2j1b, reg2j2b, reg3j, reg4j], axis_title: "#it{m}_{lep2jet2}" }
+  # - { var: mass_lep2jet1met, nbins: 50, xmin: 0, xmax: 400, use_filter_minmax: false, filters: [ALL], axis_title: "#it{m}_{lep2jet1met}" }
+  # - { var: deltaR_lep2_jet1, nbins: 50, xmin: 0, xmax: 6, use_filter_minmax: false, filters: [ALL], axis_title: "#Delta R(lep2,jet1)" }
+  # - { var: deltaR_lep1_lep2, nbins: 50, xmin: 0, xmax: 6, use_filter_minmax: false, filters: [ALL], axis_title: "#Delta R(lep1,lep2)" }
+  # - { var: deltaR_lep1_jet1, nbins: 50, xmin: 0, xmax: 6, use_filter_minmax: false, filters: [ALL], axis_title: "#Delta R(lep1,jet1)" }
   # - { var: nloosejets, nbins: 4, xmin: -0.5, xmax: 3.5, use_filter_minmax: false, filters: [ALL], axis_title: "N_{loose jets}" }
   # - { var: nloosebjets, nbins: 4, xmin: -0.5, xmax: 3.5, use_filter_minmax: false, filters: [ALL], axis_title: "N_{loose b-jets}" }
-  # - { var: deltapT_lep1_jet1, nbins: 60, xmin: -150, xmax: 150, use_filter_minmax: false, filters: [ALL], axis_title: "#Delta #it{p}_{T}(lep1, jet1) [GeV]" }
-  # - { var: deltapT_lep1_jet2, nbins: 60, xmin: -150, xmax: 150, use_filter_minmax: false, filters: [reg2j1b, reg2j2b, reg3j, reg4j], axis_title: "#Delta #it{p}_{T}(lep1, jet2) [GeV]" }
-  # - { var: deltapT_lep1lep2_jet2, nbins: 60, xmin: -150, xmax: 150, use_filter_minmax: false, filters: [reg2j1b, reg2j2b, reg3j, reg4j], axis_title: "#Delta #it{p}_{T}(lep1lep2, jet2) [GeV]" }
-  # - { var: mT_lep2met, nbins: 60, xmin: 0, xmax: 250, use_filter_minmax: false, filters: [ALL], axis_title: "#it{m}_{T}^{lep2, #it{E}_{T}^{miss}} [GeV]" }
-  # - { var: cent_lep1lep2, nbins: 60, xmin: 0, xmax: 1, use_filter_minmax: false, filters: [ALL], axis_title: "Centrality(lep1lep2)" }
+  # - { var: deltapT_lep1_jet1, nbins: 50, xmin: -150, xmax: 150, use_filter_minmax: false, filters: [ALL], axis_title: "#Delta #it{p}_{T}(lep1, jet1) [GeV]" }
+  # - { var: deltapT_lep1_jet2, nbins: 50, xmin: -150, xmax: 150, use_filter_minmax: false, filters: [reg2j1b, reg2j2b, reg3j, reg4j], axis_title: "#Delta #it{p}_{T}(lep1, jet2) [GeV]" }
+  # - { var: deltapT_lep1lep2_jet2, nbins: 50, xmin: -150, xmax: 150, use_filter_minmax: false, filters: [reg2j1b, reg2j2b, reg3j, reg4j], axis_title: "#Delta #it{p}_{T}(lep1lep2, jet2) [GeV]" }
+  # - { var: mT_lep2met, nbins: 50, xmin: 0, xmax: 250, use_filter_minmax: false, filters: [ALL], axis_title: "#it{m}_{T}^{lep2, #it{E}_{T}^{miss}} [GeV]" }
+  # - { var: cent_lep1lep2, nbins: 50, xmin: 0, xmax: 1, use_filter_minmax: false, filters: [ALL], axis_title: "Centrality(lep1lep2)" }
   # - { var: psuedoContTagBin_jet1, nbins: 6, xmin: -0.5, xmax: 5.5, use_filter_minmax: false, filters: [ALL], axis_title: "PsuedoCont b-tag bin (jet1)" }
   # - { var: psuedoContTagBin_jet2, nbins: 6, xmin: -0.5, xmax: 5.5, use_filter_minmax: false, filters: [reg2j1b, reg2j2b, reg3j, reg4j], axis_title: "PsuedoCont b-tag bin (jet2)" }
-  # - { var: HT_lep1jet1, nbins: 60, xmin: 52, xmax: 352, use_filter_minmax: false, filters: [ALL], axis_title: "#it{H}_{T} (lep1, jet1) [GeV]"}
+  # - { var: HT_lep1jet1, nbins: 50, xmin: 52, xmax: 352, use_filter_minmax: false, filters: [ALL], axis_title: "#it{H}_{T} (lep1, jet1) [GeV]"}
   # - { var: sigpTsys_lep1lep2met, nbins: 40, xmin: 0, xmax: 0.6, use_filter_minmax: false, filters: [ALL], axis_title: "#sigma(#it{p}_{T}^{sys})(lep1lep2#it{E}_{T}^{miss})" }
