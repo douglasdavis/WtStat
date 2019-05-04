@@ -5,6 +5,7 @@ from WtStat.sorting import sort_for_nominal_tree
 from WtStat.sorting import sort_for_systematic_trees
 from WtStat.sorting import create_systtree_executions
 from WtStat.fitgen import fit_workspace
+from WtStat.ntuple_fitgen import ntuple_fit
 import subprocess
 import argparse
 
@@ -21,104 +22,35 @@ def parseargs():
     subcommands = parser.add_subparsers(dest="topcommand")
 
     histgen = subcommands.add_parser("histgen")
-    histgen.add_argument(
-        "--files",
-        dest="files",
-        type=str,
-        nargs="+",
-        help="file list to sort and histogram",
-        required=True,
-    )
-    histgen.add_argument(
-        "--run-sys-weights",
-        dest="sys_weights",
-        action="store_true",
-        help="run systematic weights",
-    )
-    histgen.add_argument(
-        "--out-file",
-        dest="outfile_name",
-        default="histograms.root",
-        required=False,
-        help="output file name",
-    )
-    histgen.add_argument(
-        "--yaml-config",
-        dest="yaml_config",
-        type=str,
-        required=True,
-        help="YAML filter and template config",
-    )
-    histgen.add_argument(
-        "--tree-prefix",
-        dest="tree_prefix",
-        type=str,
-        required=False,
-        default="WtTMVA",
-        help="ROOT Tree prefix (WtLoop or WtTMVA)",
-    )
-    histgen.add_argument(
-        "--dry",
-        dest="dry",
-        action="store_true",
-        help="don't execute, just print commands",
-    )
+    histgen.add_argument("--files", dest="files", type=str, nargs="+",
+                         help="file list to sort and histogram", required=True)
+    histgen.add_argument("--run-sys-weights", dest="sys_weights", action="store_true",
+                         help="run systematic weights")
+    histgen.add_argument("--out-file", dest="outfile_name", default="histograms.root", required=False,
+                         help="output file name")
+    histgen.add_argument("--yaml-config", dest="yaml_config", type=str, required=True,
+                         help="YAML filter and template config")
+    histgen.add_argument("--tree-prefix", dest="tree_prefix", type=str, required=False, default="WtTMVA",
+                         help="ROOT Tree prefix (WtLoop or WtTMVA)")
+    histgen.add_argument("--dry", dest="dry", action="store_true", help="don't execute, just print commands")
 
-    confgen = subcommands.add_parser("fitgen")
-    confgen.add_argument(
-        "-n",
-        "--name",
-        dest="name",
-        type=str,
-        help="fit name (trex-fitter will create a directory with this name)",
-        required=True,
-    )
-    confgen.add_argument(
-        "-f",
-        "--hfile",
-        dest="hfile",
-        type=str,
-        help="file which contains the histogram",
-        required=True,
-    )
-    confgen.add_argument(
-        "-o",
-        "--outdir",
-        dest="outdir",
-        type=str,
-        help="output directory to save fit scripts",
-        required=True,
-    )
-    confgen.add_argument(
-        "-l",
-        "--lumi",
-        dest="lumi",
-        type=float,
-        help="luminosity to scale to for the fit (wt-stat histograrms are 1/fb)",
-        required=False,
-        default=140.5,
-    )
-    confgen.add_argument(
-        "--ncpu",
-        dest="ncpu",
-        type=int,
-        help="NumCPU TRExFitter option",
-        required=False,
-        default=2,
-    )
-    confgen.add_argument(
-        "--vrplots",
-        dest="vrplots",
-        type=str,
-        required=False,
-        help="YAML config for blocks which will request the generation of VR plots",
-    )
-    confgen.add_argument(
-        "--skip-pdfs",
-        dest="skip_pdfs",
-        action="store_true",
-        help="Skip PDF uncertainties",
-    )
+    hfitgen = subcommands.add_parser("fitgen")
+    hfitgen.add_argument("-n", "--name", dest="name", type=str, help="fit name", required=True)
+    hfitgen.add_argument("-f", "--hfile", dest="hfile", type=str, help="file containing histogram", required=True)
+    hfitgen.add_argument("-o", "--outdir", dest="outdir", type=str, help="output directory", required=True)
+    hfitgen.add_argument("-l", "--lumi", dest="lumi", type=float, help="luminosity", required=False, default=140.5)
+    hfitgen.add_argument("--ncpu", dest="ncpu", type=int, help="NumCPU TRExFitter option", required=False, default=2)
+    hfitgen.add_argument("--vrplots", dest="vrplots", type=str, required=False,
+                         help="YAML config for blocks which will request the generation of VR plots")
+    hfitgen.add_argument("--skip-pdfs", dest="skip_pdfs", action="store_true", help="Skip PDF uncertainties")
+
+    nfitgen = subcommands.add_parser("ntupfitgen")
+    nfitgen.add_argument("-n", "--name", dest="name", type=str, help="fit name", required=True)
+    nfitgen.add_argument("-d", "--ntupdir", dest="ntupdir", type=str, help="dir with ntuples", required=True)
+    nfitgen.add_argument("-o", "--outdir", dest="outdir", type=str, help="output directory", required=True)
+    nfitgen.add_argument("-l", "--lumi", dest="lumi", type=float, help="lumi", default=140.5, required=False)
+    nfitgen.add_argument("--ncpu", dest="ncpu", type=int, help="number of CPUs", default=2, required=False)
+
     return parser.parse_args()
 
 
@@ -156,6 +88,21 @@ def fitgen(args):
     )
     return 0
 
+def ntupfitgen(args):
+    log = logging.getLogger('wt-stat ntupfitgen')
+    ntuple_fit(
+        args.name,
+        args.ntupdir,
+        args.outdir,
+        args.lumi,
+        args.ncpu,
+        skip_treesys=True,
+        skip_weightsys=True,
+        skip_pdfs=True,
+        vrplots=None
+    )
+    return 0
+
 def main():
     args = parseargs()
 
@@ -164,6 +111,9 @@ def main():
 
     if args.topcommand == "fitgen":
         return fitgen(args)
+
+    if args.topcommand == "ntupfitgen":
+        return ntupfitgen(args)
 
 if __name__ == "__main__":
     main()
