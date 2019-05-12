@@ -149,11 +149,12 @@ def rank(args):
                             continue
                     commands.append("{}{}".format(command_pref, sys))
 
-    # parallel_subprocess(commands, max_tasks=args.maxt, logpref="rank")
-    # subprocess.Popen("trex-fitter r {} Ranking=plot".format(args.config), shell=True)
+    parallel_subprocess(commands, max_tasks=args.maxt, logpref="rank")
+    subprocess.Popen("trex-fitter r {} Ranking=plot".format(args.config), shell=True)
     for com in commands:
         print (com)
 
+    return 0
 
 def main():
     args = parseargs()
