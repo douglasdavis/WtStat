@@ -14,8 +14,7 @@ import time
 import logging
 
 logging.basicConfig(
-    level=logging.INFO,
-    format="{:20}  %(levelname)s  %(message)s".format("[WtStat:%(name)s]"),
+    level=logging.INFO, format="{:20}  %(levelname)s  %(message)s".format("[WtStat:%(name)s]")
 )
 
 # fmt: off
@@ -24,7 +23,7 @@ def parseargs():
 
     subcommands = parser.add_subparsers(dest="topcommand")
 
-    histgen = subcommands.add_parser("histgen")
+    histgen = subcommands.add_parser("histgen", help="generate templates (histograms) from ntuples")
     histgen.add_argument("--files", dest="files", type=str, nargs="+",
                          help="file list to sort and histogram", required=True)
     histgen.add_argument("--run-sys-weights", dest="sys_weights", action="store_true",
@@ -37,7 +36,7 @@ def parseargs():
                          help="ROOT Tree prefix (WtLoop or WtTMVA)")
     histgen.add_argument("--dry", dest="dry", action="store_true", help="don't execute, just print commands")
 
-    hfitgen = subcommands.add_parser("fitgen")
+    hfitgen = subcommands.add_parser("fitgen", help="generate fit config which uses pre-made templates")
     hfitgen.add_argument("-n", "--name", dest="name", type=str, help="fit name", required=True)
     hfitgen.add_argument("-f", "--hfile", dest="hfile", type=str, help="file containing histogram", required=True)
     hfitgen.add_argument("-o", "--outdir", dest="outdir", type=str, help="output directory", required=True)
@@ -47,20 +46,23 @@ def parseargs():
                          help="YAML config for blocks which will request the generation of VR plots")
     hfitgen.add_argument("--skip-pdfs", dest="skip_pdfs", action="store_true", help="Skip PDF uncertainties")
 
-    nfitgen = subcommands.add_parser("ntupfitgen")
+    nfitgen = subcommands.add_parser("ntupfitgen", help="generate fit config which uses ntuples")
     nfitgen.add_argument("-n", "--name", dest="name", type=str, help="fit name", required=True)
     nfitgen.add_argument("-d", "--ntupdir", dest="ntupdir", type=str, help="dir with ntuples", required=True)
     nfitgen.add_argument("-o", "--outdir", dest="outdir", type=str, help="output directory", required=True)
     nfitgen.add_argument("-l", "--lumi", dest="lumi", type=float, help="lumi", default=140.5, required=False)
     nfitgen.add_argument("--ncpu", dest="ncpu", type=int, help="number of CPUs", default=2, required=False)
 
-    ntupling = subcommands.add_parser("ntupling")
+    ntupling = subcommands.add_parser("ntupling", help="steer TRExFitter to run the 'n' step in parallel")
     ntupling.add_argument("-c", "--config", dest="config", type=str, required=True, help="TRExFitter config")
     ntupling.add_argument("-r", "--regions", dest="regions", type=str, nargs="+", required=True, help="Region names")
+    ntupling.add_argument("-m", "--max-tasks", dest="maxt", type=int, required=False, default=4, help="Max parallel tasks")
 
-    rank = subcommands.add_parser("rank")
+    rank = subcommands.add_parser("rank", help="perform ranking processing in parallel")
     rank.add_argument("-c", "--config", dest="config", type=str, required=True, help="TRExFitter config")
-    rank.add_argument("-s", "--sys", dest="sys", type=str, required=True, help="Systematics")
+    rank.add_argument("-m", "--max-tasks", dest="maxt", type=int, required=False, default=4, help="Max parallel tasks")
+    rank.add_argument("-e", "--exclude", dest="exclude", type=str, required=False, nargs="+", help="Exclude these systematics")
+    rank.add_argument("-s", "--sys", dest="sys", type=str, required=False, nargs="+", help="Manually define systematics")
 
     return parser.parse_args()
 # fmt: on
@@ -81,7 +83,7 @@ def histgen(args):
     )
     for i, exe in enumerate(nom_exes + sys_exes):
         if args.dry:
-            print("{} -y {}".format(exe, args.yaml_config))
+            log.info("{} -y {}".format(exe, args.yaml_config))
         else:
             subprocess.call("{} -y {}".format(exe, args.yaml_config), shell=True)
         log.info("{}/{}".format(i + 1, len(nom_exes) + len(sys_exes)))
@@ -125,8 +127,32 @@ def ntupling(args):
     for region in args.regions:
         commands.append("{}{}".format(command_pref, region))
 
-    parallel_subprocess(commands, 8, "ntupling")
+    parallel_subprocess(commands, max_tasks=args.maxt, logpref="ntupling")
     return 0
+
+
+def rank(args):
+    log = logging.getLogger("wt-stat rank")
+    command_pref = "trex-fitter r {} Ranking=".format(args.config)
+
+    commands = []
+    if args.sys:
+        for entry in args.sys:
+            commands.append("{}{}".format(command_pref, entry))
+    else:
+        with open(args.config, "r") as f:
+            for line in f.readlines():
+                if "Systematic:" in line:
+                    sys = line.strip().split("Systematic: ")[-1].replace('"', "")
+                    if args.exclude:
+                        if sys in args.exclude:
+                            continue
+                    commands.append("{}{}".format(command_pref, sys))
+
+    # parallel_subprocess(commands, max_tasks=args.maxt, logpref="rank")
+    # subprocess.Popen("trex-fitter r {} Ranking=plot".format(args.config), shell=True)
+    for com in commands:
+        print (com)
 
 
 def main():
@@ -143,6 +169,9 @@ def main():
 
     if args.topcommand == "ntupling":
         return ntupling(args)
+
+    if args.topcommand == "rank":
+        return rank(args)
 
 
 if __name__ == "__main__":

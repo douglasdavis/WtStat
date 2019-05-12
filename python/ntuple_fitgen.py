@@ -21,7 +21,7 @@ def ntuple_fit(
     ## job and fit blocks
 
     outtext.append(WtStat.ntuple_trex.Job(name, ntupdir, lumi))
-    outtext.append(WtStat.ntuple_trex.Fit(name, blind="TRUE" if blind else "FALSE"))
+    outtext.append(WtStat.ntuple_trex.Fit(name, blind="TRUE" if blind else "FALSE"), NumCPU=ncpu)
 
     ## region blocks
 
