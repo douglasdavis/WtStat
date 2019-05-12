@@ -51,6 +51,7 @@ def parseargs():
     nfitgen.add_argument("-d", "--ntupdir", dest="ntupdir", type=str, help="dir with ntuples", required=True)
     nfitgen.add_argument("-o", "--outdir", dest="outdir", type=str, help="output directory", required=True)
     nfitgen.add_argument("-l", "--lumi", dest="lumi", type=float, help="lumi", default=140.5, required=False)
+    nfitgen.add_argument("-r", "--regions", dest="regs", type=str, nargs="+", required=True, help="regions to put in config")
     nfitgen.add_argument("--ncpu", dest="ncpu", type=int, help="number of CPUs", default=2, required=False)
 
     ntupling = subcommands.add_parser("ntupling", help="steer TRExFitter to run the 'n' step in parallel")
@@ -116,6 +117,7 @@ def ntupfitgen(args):
         skip_weightsys=True,
         skip_pdfs=True,
         vrplots=None,
+        regions=args.regs,
     )
     return 0
 
