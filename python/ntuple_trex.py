@@ -6,6 +6,7 @@ import yaml
 
 import WtStat.systematics
 from WtStat.ntuple_utils import files_from_dir
+from WtStat.ntuple_utils import generic_region
 
 
 def block(block_type, block_title, **options):
@@ -26,7 +27,6 @@ def Job(name, npath, lumi):
         LumiLabel='"{} fb^{{-1}}"'.format(lumi),
         NtuplePath=npath,
         NtupleName="WtTMVA_nominal",
-        # MCweight='"weight_nominal"',
         DebugLevel=1,
         MCstatThreshold=0.005,
         SystControlPlots="TRUE",
@@ -65,87 +65,58 @@ def Fit(name, blind="TRUE", NumCPU=6):
     )
     return bk
 
+def Region_1j1b(nbins, xmin, xmax, zs=None, zb=None, rebin=None):
+    genr = generic_region("reg1j1b", "SIGNAL", "reg1j1b==1&&elmu==1&&OS==1", "bdt_response",
+                          nbins, xmin, xmax, "BDT", "1j1b", zs, zb, rebin)
+    return genr
 
-def Region_1j1b():
+
+def Region_2j1b(nbins, xmin, xmax, zs=None, zb=None, rebin=None):
+    genr = generic_region("reg2j1b", "SIGNAL", "reg2j1b==1&&elmu==1&&OS==1", "bdt_response",
+                          nbins, xmin, xmax, "BDT", "2j1b", zs, zb, rebin)
+    return genr
+
+
+def Region_2j2b(nbins, xmin, xmax, zs=None, zb=None, rebin=None):
+    genr = generic_region("reg2j2b", "SIGNAL", "reg2j2b==1&&elmu==1&&OS==1", "bdt_response",
+                          nbins, xmin, xmax, "BDT", "2j2b", zs, zb, rebin)
+    return genr
+
+
+def Region_3j(nbins, xmin, xmax, zs=None, zb=None, rebin=None):
+    genr = generic_region("reg3j", "SIGNAL", "reg3j==1&&elmu==1&&OS==1", "bdt_response",
+                          nbins, xmin, xmax, "BDT", "3j", zs, zb, rebin)
+    return genr
+
+
+def Region_3j1b(nbins, xmin, xmax, zs=None, zb=None, rebin=None):
+    genr = generic_region("reg3j1b", "SIGNAL", "reg3j1b==1&&elmu==1&&OS==1", "bdt_response",
+                          nbins, xmin, xmax, "BDT", "3j1b", zs, zb, rebin)
+    return genr
+
+
+def Region_3jpT(nbins=25):
     bk = r"""
-Region: reg1j1b
-  Type: SIGNAL
-  Selection: "reg1j1b==1&&elmu==1&&OS==1"
-  Variable: "bdt_response",25,-0.6,0.7
-  VariableTitle: "BDT"
-  Label: 1j1b
-  ShortLabel: 1j1b
-  %Binning: "AutoBin","TransfoD",5,15
-"""
-    return bk
-
-
-def Region_2j1b():
-    bk = r"""
-Region: reg2j1b
-  Type: SIGNAL
-  Selection: "reg2j1b==1&&elmu==1&&OS==1"
-  Variable: "bdt_response",25,-0.6,0.7
-  VariableTitle: "BDT"
-  Label: 2j1b
-  ShortLabel: 2j1b
-  %Binning: "AutoBin","TransfoD",5,15
-"""
-    return bk
-
-
-def Region_2j2b():
-    bk = r"""
-Region: reg2j2b
-  Type: SIGNAL
-  Selection: "reg2j2b==1&&elmu==1&&OS==1"
-  Variable: "bdt_response",25,-0.7,0.95
-  VariableTitle: "BDT"
-  Label: 2j2b
-  ShortLabel: 2j2b
-  %Binning: "AutoBin","TransfoD",5,15
-"""
-    return bk
-
-
-def Region_3j():
-    bk = r"""
-Region: reg3j
+Region: reg3jpT
   Type: SIGNAL
   Selection: "reg3j==1&&elmu==1&&OS==1"
-  Variable: "bdt_response",25,-0.7,0.7
-  VariableTitle: "BDT"
+  Variable: "pT_jet2",{},25,175
+  VariableTitle: "#it{{p}}_{{T}}(jet2) [GeV]"
   Label: 3j
   ShortLabel: 3j
-  %Binning: "AutoBin","TransfoD",5,15
-"""
+""".format(nbins)
     return bk
 
-
-def Region_3jpT():
+def Region_3j1bpT(nbins=25):
     bk = r"""
-Region: reg3j
-  Type: SIGNAL
-  Selection: "reg3j==1&&elmu==1&&OS==1"
-  Variable: "pT_jet2",25,25,175
-  VariableTitle: "#it{p}_{T}(jet2) [GeV]"
-  Label: 3j
-  ShortLabel: 3j
-"""
-    return bk
-
-
-def Region_3j1b():
-    bk = r"""
-Region: reg3j1b
+Region: reg3j1bpT
   Type: SIGNAL
   Selection: "reg3j1b==1&&elmu==1&&OS==1"
-  Variable: "bdt_response",25,-0.8,0.6
-  VariableTitle: "BDT"
+  Variable: "pT_jet2",{},25,175
+  VariableTitle: "#it{{p}}_{{T}}(jet2) [GeV]"
   Label: 3j1b
   ShortLabel: 3j1b
-  %Binning: "AutoBin","TransfoD",5,15
-"""
+""".format(nbins)
     return bk
 
 
@@ -323,6 +294,135 @@ NormFactor: "mu_tt"
 """
     return bk
 
+
+def Systematic_tW_DRDS(ntupdir):
+    dsfiles = files_from_dir(ntupdir, r"^tW_DS_41065(6|7)_FS_MC16(a|d|e).root$")
+    bk = r"""
+Systematic: "tW_DRDS"
+  Title: "tW DR vs DS"
+  Type: HISTO
+  Samples: tW
+  NtupleFilesUp: {}
+  Symmetrisation: ONESIDED
+  Category: Modeling
+""".format(dsfiles)
+    return bk
+
+def Systematic_tW_PS(ntupdir):
+    sysfiles = files_from_dir(ntupdir, r"^tW_DR_41103(8|9)_AFII_MC16(a|d|e).root$")
+    bk = r"""
+Systematic: "tW_PS"
+  Title: "tW Parton Shower"
+  Type: HISTO
+  Samples: tW
+  NtupleFilesUp: {}
+  ReferenceSample: tWghost
+  Symmetrisation: ONESIDED
+  Category: Modeling
+""".format(sysfiles)
+    return bk
+
+def Systematic_tW_HS(ntupdir):
+    sysfiles = files_from_dir(ntupdir, r"^tW_412003_AFII_MC16(a|d|e).root$")
+    bk = r"""
+Systematic: "tW_HS"
+  Title: "tW Hard Scatter"
+  Type: HISTO
+  Samples: tW
+  NtupleFilesUp: {}
+  ReferenceSample: tWghost
+  Symmetrisation: ONESIDED
+  Category: Modeling
+""".format(sysfiles)
+    return bk
+
+def Systematic_tW_AR():
+    bk = r"""
+Systematic: "tW_AR"
+  Title: "tW Add. Rad."
+  Type: HISTO
+  Samples: tW
+  WeightDown: "weight_sys_radLo"
+  WeightUp: "weight_sys_radHi"
+  Category: Modeling
+  Symmetrisation: TWOSIDED
+"""
+    return bk
+
+def Systematic_ttbar_PS(ntupdir):
+    sysfiles = files_from_dir(ntupdir, r"^ttbar_410558_AFII_MC16(a|d|e).root$")
+    bk = """
+Systematic: "ttbar_PS"
+  Title: "ttbar Parton Shower"
+  Type: HISTO
+  Samples: ttbar
+  NtupleFilesUp: {}
+  ReferenceSample: ttbarghost
+  Symmetrisation: ONESIDED
+  Category: Modeling
+""".format(sysfiles)
+    return bk
+
+def Systematic_ttbar_HS(ntupdir):
+    sysfiles = files_from_dir(ntupdir, r"^ttbar_410465_AFII_MC16(a|d|e).root$")
+    bk = """
+Systematic: "ttbar_HS"
+  Title: "ttbar Hard Scatter"
+  Type: HISTO
+  Samples: ttbar
+  NtupleFilesUp: {}
+  ReferenceSample: ttbarghost
+  Symmetrisation: ONESIDED
+  Category: Modeling
+""".format(sysfiles)
+    return bk
+
+
+def Systematic_ttbar_AR(ntupdir):
+    filesup = files_from_dir(ntupdir, r"^ttbar_410482_AFII_MC16(a|d|e).root$")
+    filesdn = files_from_dir(ntupdir, r"^ttbar_410472_AFII_MC16(a|d|e).root$")
+    bk = r"""
+Systematic: "ttbar_AR"
+  Title: "ttbar Add. Rad."
+  Type: HISTO
+  Samples: ttbar
+  WeightDown: "weight_sys_radLo"
+  WeightUp: "weight_sys_radHi"
+  NtupleFilesUp: {}
+  NtupleFilesDown: {}
+  Category: Modeling
+  Symmetrisation: TWOSIDED
+""".format(filesup, filesdn)
+    return bk
+
+
+def  NF_minor_inclusive():
+    bk = """
+Systematic: Norm_Diboson
+  Title: "Norm Diboson"
+  Type: OVERALL
+  OverallUp: 0.5
+  OverallDown: -0.5
+  Samples: Diboson
+  Category: Norms
+
+Systematic: Norm_Zjets
+  Title: "Norm Zjets"
+  Type: OVERALL
+  OverallUp: 0.5
+  OverallDown: -0.5
+  Samples: Zjets
+  Category: Norms
+
+Systematic: Norm_MCNP
+  Title: "Norm MCNP"
+  Type: OVERALL
+  OverallUp: 0.5
+  OverallDown: -0.5
+  Samples: MCNP
+  Category: Norms
+"""
+    return bk
 
 def NF_minor(regions=["1j1b", "2j1b", "2j2b", "3j1b"]):
     ret = []
@@ -523,6 +623,18 @@ Systematic: Norm_MCNP_3j1b
 
     return "{}{}".format("\n".join(ret), "\n")
 
+
+def Systematic_lumi():
+    bk = """
+Systematic: "Lumi"
+  Title: "Luminosity"
+  Type: OVERALL
+  OverallUp: 0.02
+  OverallDown: -0.02
+  Samples: tW,ttbar
+  Category: Instrumental
+"""
+    return bk
 
 def get_sys_weights(do_smoothing=False):
     sys_weight_blocks = []

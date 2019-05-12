@@ -19,14 +19,19 @@ filters:
     xmin: -0.70
     xmax: 0.70
 
+  - name: reg3j1b
+    filter: "reg3j1b && elmu && OS"
+    xmin: -0.8
+    xmax:  0.6
+
   - name: reg4j
     filter: "reg4j && elmu && OS"
     xmin: 0
     xmax: 1
 
 templates:
-  - { var: bdt_response, nbins: 60, xmin: -1, xmax: 1, use_filter_minmax: true, filters: [reg1j1b, reg2j1b, reg2j2b, reg3j], axis_title: "Classifier Response" }
-  - { var: pT_jet2, nbins: 50, xmin: 25, xmax: 175, use_filter_minmax: false, filters: [reg2j1b, reg2j2b, reg3j, reg4j], axis_title: "#it{p}_{T}^{jet2} [GeV]" }
+  - { var: bdt_response, nbins: 60, xmin: -1, xmax: 1, use_filter_minmax: true, filters: [reg1j1b, reg2j1b, reg2j2b, reg3j, reg3j1b], axis_title: "Classifier Response" }
+  - { var: pT_jet2, nbins: 50, xmin: 25, xmax: 175, use_filter_minmax: false, filters: [reg2j1b, reg2j2b, reg3j, reg3j1b, reg4j], axis_title: "#it{p}_{T}^{jet2} [GeV]" }
   # - { var: minimaxmbl, nbins: 50, xmin: 25,  xmax: 325, use_filter_minmax: false, filters: [reg2j2b], axis_title: "m_{bl}^{minimax}" }
   # - { var: pT_jet1, nbins: 50, xmin: 25, xmax: 275, use_filter_minmax: false, filters: [ALL], axis_title: "#it{p}_{T}^{jet1} [GeV]" }
   # - { var: pT_lep1, nbins: 50, xmin: 27, xmax: 227, use_filter_minmax: false, filters: [ALL], axis_title: "#it{p}_{T}^{lep1} [GeV]" }

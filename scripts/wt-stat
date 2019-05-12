@@ -4,10 +4,12 @@ from WtStat.sorting import create_nominal_executions
 from WtStat.sorting import sort_for_nominal_tree
 from WtStat.sorting import sort_for_systematic_trees
 from WtStat.sorting import create_systtree_executions
+from WtStat.utils import parallel_subprocess
 from WtStat.fitgen import fit_workspace
 from WtStat.ntuple_fitgen import ntuple_fit
 import subprocess
 import argparse
+import time
 
 import logging
 
@@ -16,6 +18,7 @@ logging.basicConfig(
     format="{:20}  %(levelname)s  %(message)s".format("[WtStat:%(name)s]"),
 )
 
+# fmt: off
 def parseargs():
     parser = argparse.ArgumentParser(description="WtStat executions")
 
@@ -51,7 +54,16 @@ def parseargs():
     nfitgen.add_argument("-l", "--lumi", dest="lumi", type=float, help="lumi", default=140.5, required=False)
     nfitgen.add_argument("--ncpu", dest="ncpu", type=int, help="number of CPUs", default=2, required=False)
 
+    ntupling = subcommands.add_parser("ntupling")
+    ntupling.add_argument("-c", "--config", dest="config", type=str, required=True, help="TRExFitter config")
+    ntupling.add_argument("-r", "--regions", dest="regions", type=str, nargs="+", required=True, help="Region names")
+
+    rank = subcommands.add_parser("rank")
+    rank.add_argument("-c", "--config", dest="config", type=str, required=True, help="TRExFitter config")
+    rank.add_argument("-s", "--sys", dest="sys", type=str, required=True, help="Systematics")
+
     return parser.parse_args()
+# fmt: on
 
 
 def histgen(args):
@@ -72,8 +84,9 @@ def histgen(args):
             print("{} -y {}".format(exe, args.yaml_config))
         else:
             subprocess.call("{} -y {}".format(exe, args.yaml_config), shell=True)
-        log.info("{}/{}".format(i+1, len(nom_exes) + len(sys_exes)))
+        log.info("{}/{}".format(i + 1, len(nom_exes) + len(sys_exes)))
     return 0
+
 
 def fitgen(args):
     log = logging.getLogger("wt-stat fitgen")
@@ -88,8 +101,9 @@ def fitgen(args):
     )
     return 0
 
+
 def ntupfitgen(args):
-    log = logging.getLogger('wt-stat ntupfitgen')
+    log = logging.getLogger("wt-stat ntupfitgen")
     ntuple_fit(
         args.name,
         args.ntupdir,
@@ -99,9 +113,21 @@ def ntupfitgen(args):
         skip_treesys=True,
         skip_weightsys=True,
         skip_pdfs=True,
-        vrplots=None
+        vrplots=None,
     )
     return 0
+
+
+def ntupling(args):
+    log = logging.getLogger("wt-stat ntupling")
+    command_pref = "trex-fitter n {} Regions=".format(args.config)
+    commands = []
+    for region in args.regions:
+        commands.append("{}{}".format(command_pref, region))
+
+    parallel_subprocess(commands, 8, "ntupling")
+    return 0
+
 
 def main():
     args = parseargs()
@@ -114,6 +140,10 @@ def main():
 
     if args.topcommand == "ntupfitgen":
         return ntupfitgen(args)
+
+    if args.topcommand == "ntupling":
+        return ntupling(args)
+
 
 if __name__ == "__main__":
     main()
