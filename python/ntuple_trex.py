@@ -424,7 +424,7 @@ Systematic: Norm_MCNP
 """
     return bk
 
-def NF_minor(regions=["1j1b", "2j1b", "2j2b", "3j1b"]):
+def NF_minor(regions=["1j1b", "2j1b", "2j2b", "3jpT"]):
     ret = []
     if "1j1b" in regions:
         ret.append(
@@ -476,6 +476,19 @@ Systematic: Norm_Diboson_3j
   Samples: Diboson
   Category: Norms
   Regions: reg3j"""
+        )
+
+    if "3jpT" in regions:
+        ret.append(
+            """
+Systematic: Norm_Diboson_3jpT
+  Title: "Norm Diboson 3j"
+  Type: OVERALL
+  OverallUp: 0.5
+  OverallDown: -0.5
+  Samples: Diboson
+  Category: Norms
+  Regions: reg3jpT"""
         )
 
     if "3j1b" in regions:
@@ -543,6 +556,19 @@ Systematic: Norm_Zjets_3j
   Regions: reg3j"""
         )
 
+    if "3jpT" in regions:
+        ret.append(
+            r"""
+Systematic: Norm_Zjets_3jpT
+  Title: "Norm Zjets 3j"
+  Type: OVERALL
+  OverallUp: 0.5
+  OverallDown: -0.5
+  Samples: Zjets
+  Category: Norms
+  Regions: reg3jpT"""
+        )
+
     if "3j1b" in regions:
         ret.append(
             r"""
@@ -606,6 +632,19 @@ Systematic: Norm_MCNP_3j
   Samples: MCNP
   Category: Norms
   Regions: reg3j"""
+        )
+
+    if "3jpT" in regions:
+        ret.append(
+            r"""
+Systematic: Norm_MCNP_3jpT
+  Title: "Norm MCNP 3j"
+  Type: OVERALL
+  OverallUp: 0.5
+  OverallDown: -0.5
+  Samples: MCNP
+  Category: Norms
+  Regions: reg3jpT"""
         )
 
     if "3j1b" in regions:
