@@ -1,12 +1,16 @@
 from __future__ import print_function, division, absolute_import
 import os
+import shutil
 import itertools
+import subprocess
 import WtStat.ntuple_trex
 
-ntupdir = "/var/phy/project/hep/atlas/users/drd25/data/wtloop/v28_20190501/bdt_main"
+ntupdir = "/Users/ddavis/ATLAS/data/bdt_main"
 lumi = 140.5
 name = "tW"
 ncpu = 8
+
+master_3jpT_file = "/Users/ddavis/ATLAS/analysis/WtAna/WtStat/sandbox/tW_reg3jpT_histos.root"
 
 pre_constants = []
 pre_constants.append(WtStat.ntuple_trex.Job(name, ntupdir, lumi))
@@ -307,18 +311,106 @@ def gen_combos(lo, hi, n):
     #coms.append((hi, lo))
     return coms
 
-combos_1j1b = gen_combos(0, 23, 2)
-combos_2j1b = gen_combos(0, 23, 2)
-combos_2j2b = gen_combos(0, 27, 2)
+combos_1j1b = gen_combos(0, 23, 1)
+combos_2j1b = gen_combos(0, 23, 1)
+combos_2j2b = gen_combos(0, 27, 1)
 
 bash_script = """
 #!/bin/bash
 
-wt-stat ntupling -c fit.conf -r reg1j1b reg2j1b reg2j2b reg3jpT -m 4
+wt-stat ntupling -c fit.conf -r reg1j1b reg2j1b reg2j2b -m 4
 trex-fitter wdf fit.conf
 """
 
+for i, combo in enumerate(combos_1j1b):
+    opt_1j1b = combo
+    midblocks = []
+    midblocks.append(WtStat.ntuple_trex.Region_1j1b(23, -0.70, 0.60, zs=opt_1j1b[0], zb=opt_1j1b[1]))
+    midblocks.append(WtStat.ntuple_trex.Region_2j1b(23, -0.70, 0.75))
+    midblocks.append(WtStat.ntuple_trex.Region_2j2b(27, -0.85, 0.95))
+    midblocks.append(WtStat.ntuple_trex.Region_3jpT(30))
 
+    config = "{}{}{}".format(pre_constants, "".join(midblocks), post_constants)
+
+    dirname = "fitbinscan_{}_vary1j1b_{}-{}".format(str(i).zfill(4), opt_1j1b[0], opt_1j1b[1])
+    os.mkdir(dirname)
+    with open("{}/fit.conf".format(dirname), "w") as f:
+        f.write("{}{}{}".format(pre_constants, "".join(midblocks), post_constants))
+    with open("{}/run.sh".format(dirname), "w") as f:
+        f.write(bash_script)
+
+    os.mkdir("{}/tW".format(dirname))
+    os.mkdir("{}/tW/Histograms".format(dirname))
+    shutil.copy(master_3jpT_file, "{}/tW/Histograms/tW_reg3jpT_histos.root".format(dirname))
+
+    #if i > 3:
+    #    break
+
+for i, combo in enumerate(combos_2j1b):
+    opt_2j1b = combo
+    midblocks = []
+    midblocks.append(WtStat.ntuple_trex.Region_1j1b(23, -0.70, 0.60))
+    midblocks.append(WtStat.ntuple_trex.Region_2j1b(23, -0.70, 0.75, zs=opt_2j1b[0], zb=opt_2j1b[1]))
+    midblocks.append(WtStat.ntuple_trex.Region_2j2b(27, -0.85, 0.95))
+    midblocks.append(WtStat.ntuple_trex.Region_3jpT(30))
+
+    config = "{}{}{}".format(pre_constants, "".join(midblocks), post_constants)
+
+    dirname = "fitbinscan_{}_vary2j1b_{}-{}".format(str(i).zfill(4), opt_2j1b[0], opt_2j1b[1])
+    os.mkdir(dirname)
+    with open("{}/fit.conf".format(dirname), "w") as f:
+        f.write("{}{}{}".format(pre_constants, "".join(midblocks), post_constants))
+    with open("{}/run.sh".format(dirname), "w") as f:
+        f.write(bash_script)
+
+    os.mkdir("{}/tW".format(dirname))
+    os.mkdir("{}/tW/Histograms".format(dirname))
+    shutil.copy(master_3jpT_file, "{}/tW/Histograms/tW_reg3jpT_histos.root".format(dirname))
+
+    #if i > 3:
+    #    break
+
+for i, combo in enumerate(combos_2j2b):
+    opt_2j2b = combo
+    midblocks = []
+    midblocks.append(WtStat.ntuple_trex.Region_1j1b(23, -0.70, 0.60))
+    midblocks.append(WtStat.ntuple_trex.Region_2j1b(23, -0.70, 0.75))
+    midblocks.append(WtStat.ntuple_trex.Region_2j2b(27, -0.85, 0.95, zs=opt_2j2b[0], zb=opt_2j2b[1]))
+    midblocks.append(WtStat.ntuple_trex.Region_3jpT(30))
+
+    config = "{}{}{}".format(pre_constants, "".join(midblocks), post_constants)
+
+
+    dirname = "fitbinscan_{}_vary2j2b_{}-{}".format(str(i).zfill(4), opt_2j2b[0], opt_2j2b[1])
+    os.mkdir(dirname)
+    with open("{}/fit.conf".format(dirname), "w") as f:
+        f.write("{}{}{}".format(pre_constants, "".join(midblocks), post_constants))
+    with open("{}/run.sh".format(dirname), "w") as f:
+        f.write(bash_script)
+
+    os.mkdir("{}/tW".format(dirname))
+    os.mkdir("{}/tW/Histograms".format(dirname))
+    shutil.copy(master_3jpT_file, "{}/tW/Histograms/tW_reg3jpT_histos.root".format(dirname))
+
+    #if i > 3:
+    #    break
+
+items = []
+for item in os.listdir('.'):
+    if 'fitbinscan' in item:
+        items.append(item)
+
+for i, item in enumerate(items):
+    print(i, item)
+    os.chdir(item)
+    subprocess.call("bash run.sh", shell=True)
+    subprocess.call("trex-fitter wdf fit.conf", shell=True)
+    os.chdir("..")
+
+################################
+################################
+
+"""
 for i, combo in enumerate(itertools.product(combos_1j1b, combos_2j1b, combos_2j2b)):
     opt_1j1b, opt_2j1b, opt_2j2b = combo
 
@@ -343,3 +435,4 @@ for i, combo in enumerate(itertools.product(combos_1j1b, combos_2j1b, combos_2j2
 
     #if i > 20:
     #    break
+"""

@@ -66,30 +66,40 @@ def Fit(name, blind="TRUE", NumCPU=6):
     return bk
 
 def Region_1j1b(nbins, xmin, xmax, zs=None, zb=None, rebin=None):
+    if zs is not None and zb is not None:
+        nbins = 100
     genr = generic_region("reg1j1b", "SIGNAL", "reg1j1b==1&&elmu==1&&OS==1", "bdt_response",
                           nbins, xmin, xmax, "BDT", "1j1b", zs, zb, rebin)
     return genr
 
 
 def Region_2j1b(nbins, xmin, xmax, zs=None, zb=None, rebin=None):
+    if zs is not None and zb is not None:
+        nbins = 100
     genr = generic_region("reg2j1b", "SIGNAL", "reg2j1b==1&&elmu==1&&OS==1", "bdt_response",
                           nbins, xmin, xmax, "BDT", "2j1b", zs, zb, rebin)
     return genr
 
 
 def Region_2j2b(nbins, xmin, xmax, zs=None, zb=None, rebin=None):
+    if zs is not None and zb is not None:
+        nbins = 100
     genr = generic_region("reg2j2b", "SIGNAL", "reg2j2b==1&&elmu==1&&OS==1", "bdt_response",
                           nbins, xmin, xmax, "BDT", "2j2b", zs, zb, rebin)
     return genr
 
 
 def Region_3j(nbins, xmin, xmax, zs=None, zb=None, rebin=None):
+    if zs is not None and zb is not None:
+        nbins = 100
     genr = generic_region("reg3j", "SIGNAL", "reg3j==1&&elmu==1&&OS==1", "bdt_response",
                           nbins, xmin, xmax, "BDT", "3j", zs, zb, rebin)
     return genr
 
 
 def Region_3j1b(nbins, xmin, xmax, zs=None, zb=None, rebin=None):
+    if zs is not None and zb is not None:
+        nbins = 100
     genr = generic_region("reg3j1b", "SIGNAL", "reg3j1b==1&&elmu==1&&OS==1", "bdt_response",
                           nbins, xmin, xmax, "BDT", "3j1b", zs, zb, rebin)
     return genr
