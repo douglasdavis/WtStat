@@ -40,20 +40,26 @@ def ntuple_fit(
     # if "3j1bpT" in regions:
     #     outtext.append(WtStat.ntuple_trex.Region_3j1bpT())
 
-    if "1j1b" in regions:
-        outtext.append(WtStat.ntuple_trex.Region_1j1b(23, -0.70, 0.60))
-    if "2j1b" in regions:
-        outtext.append(WtStat.ntuple_trex.Region_2j1b(23, -0.70, 0.75))
-    if "2j2b" in regions:
+    if "nominal" in regions:
+        outtext.append(WtStat.ntuple_trex.Region_1j1b(23, -0.70, 0.60, zs=6, zb=17))
+        outtext.append(WtStat.ntuple_trex.Region_2j1b(23, -0.70, 0.75, zs=5, zb=18))
         outtext.append(WtStat.ntuple_trex.Region_2j2b(27, -0.85, 0.95))
-    if "3j" in regions:
-        outtext.append(WtStat.ntuple_trex.Region_3j(27, -0.8, 0.525))
-    if "3j1b" in regions:
-        outtext.append(WtStat.ntuple_trex.Region_3j1b(25, -0.8, 0.50))
-    if "3jpT" in regions:
         outtext.append(WtStat.ntuple_trex.Region_3jpT(30))
-    if "3j1bpT" in regions:
-        outtext.append(WtStat.ntuple_trex.Region_3j1bpT(28))
+    else:
+        if "1j1b" in regions:
+            outtext.append(WtStat.ntuple_trex.Region_1j1b(23, -0.70, 0.60))
+        if "2j1b" in regions:
+            outtext.append(WtStat.ntuple_trex.Region_2j1b(23, -0.70, 0.75))
+        if "2j2b" in regions:
+            outtext.append(WtStat.ntuple_trex.Region_2j2b(27, -0.85, 0.95))
+        if "3j" in regions:
+            outtext.append(WtStat.ntuple_trex.Region_3j(27, -0.8, 0.525))
+        if "3j1b" in regions:
+            outtext.append(WtStat.ntuple_trex.Region_3j1b(25, -0.8, 0.50))
+        if "3jpT" in regions:
+            outtext.append(WtStat.ntuple_trex.Region_3jpT(30))
+        if "3j1bpT" in regions:
+            outtext.append(WtStat.ntuple_trex.Region_3j1bpT(28))
 
 
 
