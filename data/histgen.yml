@@ -1,8 +1,8 @@
 filters:
   - name: reg1j1b
     filter: "reg1j1b && elmu && OS"
-    xmin: -0.60
-    xmax: 0.70
+    xmin: -0.70
+    xmax: 0.60
     nbins: 36
 
   - name: reg2j1b
@@ -14,7 +14,7 @@ filters:
   - name: reg2j2b
     filter: "reg2j2b && elmu && OS"
     xmin: -0.85
-    xmax: 0.95
+    xmax: 0.90
     nbins: 34
 
   - name: reg3j
