@@ -41,10 +41,10 @@ def ntuple_fit(
     #     outtext.append(WtStat.ntuple_trex.Region_3j1bpT())
 
     if "nominal" in regions:
-        outtext.append(WtStat.ntuple_trex.Region_1j1b(23, -0.70, 0.60, zs=6, zb=17))
-        outtext.append(WtStat.ntuple_trex.Region_2j1b(23, -0.70, 0.75, zs=5, zb=18))
-        outtext.append(WtStat.ntuple_trex.Region_2j2b(27, -0.85, 0.95))
-        outtext.append(WtStat.ntuple_trex.Region_3jpT(30))
+        outtext.append(WtStat.ntuple_trex.Region_1j1b(30, -0.70, 0.60))
+        outtext.append(WtStat.ntuple_trex.Region_2j1b(22, -0.70, 0.75))
+        outtext.append(WtStat.ntuple_trex.Region_2j2b(30, -0.85, 0.90))
+        outtext.append(WtStat.ntuple_trex.Region_3jpT(32))
     else:
         if "1j1b" in regions:
             outtext.append(WtStat.ntuple_trex.Region_1j1b(23, -0.70, 0.60))
