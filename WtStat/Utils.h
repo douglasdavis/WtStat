@@ -20,7 +20,11 @@
 
 namespace wts {
 
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 16, 00)
 using Filter_t = ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void>;
+#else
+using Filter_t = ROOT::RDF::RNode;
+#fi
 using FilterDefs_t = std::map<std::string, std::tuple<std::string, double, double, int>>;
 using FilterTable_t = std::map<std::string, std::tuple<wts::Filter_t, double, double, int>>;
 using HResult_t = ROOT::RDF::RResultPtr<TH1D>;
