@@ -4,10 +4,17 @@
 #include <TopLoop/spdlog/fmt/fmt.h>
 // avoid clang-format reorder
 #include <TopLoop/spdlog/sinks/stdout_color_sinks.h>
+
 // ROOT
 #include <TChain.h>
-#include <ROOT/RDFHistoModels.hxx>
 #include <ROOT/RDataFrame.hxx>
+
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 16, 00)
+#include <ROOT/RDFHistoModels.hxx>
+#else
+#include <ROOT/RDF/HistoModels.hxx>
+#endif
+
 
 wts::TemplateSet::TemplateSet(const std::string& name, const std::string& treePref,
                               const std::string& treeSuff, bool doSysWeights)
@@ -32,6 +39,7 @@ void wts::TemplateSet::flowThroughFilters(const wts::FilterDefs_t& filters,
 
   double customXmin;
   double customXmax;
+  int customNbin;
 
   m_logger->info("Registering the following filters:");
   std::string table_hline =
@@ -47,8 +55,9 @@ void wts::TemplateSet::flowThroughFilters(const wts::FilterDefs_t& filters,
     auto filt = std::get<0>(filttup);
     customXmin = std::get<1>(filttup);
     customXmax = std::get<2>(filttup);
+    customNbin = std::get<3>(filttup);
     filterTable.emplace(std::make_pair(
-        fname, std::make_tuple(nom_df.Filter(filt, fname), customXmin, customXmax)));
+      fname, std::make_tuple(nom_df.Filter(filt, fname), customXmin, customXmax, customNbin)));
     m_logger->info("| {0:^20} | {1:^50} | {2:^7} | {3:^7} |", fname, filt, customXmin,
                    customXmax);
   }
@@ -82,14 +91,17 @@ void wts::TemplateSet::flowThroughFilters(const wts::FilterDefs_t& filters,
     auto filter = std::get<0>(filterTuple);
     auto filterXmin = std::get<1>(filterTuple);
     auto filterXmax = std::get<2>(filterTuple);
+    auto filterNbin = std::get<3>(filterTuple);
 
     for (const auto& htemplate : m_histTemplates) {
       if (!wts::inVec(htemplate.filters, filterName)) continue;
       float xmin = htemplate.xmin;
       float xmax = htemplate.xmax;
+      int nbin = htemplate.nbins;
       if (htemplate.use_filter_minmax) {
         xmin = filterXmin;
         xmax = filterXmax;
+        nbin = filterNbin;
       }
 
       std::string hname =
@@ -99,7 +111,7 @@ void wts::TemplateSet::flowThroughFilters(const wts::FilterDefs_t& filters,
       }
       else {
         histograms.push_back(filter.Histo1D(
-            ROOT::RDF::TH1DModel(hname.c_str(), hname.c_str(), htemplate.nbins, xmin, xmax),
+            ROOT::RDF::TH1DModel(hname.c_str(), hname.c_str(), nbin, xmin, xmax),
             htemplate.var, "weight_nominal"));
       }
     }
@@ -108,7 +120,7 @@ void wts::TemplateSet::flowThroughFilters(const wts::FilterDefs_t& filters,
     if (m_treeSuff == "nominal") {
       // do the systematic weights
       if (doSysWeights()) {
-        flowOnSysWeights(filter, filterName, histograms, filterXmin, filterXmax, outFile);
+        flowOnSysWeights(filter, filterName, histograms, filterXmin, filterXmax, filterNbin, outFile);
       }
       // do extra weights
       for (auto const& xw : m_extraWeights) {
@@ -116,9 +128,11 @@ void wts::TemplateSet::flowThroughFilters(const wts::FilterDefs_t& filters,
           if (!wts::inVec(htemplate.filters, filterName)) continue;
           float xmin = htemplate.xmin;
           float xmax = htemplate.xmax;
+          int nbin = htemplate.nbins;
           if (htemplate.use_filter_minmax) {
             xmin = filterXmin;
             xmax = filterXmax;
+            nbin = filterNbin;
           }
 
           std::string xwshort = xw;
@@ -133,7 +147,7 @@ void wts::TemplateSet::flowThroughFilters(const wts::FilterDefs_t& filters,
           else {
             histograms.push_back(
                 filter.Histo1D(ROOT::RDF::TH1DModel(hname.c_str(), hname.c_str(),
-                                                    htemplate.nbins, xmin, xmax),
+                                                    nbin, xmin, xmax),
                                htemplate.var, xw));
           }
         }
@@ -152,7 +166,7 @@ void wts::TemplateSet::flowThroughFilters(const wts::FilterDefs_t& filters,
 void wts::TemplateSet::flowOnSysWeights(wts::Filter_t& filter,
                                         const std::string& filterName,
                                         std::vector<HResult_t>& histograms,
-                                        double filterXmin, double filterXmax,
+                                        double filterXmin, double filterXmax, int filterNbin,
                                         TFile* outFile) const {
   if (m_treeSuff != "nominal") {
     m_logger->warn(
@@ -174,9 +188,11 @@ void wts::TemplateSet::flowOnSysWeights(wts::Filter_t& filter,
       auto wn_down = entry.value()["down"].get<std::string>();
       float xmin = htemplate.xmin;
       float xmax = htemplate.xmax;
+      int nbin = htemplate.nbins;
       if (htemplate.use_filter_minmax) {
         xmin = filterXmin;
         xmax = filterXmax;
+        nbin = filterNbin;
       }
 
       if (outFile->GetListOfKeys()->Contains(hname_up.c_str())) {
@@ -185,7 +201,7 @@ void wts::TemplateSet::flowOnSysWeights(wts::Filter_t& filter,
       else {
         histograms.push_back(
             filter.Histo1D(ROOT::RDF::TH1DModel(hname_up.c_str(), hname_up.c_str(),
-                                                htemplate.nbins, xmin, xmax),
+                                                nbin, xmin, xmax),
                            htemplate.var, wn_up));
       }
       if (outFile->GetListOfKeys()->Contains(hname_down.c_str())) {
@@ -194,7 +210,7 @@ void wts::TemplateSet::flowOnSysWeights(wts::Filter_t& filter,
       else {
         histograms.push_back(
             filter.Histo1D(ROOT::RDF::TH1DModel(hname_down.c_str(), hname_down.c_str(),
-                                                htemplate.nbins, xmin, xmax),
+                                                nbin, xmin, xmax),
                            htemplate.var, wn_down));
       }
     }
@@ -204,9 +220,11 @@ void wts::TemplateSet::flowOnSysWeights(wts::Filter_t& filter,
       auto wn_up = entry.value()["up"].get<std::string>();
       float xmin = htemplate.xmin;
       float xmax = htemplate.xmax;
+      int nbin = htemplate.nbins;
       if (htemplate.use_filter_minmax) {
         xmin = filterXmin;
         xmax = filterXmax;
+        nbin = filterNbin;
       }
 
       if (outFile->GetListOfKeys()->Contains(hname_up.c_str())) {
@@ -215,7 +233,7 @@ void wts::TemplateSet::flowOnSysWeights(wts::Filter_t& filter,
       else {
         histograms.push_back(
             filter.Histo1D(ROOT::RDF::TH1DModel(hname_up.c_str(), hname_up.c_str(),
-                                                htemplate.nbins, xmin, xmax),
+                                                nbin, xmin, xmax),
                            htemplate.var, wn_up));
       }
     }

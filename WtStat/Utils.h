@@ -3,10 +3,17 @@
 
 // TopLoop
 #include <TopLoop/json/json.hpp>
+
 // ROOT
 #include <TH1D.h>
-#include <ROOT/RDFInterface.hxx>
 #include <ROOT/RResultPtr.hxx>
+
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 16, 00)
+#include <ROOT/RDFInterface.hxx>
+#else
+#include <ROOT/RDF/InterfaceUtils.hxx>
+#endif
+
 // C++
 #include <map>
 #include <string>
@@ -14,8 +21,8 @@
 namespace wts {
 
 using Filter_t = ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void>;
-using FilterDefs_t = std::map<std::string, std::tuple<std::string, double, double>>;
-using FilterTable_t = std::map<std::string, std::tuple<wts::Filter_t, double, double>>;
+using FilterDefs_t = std::map<std::string, std::tuple<std::string, double, double, int>>;
+using FilterTable_t = std::map<std::string, std::tuple<wts::Filter_t, double, double, int>>;
 using HResult_t = ROOT::RDF::RResultPtr<TH1D>;
 
 /// simple struct to define a template histogram
