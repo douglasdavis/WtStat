@@ -14,7 +14,7 @@ def ntuple_fit(
     skip_weightsys=False,
     skip_pdfs=False,
     vrplots=None,
-    regions=["1j1b", "2j1b", "2j2b", "3j", "3jpT", "3j1b", "3j1bpT"],
+    regions=["1j1b", "2j1b", "2j2b", "3jpT"],
 ):
     outtext = []
 
@@ -23,39 +23,23 @@ def ntuple_fit(
     outtext.append(WtStat.ntuple_trex.Job(name, ntupdir, lumi))
     outtext.append(WtStat.ntuple_trex.Fit(name, blind="TRUE" if blind else "FALSE", NumCPU=ncpu))
 
+    r1j1b = WtStat.ntuple_trex.Region_1j1b(36, -0.70, 0.60)
+    r2j1b = WtStat.ntuple_trex.Region_2j1b(22, -0.70, 0.75)
+    r2j2b = WtStat.ntuple_trex.Region_2j2b(34, -0.85, 0.90)
+    r3jpT = WtStat.ntuple_trex.Region_3jpT(34)
+
     ## region blocks
-
-    # if "1j1b" in regions:
-    #     outtext.append(WtStat.ntuple_trex.Region_1j1b(100, -0.70, 0.75, zs=5, zb=25))
-    # if "2j1b" in regions:
-    #     outtext.append(WtStat.ntuple_trex.Region_2j1b(100, -0.70, 0.75, zs=5, zb=25))
-    # if "2j2b" in regions:
-    #     outtext.append(WtStat.ntuple_trex.Region_2j2b(100, -0.85, 0.95, zs=5, zb=25))
-    # if "3j" in regions:
-    #     outtext.append(WtStat.ntuple_trex.Region_3j(100, -0.85, 0.64, zs=5, zb=25))
-    # if "3j1b" in regions:
-    #     outtext.append(WtStat.ntuple_trex.Region_3j1b(100, -0.85, 0.62, zs=5, zb=25))
-    # if "3jpT" in regions:
-    #     outtext.append(WtStat.ntuple_trex.Region_3jpT())
-    # if "3j1bpT" in regions:
-    #     outtext.append(WtStat.ntuple_trex.Region_3j1bpT())
-
-    if "1j1b" in regions:
-        outtext.append(WtStat.ntuple_trex.Region_1j1b(23, -0.70, 0.60))
-    if "2j1b" in regions:
-        outtext.append(WtStat.ntuple_trex.Region_2j1b(23, -0.70, 0.75))
-    if "2j2b" in regions:
-        outtext.append(WtStat.ntuple_trex.Region_2j2b(27, -0.85, 0.95))
-    if "3j" in regions:
-        outtext.append(WtStat.ntuple_trex.Region_3j(27, -0.8, 0.525))
-    if "3j1b" in regions:
-        outtext.append(WtStat.ntuple_trex.Region_3j1b(25, -0.8, 0.50))
-    if "3jpT" in regions:
-        outtext.append(WtStat.ntuple_trex.Region_3jpT(30))
-    if "3j1bpT" in regions:
-        outtext.append(WtStat.ntuple_trex.Region_3j1bpT(28))
-
-
+    if "nominal" in regions:
+        outtext += [r1j1b, r2j1b, r2j2b, r3jpT]
+    else:
+        if "1j1b" in regions:
+            outtext.append(r1j1b)
+        if "2j1b" in regions:
+            outtext.append(r2j1b)
+        if "2j2b" in regions:
+            outtext.append(r2j2b)
+        if "3jpT" in regions:
+            outtext.append(r3jpT)
 
     ## sample blocks
     outtext.append("\n")

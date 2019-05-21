@@ -307,8 +307,8 @@ sys_lumi = block(
     "Lumi",
     Type="OVERALL",
     Title='"Lumi"',
-    OverallUp=0.023,
-    OverallDown=-0.023,
+    OverallUp=0.02,
+    OverallDown=-0.02,
     Samples="all",
     Category="Instrumental",
 )
@@ -349,13 +349,25 @@ sys_zjets_norm_2j2b = block(
     Category='"Norms"',
 )
 
+sys_zjets_norm_3j = block(
+    "Systematic",
+    "Norm_Zjets_3j",
+    Type="OVERALL",
+    Title='"Norm Zjets 3j"',
+    OverallUp=0.5,
+    OverallDown=-0.5,
+    Samples="Zjets",
+    Regions="reg3j",
+    Category='"Norms"',
+)
+
 sys_diboson_norm_1j1b = block(
     "Systematic",
     "Norm_Diboson_1j1b",
     Type="OVERALL",
     Title='"Norm Diboson 1j1b"',
-    OverallUp=0.5,
-    OverallDown=-0.5,
+    OverallUp=0.25,
+    OverallDown=-0.25,
     Samples="Diboson",
     Regions="reg1j1b",
     Category='"Norms"',
@@ -366,8 +378,8 @@ sys_diboson_norm_2j1b = block(
     "Norm_Diboson_2j1b",
     Type="OVERALL",
     Title='"Norm Diboson 2j1b"',
-    OverallUp=0.5,
-    OverallDown=-0.5,
+    OverallUp=0.25,
+    OverallDown=-0.25,
     Samples="Diboson",
     Regions="reg2j1b",
     Category='"Norms"',
@@ -378,10 +390,22 @@ sys_diboson_norm_2j2b = block(
     "Norm_Diboson_2j2b",
     Type="OVERALL",
     Title='"Norm Diboson 2j2b"',
-    OverallUp=0.5,
-    OverallDown=-0.5,
+    OverallUp=0.25,
+    OverallDown=-0.25,
     Samples="Diboson",
     Regions="reg2j2b",
+    Category='"Norms"',
+)
+
+sys_diboson_norm_3j = block(
+    "Systematic",
+    "Norm_Diboson_3j",
+    Type="OVERALL",
+    Title='"Norm Diboson 3j"',
+    OverallUp=0.25,
+    OverallDown=-0.25,
+    Samples="Diboson",
+    Regions="reg3j",
     Category='"Norms"',
 )
 
@@ -391,8 +415,8 @@ sys_mcnp_norm_1j1b = block(
     "Norm_MCNP_1j1b",
     Type="OVERALL",
     Title='"Norm MCNP 1j1b"',
-    OverallUp=0.5,
-    OverallDown=-0.5,
+    OverallUp=1.0,
+    OverallDown=-1.0,
     Samples="MCNP",
     Regions="reg1j1b",
     Category='"Norms"',
@@ -403,8 +427,8 @@ sys_mcnp_norm_2j1b = block(
     "Norm_MCNP_2j1b",
     Type="OVERALL",
     Title='"Norm MCNP 2j1b"',
-    OverallUp=0.5,
-    OverallDown=-0.5,
+    OverallUp=1.0,
+    OverallDown=-1.0,
     Samples="MCNP",
     Regions="reg2j1b",
     Category='"Norms"',
@@ -415,22 +439,35 @@ sys_mcnp_norm_2j2b = block(
     "Norm_MCNP_2j2b",
     Type="OVERALL",
     Title='"Norm MCNP 2j2b"',
-    OverallUp=0.5,
-    OverallDown=-0.5,
+    OverallUp=1.0,
+    OverallDown=-1.0,
     Samples="MCNP",
     Regions="reg2j2b",
     Category='"Norms"',
 )
 
-sys_zjets_norms = [sys_zjets_norm_1j1b, sys_zjets_norm_2j1b, sys_zjets_norm_2j2b]
+sys_mcnp_norm_3j = block(
+    "Systematic",
+    "Norm_MCNP_3j",
+    Type="OVERALL",
+    Title='"Norm MCNP 3j"',
+    OverallUp=1.0,
+    OverallDown=-1.0,
+    Samples="MCNP",
+    Regions="reg3j",
+    Category='"Norms"',
+)
+
+sys_zjets_norms = [sys_zjets_norm_1j1b, sys_zjets_norm_2j1b, sys_zjets_norm_2j2b, sys_zjets_norm_3j]
 
 sys_diboson_norms = [
     sys_diboson_norm_1j1b,
     sys_diboson_norm_2j1b,
     sys_diboson_norm_2j2b,
+    sys_diboson_norm_3j,
 ]
 
-sys_mcnp_norms = [sys_mcnp_norm_1j1b, sys_mcnp_norm_2j1b, sys_mcnp_norm_2j2b]
+sys_mcnp_norms = [sys_mcnp_norm_1j1b, sys_mcnp_norm_2j1b, sys_mcnp_norm_2j2b, sys_mcnp_norm_3j]
 
 sys_tW_DRDS = block(
     "Systematic",

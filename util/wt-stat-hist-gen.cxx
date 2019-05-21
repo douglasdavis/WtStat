@@ -7,6 +7,8 @@
 #include <TopLoop/spdlog/fmt/fmt.h>
 // WtLoop
 #include <WtLoop/Externals/CLI11.hpp>
+// ROOT
+#include <TROOT.h>
 // C++
 #include <map>
 
@@ -50,13 +52,15 @@ int main(int argc, char* argv[]) {
   for (const auto& filt : yaml_filters) {
     double xmin = 0;
     double xmax = 0;
+    int nbin = 0;
     std::string y_name = filt["name"].as<std::string>();
     std::string y_filt = filt["filter"].as<std::string>();
-    if (filt["xmin"] && filt["xmax"]) {
+    if (filt["xmin"] && filt["xmax"] && filt["nbins"]) {
       xmin = filt["xmin"].as<float>();
       xmax = filt["xmax"].as<float>();
+      nbin = filt["nbins"].as<int>();
     }
-    filters.emplace(std::make_pair(y_name, std::make_tuple(y_filt, xmin, xmax)));
+    filters.emplace(std::make_pair(y_name, std::make_tuple(y_filt, xmin, xmax, nbin)));
   }
 
   wts::TemplateSet templateSet(templateSetName, treePref, treeSuff, doWeights);
