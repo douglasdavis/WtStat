@@ -29,6 +29,7 @@ def Job(name, hpath, hfile, lumi):
         SystPruningNorm=0.005,
         ImageFormat='"pdf"',
         SystCategoryTables="TRUE",
+        SystDataPlots="TRUE",
         RankingPlot="Systs",
         RankingMaxNP=15,
         DoSummaryPlot="TRUE",

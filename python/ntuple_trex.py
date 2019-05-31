@@ -34,6 +34,7 @@ def Job(name, npath, lumi):
         SystPruningNorm=0.005,
         ImageFormat='"pdf"',
         SystCategoryTables="TRUE",
+        SystDataPlots="TRUE",
         RankingPlot="Systs",
         RankingMaxNP=15,
         DoSummaryPlot="TRUE",
