@@ -3,69 +3,7 @@
 from __future__ import print_function
 import os
 from WtStat.yattag import Doc, indent
-
-_CSS = """
-body {
-  font-family: Liberation Sans, Arial, sans-serif;
-  background-color: #fffaf7;
-  line-height: 1.5;
-}
-main {
-  max-width: 100ch
-  padding: 2ch;
-  margin: auto;
-}
-header {
-  margin-bottom: 1.5rem;
-}
-h1 {
-  margin-bottom: .5rem;
-}
-pre {
-  white-space: pre-wrap;
-}
-hr {
-  border: 2px solid #ddd;
-  margin: 2rem auto;
-}
-a {
-  color: #ff3c3c;
-  text-decoration: none;
-  outline: 0;
-}
-a:hover {
-  text-decoration: underline;
-}
-.container {
-    max-width: 85%;
-    overflow-x: auto;
-    white-space: nowrap;
-    margin-left: auto;
-    margin-right: auto;
-}
-.centerimg {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 100ch;
-}
-.sysimg {
-  max-height: 22rem;
-}
-.regimg {
-  max-height: 30rem;
-}
-.corrmatrix {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 100ch;
-}
-h1, h2, h3 {
-  text-align: center;
-}
-"""
-
+from WtStat._css import CSS
 
 def top_level(doc, tag, text):
     with tag("h2"):
@@ -113,7 +51,7 @@ def generate_html(directory):
     with tag("html"):
         with tag("head"):
             with tag("style", type="text/css"):
-                text(_CSS)
+                text(CSS)
 
         with tag("body"):
             plots(doc, tag, text)
@@ -137,7 +75,6 @@ def trex2html(directory):
 
 if __name__ == "__main__":
     import argparse
-
     parser = argparse.ArgumentParser()
     parser.add_argument("workspace", type=str, help="TRExFitter workspace")
     args = parser.parse_args()
