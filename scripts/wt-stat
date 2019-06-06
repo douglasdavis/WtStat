@@ -7,6 +7,7 @@ from WtStat.sorting import create_systtree_executions
 from WtStat.utils import parallel_subprocess
 from WtStat.fitgen import fit_workspace
 from WtStat.ntuple_fitgen import ntuple_fit
+from WtStat.trex2html import trex2html
 import subprocess
 import argparse
 import time
@@ -64,6 +65,9 @@ def parseargs():
     rank.add_argument("-m", "--max-tasks", dest="maxt", type=int, required=False, default=4, help="Max parallel tasks")
     rank.add_argument("-e", "--exclude", dest="exclude", type=str, required=False, nargs="+", help="Exclude these systematics")
     rank.add_argument("-s", "--sys", dest="sys", type=str, required=False, nargs="+", help="Manually define systematics")
+
+    tohtml = subcommands.add_parser("trex2html", help="generate index.html file for a TRExFitter workspace")
+    tohtml.add_argument("-d", "--dir", dest="dir", type=str, required=True, help="Directory")
 
     return parser.parse_args()
 # fmt: on
@@ -176,6 +180,9 @@ def main():
     if args.topcommand == "rank":
         return rank(args)
 
+    if args.topcommand == "trex2html":
+        trex2html(args.dir)
+        return 0
 
 if __name__ == "__main__":
     main()
