@@ -13,6 +13,8 @@ def top_level(doc, tag, text):
     doc.stag("img", src="./Pruning.png", klass="centerimg")
     doc.stag("img", src="./CorrMatrix.png", klass="corrmatrix")
     doc.stag("img", src="./Gammas.png", klass="centerimg", alt="Gammas")
+    if os.path.exists("./RankingSysts.png"):
+        doc.stag("img", src="./RankingSysts.png", klass="centerimg", alt="Ranking")
 
 
 def plots(doc, tag, text):

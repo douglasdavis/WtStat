@@ -14,14 +14,15 @@ def fit_workspace(
     skip_weightsys=False,
     skip_pdfs=False,
     vrplots=None,
+    imgf="pdf",
 ):
     fileinfo = hfilesplit(hfile)
 
     outtext = []
 
     ## `Job` and `Fit` blocks
-    outtext.append(WtStat.trex.Job(name, fileinfo[0], fileinfo[1], lumi))
-    outtext.append(WtStat.trex.Fit(name, blind="TRUE" if blind else "FALSE"))
+    outtext.append(WtStat.trex.Job(name, fileinfo[0], fileinfo[1], lumi, imgf=imgf))
+    outtext.append(WtStat.trex.Fit(name, blind="TRUE" if blind else "FALSE", NumCPU=ncpu))
 
     ## `Region` blocks
 

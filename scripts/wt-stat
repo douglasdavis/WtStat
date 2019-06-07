@@ -46,6 +46,7 @@ def parseargs():
     hfitgen.add_argument("--vrplots", dest="vrplots", type=str, required=False,
                          help="YAML config for blocks which will request the generation of VR plots")
     hfitgen.add_argument("--skip-pdfs", dest="skip_pdfs", action="store_true", help="Skip PDF uncertainties")
+    hfitgen.add_argument("--imgf", dest="imgf", default="pdf", help="image format")
 
     nfitgen = subcommands.add_parser("ntupfitgen", help="generate fit config which uses ntuples")
     nfitgen.add_argument("-n", "--name", dest="name", type=str, help="fit name", required=True)
@@ -54,6 +55,7 @@ def parseargs():
     nfitgen.add_argument("-l", "--lumi", dest="lumi", type=float, help="lumi", default=140.5, required=False)
     nfitgen.add_argument("-r", "--regions", dest="regs", type=str, nargs="+", required=True, help="regions to put in config")
     nfitgen.add_argument("--ncpu", dest="ncpu", type=int, help="number of CPUs", default=2, required=False)
+    nfitgen.add_argument("--imgf", dest="imgf", default="pdf", help="image format")
 
     ntupling = subcommands.add_parser("ntupling", help="steer TRExFitter to run the 'n' step in parallel")
     ntupling.add_argument("-c", "--config", dest="config", type=str, required=True, help="TRExFitter config")
@@ -105,6 +107,7 @@ def fitgen(args):
         args.ncpu,
         skip_pdfs=args.skip_pdfs,
         vrplots=args.vrplots,
+        imgf=args.imgf
     )
     return 0
 
@@ -122,6 +125,7 @@ def ntupfitgen(args):
         skip_pdfs=True,
         vrplots=None,
         regions=args.regs,
+        imgf=args.imgf
     )
     return 0
 

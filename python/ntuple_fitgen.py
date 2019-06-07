@@ -15,12 +15,13 @@ def ntuple_fit(
     skip_pdfs=False,
     vrplots=None,
     regions=["1j1b", "2j1b", "2j2b", "3jpT"],
+    imgf="pdf"
 ):
     outtext = []
 
     ## job and fit blocks
 
-    outtext.append(WtStat.ntuple_trex.Job(name, ntupdir, lumi))
+    outtext.append(WtStat.ntuple_trex.Job(name, ntupdir, lumi, imgf=imgf))
     outtext.append(WtStat.ntuple_trex.Fit(name, blind="TRUE" if blind else "FALSE", NumCPU=ncpu))
 
     r1j1b = WtStat.ntuple_trex.Region_1j1b(36, -0.70, 0.60)

@@ -16,7 +16,7 @@ def block(block_type, block_title, **options):
     return "{}\n\n".format(ret)
 
 
-def Job(name, npath, lumi):
+def Job(name, npath, lumi, imgf="pdf"):
     bk = block(
         "Job",
         name,
@@ -32,7 +32,7 @@ def Job(name, npath, lumi):
         SystControlPlots="TRUE",
         SystPruningShape=0.005,
         SystPruningNorm=0.005,
-        ImageFormat='"pdf"',
+        ImageFormat='"{}"'.format(imgf),
         SystCategoryTables="TRUE",
         SystDataPlots="TRUE",
         RankingPlot="Systs",
