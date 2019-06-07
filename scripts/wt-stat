@@ -66,8 +66,8 @@ def parseargs():
     rank.add_argument("-e", "--exclude", dest="exclude", type=str, required=False, nargs="+", help="Exclude these systematics")
     rank.add_argument("-s", "--sys", dest="sys", type=str, required=False, nargs="+", help="Manually define systematics")
 
-    tohtml = subcommands.add_parser("trex2html", help="generate index.html file for a TRExFitter workspace")
-    tohtml.add_argument("-d", "--dir", dest="dir", type=str, required=True, help="Directory")
+    tohtml = subcommands.add_parser("html", help="generate index.html file for a TRExFitter workspace")
+    tohtml.add_argument("workspace", type=str, help="TRExFitter workspace directory")
 
     return parser.parse_args()
 # fmt: on
@@ -180,8 +180,8 @@ def main():
     if args.topcommand == "rank":
         return rank(args)
 
-    if args.topcommand == "trex2html":
-        trex2html(args.dir)
+    if args.topcommand == "html":
+        trex2html(args.workspace)
         return 0
 
 if __name__ == "__main__":
