@@ -8,6 +8,7 @@ from WtStat.utils import parallel_subprocess
 from WtStat.fitgen import fit_workspace
 from WtStat.ntuple_fitgen import ntuple_fit
 from WtStat.trex2html import trex2html
+from WtStat.rdf_builder import rdf_runner
 import subprocess
 import argparse
 import time
@@ -70,6 +71,18 @@ def parseargs():
 
     tohtml = subcommands.add_parser("html", help="generate index.html file for a TRExFitter workspace")
     tohtml.add_argument("workspace", type=str, help="TRExFitter workspace directory")
+
+    rdfgen = subcommands.add_parser("rdfgen", help="generate templates from rdf_builder module")
+    rdfgen.add_argument("-d", "--directory", type=str, required=True, help="directory containing Wt ROOT files")
+    rdfgen.add_argument("-c", "--config", type=str, required=True, help="configuration file")
+    rdfgen.add_argument("-o", "--outfile", type=str, required=True, help="output file")
+    rdfgen.add_argument("--exclude-weights", type=str, nargs="+", default=[], help="set of weight systematics to exclude")
+    rdfgen.add_argument("--exclude-trees", type=str, nargs="+", default=[], help="set of tree systematics to exclude")
+    rdfgen.add_argument("--no-tree-systematics", dest="notreesys", action="store_true", help="ignore all tree  systematics")
+    rdfgen.add_argument("--no-weight-systematics", dest="noweightsys", action="store_true", help="ignore all weight systematics")
+    rdfgen.add_argument("--tree-prefix", type=str, default="WtTMVA", help="Wt tree prefix (WtTMVA or WtLoop)")
+    rdfgen.add_argument("--disable-imt", action="store_true", help="disable ROOT's implicit multithreading")
+    rdfgen.add_argument("--debug", action="store_true", help="turn on debug statements")
 
     return parser.parse_args()
 # fmt: on
@@ -166,6 +179,11 @@ def rank(args):
 
     return 0
 
+
+def rdfgen(args):
+    return rdf_runner(args)
+
+
 def main():
     args = parseargs()
 
@@ -187,6 +205,9 @@ def main():
     if args.topcommand == "html":
         trex2html(args.workspace)
         return 0
+
+    if args.topcommand == "rdfgen":
+        return rdfgen(args)
 
 if __name__ == "__main__":
     main()

@@ -10,10 +10,13 @@ import yaml
 from WtStat.enum import Enum
 from WtStat.systematics import SYS_WEIGHTS, PDF_WEIGHTS
 
+import logging
+
+log = logging.getLogger(__name__)
+
 # fmt: off
 import ROOT
 ROOT.PyConfig.IgnoreCommandLineOptions = True
-ROOT.ROOT.EnableImplicitMT()
 RDataFrame = ROOT.ROOT.RDataFrame
 TH1DModel = ROOT.ROOT.RDF.TH1DModel
 # fmt: on
@@ -276,7 +279,7 @@ def ntuple_definitions(nominal_files, systematic_files, root_dir):
     return ntuple_defs
 
 
-cpp_shift_code = """
+CPP_SHIFT_CODE = """
 void shiftScaleSetDir(TH1D* h, float lumi, TFile* file) {
   int nb = h->GetNbinsX();
 
@@ -307,24 +310,13 @@ void shiftScaleSetDir(TH1D* h, float lumi, TFile* file) {
   h->Write();
 }
 """
-ROOT.gInterpreter.ProcessLine(cpp_shift_code)
 
 
-if __name__ == "__main__":
-    # fmt: off
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument("directory", type=str, help="directory containing Wt ROOT files")
-    parser.add_argument("config", type=str, help="configuration file")
-    parser.add_argument("outfile", type=str, help="output file")
-    parser.add_argument("--exclude-weights", type=str, nargs="+", default=[], help="set of weight systematics to exclude")
-    parser.add_argument("--exclude-trees", type=str, nargs="+", default=[], help="set of tree systematics to exclude")
-    parser.add_argument("--no-tree-systematics", dest="notreesys", action="store_true", help="ignore all tree  systematics")
-    parser.add_argument("--no-weight-systematics", dest="noweightsys", action="store_true", help="ignore all weight systematics")
-    parser.add_argument("--tree-prefix", type=str, default="WtTMVA", help="Wt tree prefix (WtTMVA or WtLoop)")
-    args = parser.parse_args()
-    # fmt: on
-
+def rdf_runner(args):
+    if args.debug:
+        log.setLevel(logging.DEBUG)
+    if not args.disable_imt:
+        ROOT.ROOT.EnableImplicitMT()
     file_list = os.listdir(args.directory)
     with open(args.config, "r") as f:
         config = yaml.load(f)
@@ -340,6 +332,8 @@ if __name__ == "__main__":
 
     out_file = ROOT.TFile.Open(args.outfile, "UPDATE")
     file_keys = [str(k.GetName()) for k in out_file.GetListOfKeys()]
+
+    ROOT.gInterpreter.ProcessLine(CPP_SHIFT_CODE)
 
     nntuples = len(ntuples)
     for i, ntuple in enumerate(ntuples):
@@ -374,8 +368,9 @@ if __name__ == "__main__":
                 hist_name = "{rname}_{vname}_{sname}{tree_suffix}{weight_suffix}".format(
                     rname=region.name, vname=template.var, sname=ntuple.name,
                     tree_suffix=tree_suffix, weight_suffix=weight_suffix)
+                log.debug("Working on {}".format(hist_name))
                 if hist_name in file_keys:
-                    print("Skipping {} already in file".format(hist_name))
+                    log.warn("Skipping {} already in file".format(hist_name))
                     continue
                 if template.use_region_binning:
                     if region.bin_type == BinType.VARIABLE:
@@ -385,7 +380,7 @@ if __name__ == "__main__":
                         hmodel = TH1DModel(hist_name, ";{};".format(
                             template.axis_title), region.nbins, region.xmin, region.xmax)
                     else:
-                        print("something is wrong {} {}".format(region.bin_type, region.name))
+                        log.error("something is wrong {} {}".format(region.bin_type, region.name))
                 else:
                     if template.bin_type == BinType.VARIABLE:
                         hmodel = TH1DModel(hist_name, ";{};".format(
@@ -394,17 +389,18 @@ if __name__ == "__main__":
                         hmodel = TH1DModel(hist_name, ";{};".format(
                             template.axis_title), template.nbins, template.xmin, template.xmax)
                     else:
-                        print("something is wrong {} {}".format(template.bin_type, template.var))
+                        log.error("something is wrong {} {}".format(template.bin_type, template.var))
 
                 df_histograms.append(filt.Histo1D(hmodel, template.var, template.weight))
         # fmt: on
 
         for dfh in df_histograms:
             ROOT.shiftScaleSetDir(dfh.GetPtr(), 140.5, out_file)
-        print (
+        log.info(
             "Done with ntuple {} ({}) ({}/{})".format(
                 ntuple.name, ntuple.tree_name, i + 1, nntuples
             )
         )
 
     out_file.Close()
+    return 0
