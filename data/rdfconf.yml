@@ -1,0 +1,35 @@
+regions:
+
+  - name: reg2j2b
+    selection: "reg2j2b && elmu && OS"
+    binning: [-0.85, -0.5, -0.2, 0.0, 0.2, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+
+  - name: reg2j1b
+    selection: "reg2j1b && elmu && OS"
+    nbins: 22
+    xmin: -0.70
+    xmax: 0.75
+
+  - name: reg1j1b
+    selection: "reg1j1b && elmu && OS"
+    nbins: 30
+    xmin: -0.65
+    xmax: 0.60
+
+  - name: reg3j
+    selection: "reg3j && elmu && OS"
+
+templates:
+
+  - var: bdt_response
+    regions: [reg1j1b, reg2j1b, reg2j2b]
+    use_region_binning: true
+    axis_title: "Classifier Response"
+
+  - var: pT_jet2
+    regions: [reg3j]
+    use_region_binning: false
+    xmin: 25
+    xmax: 175
+    nbins: 30
+    axis_title: "#it{p}_{T}(jet2) [GeV]"
