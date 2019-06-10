@@ -71,6 +71,7 @@ def parseargs():
 
     tohtml = subcommands.add_parser("html", help="generate index.html file for a TRExFitter workspace")
     tohtml.add_argument("workspace", type=str, help="TRExFitter workspace directory")
+    tohtml.add_argument("-r", "--regions", type=str, nargs="+", required=False, help="Only show specific regions")
 
     rdfgen = subcommands.add_parser("rdfgen", help="generate templates from rdf_builder module")
     rdfgen.add_argument("-d", "--directory", type=str, required=True, help="directory containing Wt ROOT files")
@@ -90,23 +91,26 @@ def parseargs():
 
 def histgen(args):
     log = logging.getLogger("wt-stat histgen")
-    nominal_sorted = sort_for_nominal_tree(args.files)
-    sys_sorted = sort_for_systematic_trees(args.files)
-    nom_exes = create_nominal_executions(
-        nominal_sorted,
-        outfile=args.outfile_name,
-        sys_weights=args.sys_weights,
-        tree_prefix=args.tree_prefix,
-    )
-    sys_exes = create_systtree_executions(
-        sys_sorted, outfile=args.outfile_name, tree_prefix=args.tree_prefix
-    )
-    for i, exe in enumerate(nom_exes + sys_exes):
-        if args.dry:
-            log.info("{} -y {}".format(exe, args.yaml_config))
-        else:
-            subprocess.call("{} -y {}".format(exe, args.yaml_config), shell=True)
-        log.info("{}/{}".format(i + 1, len(nom_exes) + len(sys_exes)))
+    log.warn("The histgen command is deprecated. Use the rdfgen.")
+
+    # nominal_sorted = sort_for_nominal_tree(args.files)
+    # sys_sorted = sort_for_systematic_trees(args.files)
+    # nom_exes = create_nominal_executions(
+    #     nominal_sorted,
+    #     outfile=args.outfile_name,
+    #     sys_weights=args.sys_weights,
+    #     tree_prefix=args.tree_prefix,
+    # )
+    # sys_exes = create_systtree_executions(
+    #     sys_sorted, outfile=args.outfile_name, tree_prefix=args.tree_prefix
+    # )
+    # for i, exe in enumerate(nom_exes + sys_exes):
+    #     if args.dry:
+    #         log.info("{} -y {}".format(exe, args.yaml_config))
+    #     else:
+    #         subprocess.call("{} -y {}".format(exe, args.yaml_config), shell=True)
+    #     log.info("{}/{}".format(i + 1, len(nom_exes) + len(sys_exes)))
+
     return 0
 
 
@@ -180,10 +184,6 @@ def rank(args):
     return 0
 
 
-def rdfgen(args):
-    return rdf_runner(args)
-
-
 def main():
     args = parseargs()
 
@@ -203,11 +203,11 @@ def main():
         return rank(args)
 
     if args.topcommand == "html":
-        trex2html(args.workspace)
-        return 0
+        return trex2html(args)
 
     if args.topcommand == "rdfgen":
-        return rdfgen(args)
+        return rdf_runner(args)
+
 
 if __name__ == "__main__":
     main()

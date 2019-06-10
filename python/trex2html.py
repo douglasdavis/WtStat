@@ -17,19 +17,22 @@ def top_level(doc, tag, text):
         doc.stag("img", src="./RankingSysts.png", klass="centerimg", alt="Ranking")
 
 
-def plots(doc, tag, text):
+def plots(doc, tag, text, regions):
     with tag("h2"):
         text("Region Plots")
     with tag("div", klass="container"):
         for f in os.listdir("Plots"):
+            freg = f.split(".")[0]
             if f == "Summary.png":
+                continue
+            if freg not in regions:
                 continue
             doc.stag("img", src="./Plots/{}".format(f), klass="regimg")
         if os.path.exists("./Plots/Summary.png"):
             doc.stag("img", src="./Plots/Summary.png", klass="regimg")
 
 
-def systematics(doc, tag, text):
+def systematics(doc, tag, text, regions):
     with tag("h2"):
         text("Systematics")
     sys_names = []
@@ -42,10 +45,13 @@ def systematics(doc, tag, text):
         with tag("div", klass="container"):
             for f in os.listdir("Systematics/{}".format(sys)):
                 if ".png" in f:
+                    freg = f.split("_")[0]
+                    if freg not in regions:
+                        continue
                     doc.stag("img", src="./Systematics/{}/{}".format(sys, f), klass="sysimg")
 
 
-def generate_html(directory):
+def generate_html(directory, regions):
     doc, tag, text = Doc().tagtext()
 
     doc.asis("<!DOCTYPE html>")
@@ -56,24 +62,24 @@ def generate_html(directory):
                 text(CSS)
 
         with tag("body"):
-            plots(doc, tag, text)
+            plots(doc, tag, text, regions)
             top_level(doc, tag, text)
-            systematics(doc, tag, text)
+            systematics(doc, tag, text, regions)
 
     return indent(doc.getvalue())
 
 
-def trex2html(directory):
-    if not os.path.exists(directory):
-        print ("workspace directory ({}) doesn't exist, exiting".format(directory))
+def trex2html(args):
+    if not os.path.exists(args.workspace):
+        print ("workspace directory ({}) doesn't exist, exiting".format(args.workspace))
         return 0
     curdir = os.getcwd()
-    os.chdir(directory)
-    text = generate_html(directory)
+    os.chdir(args.workspace)
+    text = generate_html(args.workspace, args.regions)
     os.chdir(curdir)
-    with open("{}/index.html".format(directory), "w") as f:
+    with open("{}/index.html".format(args.workspace), "w") as f:
         f.write(text)
-
+    return 0
 
 if __name__ == "__main__":
     import argparse
