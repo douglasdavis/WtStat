@@ -25,8 +25,9 @@ def plots(doc, tag, text, regions):
             freg = f.split(".")[0]
             if f == "Summary.png":
                 continue
-            if freg not in regions:
-                continue
+            if regions:
+                if freg not in regions:
+                    continue
             doc.stag("img", src="./Plots/{}".format(f), klass="regimg")
         if os.path.exists("./Plots/Summary.png"):
             doc.stag("img", src="./Plots/Summary.png", klass="regimg")
@@ -46,8 +47,9 @@ def systematics(doc, tag, text, regions):
             for f in os.listdir("Systematics/{}".format(sys)):
                 if ".png" in f:
                     freg = f.split("_")[0]
-                    if freg not in regions:
-                        continue
+                    if regions:
+                        if freg not in regions:
+                            continue
                     doc.stag("img", src="./Systematics/{}/{}".format(sys, f), klass="sysimg")
 
 

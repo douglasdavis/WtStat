@@ -305,7 +305,6 @@ void shiftScaleSetDir(TH1D* h, float lumi, TFile* file) {
   h->SetBinError(0, 0.0);
   h->SetBinError(nb + 1, 0.0);
 
-  h->Scale(lumi);
   h->SetDirectory(file);
   h->Write();
 }
