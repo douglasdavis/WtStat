@@ -26,10 +26,13 @@ def fit_workspace(
 
     ## `Region` blocks
 
-    ## All BDTs
+    ## All regions
     outtext.append(WtStat.trex.Region_1j1b())
     outtext.append(WtStat.trex.Region_2j1b())
     outtext.append(WtStat.trex.Region_2j2b())
+    outtext.append(WtStat.trex.Region_3j())
+    outtext.append(WtStat.trex.Region_3j1b())
+    outtext.append(WtStat.trex.Region_3jHb())
     outtext.append(WtStat.trex.Region_3j_pT_jet2())
 
     if vrplots is not None:
