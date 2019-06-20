@@ -18,11 +18,41 @@ regions:
 
   - name: reg3j
     selection: "reg3j && elmu && OS"
+    nbins: 30
+    xmin: -1.0
+    xmax: 1.0
+
+  - name: reg3j1b
+    selection: "reg3j1b && elmu && OS"
+    nbins: 30
+    xmin: -1.0
+    xmax: 1.0
+
+  - name: reg3jHb
+    selection: "reg3jHb && elmu && OS"
+    nbins: 30
+    xmin: -1.0
+    xmax: 1.0
 
 templates:
 
   - var: bdt_response
     regions: [reg1j1b, reg2j1b, reg2j2b]
+    use_region_binning: true
+    axis_title: "Classifier Response"
+
+  - var: bdt_response_3j
+    regions: [reg3j]
+    use_region_binning: true
+    axis_title: "Classifier Response"
+
+  - var: bdt_response_3j1b
+    regions: [reg3j1b]
+    use_region_binning: true
+    axis_title: "Classifier Response"
+
+  - var: bdt_response_3jHb
+    regions: [reg3jHb]
     use_region_binning: true
     axis_title: "Classifier Response"
 
