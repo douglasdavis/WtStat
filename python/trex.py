@@ -162,33 +162,6 @@ def Region_3j(rebin=0):
         bk = "{}\n  Rebin: {}\n\n".format(bk.strip(), rebin)
     return bk
 
-def Region_3j(rebin=0):
-    bk = block(
-        "Region",
-        "reg3j",
-        Type="SIGNAL",
-        Label="3j",
-        ShortLabel="3j",
-        VariableTitle='"Classifier Response"',
-        HistoName='"reg3j_bdt_response_3j"',
-    )
-    if rebin > 0:
-        bk = "{}\n  Rebin: {}\n\n".format(bk.strip(), rebin)
-    return bk
-
-def Region_3jHb(rebin=0):
-    bk = block(
-        "Region",
-        "reg3jHb",
-        Type="SIGNAL",
-        Label="3jHb",
-        ShortLabel="3jHb",
-        VariableTitle='"Classifier Response"',
-        HistoName='"reg3jHb_bdt_response_3jHb"',
-    )
-    if rebin > 0:
-        bk = "{}\n  Rebin: {}\n\n".format(bk.strip(), rebin)
-    return bk
 
 def Region_3j1b(rebin=0):
     bk = block(
@@ -205,6 +178,22 @@ def Region_3j1b(rebin=0):
     return bk
 
 
+def Region_3jHb(rebin=0):
+    bk = block(
+        "Region",
+        "reg3jHb",
+        Type="SIGNAL",
+        Label="3jHb",
+        ShortLabel="3jHb",
+        VariableTitle='"Classifier Response"',
+        HistoName='"reg3jHb_bdt_response_3jHb"',
+    )
+    if rebin > 0:
+        bk = "{}\n  Rebin: {}\n\n".format(bk.strip(), rebin)
+    return bk
+
+
+
 def Region_3j_pT_jet2(rebin=0):
     bk = block(
         "Region",
@@ -214,21 +203,6 @@ def Region_3j_pT_jet2(rebin=0):
         ShortLabel="3j",
         VariableTitle='"#it{p}_{T}^{jet2} [GeV]"',
         HistoName='"reg3j_pT_jet2"',
-    )
-    if rebin > 0:
-        bk = "{}\n  Rebin: {}\n\n".format(bk.strip(), rebin)
-    return bk
-
-
-def Region_3j1b(rebin=0):
-    bk = block(
-        "Region",
-        "reg3j1b",
-        Type="SIGNAL",
-        VariableTitle='"#it{p}_{T}^{jet2} [GeV]"',
-        Label="3j1b",
-        ShortLabel="3j1b",
-        HistoName='"reg3j1b_pT_jet2"',
     )
     if rebin > 0:
         bk = "{}\n  Rebin: {}\n\n".format(bk.strip(), rebin)
