@@ -2,7 +2,7 @@ regions:
 
   - name: reg2j2b
     selection: "reg2j2b && elmu && OS"
-    binning: [-0.85, -0.5, -0.35, -0.2, -0.1, 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+    binning: [-0.85, -0.5, -0.325, -0.2, -0.1, 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
 
   - name: reg2j1b
     selection: "reg2j1b && elmu && OS"
