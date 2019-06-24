@@ -69,3 +69,10 @@ templates:
     xmax: 175
     nbins: 30
     axis_title: "#it{p}_{T}(jet2) [GeV]"
+
+  - var: deltapT_lep1lep2_jet3
+    regions: [reg3j, reg3j1b, reg3jHb]
+    xmin: -100
+    xmax: 200
+    nbins: 20
+    axis_title: "#Delta#it{p}_{T}(lep1lep2, jet3) [GeV]"
