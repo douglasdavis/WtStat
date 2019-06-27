@@ -5,6 +5,9 @@ matplotlib.
 """
 
 import argparse
+import matplotlib
+matplotlib.rcParams["font.size"] = 16
+matplotlib.use("pdf")
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -29,7 +32,7 @@ fit1, fit2 = [], []
 fit1_resunc = [0, 0]
 fit2_resunc = [0, 0]
 
-with open("{}/tW/Fits/tW.txt".format(args.fit1)) as f:
+with open("{0}/Fits/{0}.txt".format(args.fit1)) as f:
     for line in f.readlines():
         if line.startswith(startswith_test):
             try:
@@ -41,7 +44,7 @@ with open("{}/tW/Fits/tW.txt".format(args.fit1)) as f:
             fit1_resunc[0] = round(float(line.split()[2]), 3)
         elif line.startswith("mu_ttbar"):
             fit1_resunc[1] = round(float(line.split()[2]), 3)
-with open("{}/tW/Fits/tW.txt".format(args.fit2)) as f:
+with open("{0}/Fits/{0}.txt".format(args.fit2)) as f:
     for line in f.readlines():
         if line.startswith(startswith_test):
             try:
@@ -56,8 +59,8 @@ with open("{}/tW/Fits/tW.txt".format(args.fit2)) as f:
 
 
 title1, title2 = args.titles
-title1 = "{} ({}, {})".format(title1, fit1_resunc[0], fit1_resunc[1])
-title2 = "{} ({}, {})".format(title2, fit2_resunc[0], fit2_resunc[1])
+title1 = "{} ($\\Delta_{{tW}} = ${}, $\\Delta_{{t\\bar{{t}}}} = ${})".format(title1, fit1_resunc[0], fit1_resunc[1])
+title2 = "{} ($\\Delta_{{tW}} = ${}, $\\Delta_{{t\\bar{{t}}}} = ${})".format(title2, fit2_resunc[0], fit2_resunc[1])
 yval, ylabels, xerr1, xerr2 = [], [], [], []
 
 i = 0
@@ -91,14 +94,14 @@ ax.errorbar(np.zeros_like(yval), np.array(yval) + Y_OFFSET_PT, xerr=xerr1, label
 if not args.just_one:
     ax.errorbar(np.zeros_like(yval), np.array(yval) - Y_OFFSET_PT, xerr=xerr2, label=title2, fmt="ro", capsize=2)
 for f1e, f2e, iyval in zip(xerr1, xerr2, yval):
-    ax.text(f1e + X_OFFSET_TEXT, iyval + Y_OFFSET_TEXT, "{}".format(round(f1e,3)), color="black")
+    ax.text(f1e + X_OFFSET_TEXT, iyval + Y_OFFSET_TEXT, "{}".format(round(f1e,3)), color="black", size=12)
     if not args.just_one:
-        ax.text(-f2e - X_OFFSET_TEXT, iyval - Y_OFFSET_TEXT, "{}".format(round(f2e,3)), color="red", horizontalalignment="right", verticalalignment="top")
+        ax.text(-f2e - X_OFFSET_TEXT, iyval - Y_OFFSET_TEXT, "{}".format(round(f2e,3)), color="red", horizontalalignment="right", verticalalignment="top", size=12)
 ax.set_xlim([-1.5, 1.5])
 ax.set_ylim([ 0.0, len(yval)+1])
 ax.set_xlabel(r"$\left(\hat\theta - \theta_0\right) / \Delta \theta$")
 if not args.just_one:
-    ax.legend(bbox_to_anchor=(0, 1.01, 1, .01), loc=3, ncol=2, borderaxespad=0, mode="expand")
+    ax.legend(bbox_to_anchor=(0, 1.01, 1, .01), loc=3, ncol=1, borderaxespad=0, mode="expand")
 ax.grid(color="black", alpha=0.15)
-fig.subplots_adjust(left=0.4)
+fig.subplots_adjust(left=0.5)
 fig.savefig(args.out, bbox_inches="tight")

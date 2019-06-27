@@ -73,13 +73,13 @@ def parseargs():
 
     rdfgen = subcommands.add_parser("rdfgen", help="generate templates from rdf_builder module")
     rdfgen.add_argument("-d", "--directory", type=str, required=True, help="directory containing Wt ROOT files")
-    rdfgen.add_argument("-c", "--config", type=str, required=True, help="configuration file")
+    rdfgen.add_argument("-c", "--config", type=str, default="auto", required=False, help="configuration file")
     rdfgen.add_argument("-o", "--outfile", type=str, required=True, help="output file")
     rdfgen.add_argument("--exclude-weights", type=str, nargs="+", default=[], help="set of weight systematics to exclude")
     rdfgen.add_argument("--exclude-trees", type=str, nargs="+", default=[], help="set of tree systematics to exclude")
     rdfgen.add_argument("--no-tree-systematics", dest="notreesys", action="store_true", help="ignore all tree  systematics")
     rdfgen.add_argument("--no-weight-systematics", dest="noweightsys", action="store_true", help="ignore all weight systematics")
-    rdfgen.add_argument("--tree-prefix", type=str, default="WtTMVA", help="Wt tree prefix (WtTMVA or WtLoop)")
+    rdfgen.add_argument("--tree-prefix", type=str, default="WtLoop", help="Wt tree prefix (WtTMVA or WtLoop)")
     rdfgen.add_argument("--disable-imt", action="store_true", help="disable ROOT's implicit multithreading")
     rdfgen.add_argument("--debug", action="store_true", help="turn on debug statements")
 

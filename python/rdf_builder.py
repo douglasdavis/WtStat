@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 import os
 import re
 import math
@@ -220,6 +224,16 @@ def template_definitions(yaml_config, args):
             tdef.regions = all_regions
         template_defs.append(tdef)
 
+    radhilo_template_defs = []
+    for entry in template_defs:
+        tdef_hi, tdef_lo = deepcopy(entry), deepcopy(entry)
+        tdef_hi.weight, tdef_lo.weight = "weight_sys_radHi", "weight_sys_radLo"
+        tdef_hi.weight_suffix, tdef_lo.weight_suffix = "radHi", "radLo"
+        if "radHi" not in args.exclude_weights:
+            radhilo_template_defs.append(tdef_hi)
+        if "radLo" not in args.exclude_weights:
+            radhilo_template_defs.append(tdef_lo)
+
     if args.noweightsys:
         return template_defs
 
@@ -234,16 +248,6 @@ def template_definitions(yaml_config, args):
             tdef_dn.weight_suffix = "{}_{}".format(key, "Down")
             wsys_template_defs.append(tdef_up)
             wsys_template_defs.append(tdef_dn)
-
-    radhilo_template_defs = []
-    for entry in template_defs:
-        tdef_hi, tdef_lo = deepcopy(entry), deepcopy(entry)
-        tdef_hi.weight, tdef_lo.weight = "weight_sys_radHi", "weight_sys_radLo"
-        tdef_hi.weight_suffix, tdef_lo.weight_suffix = "radHi", "radLo"
-        if "radHi" not in args.exclude_weights:
-            radhilo_template_defs.append(tdef_hi)
-        if "radLo" not in args.exclude_weights:
-            radhilo_template_defs.append(tdef_lo)
 
     pdf_template_defs = []
     for entry in template_defs:
@@ -280,33 +284,27 @@ def ntuple_definitions(nominal_files, systematic_files, root_dir):
 
 
 CPP_SHIFT_CODE = """
-void shiftScaleSetDir(TH1D* h, float lumi, TFile* file) {
+void shiftScaleSetDir(TH1* h, TFile* file) {
   int nb = h->GetNbinsX();
 
-  double v_under = h->GetBinContent(0);
-  double v_over = h->GetBinContent(nb + 1);
+  h->AddBinContent(1, h->GetBinContent(0));
+  h->SetBinError(1, TMath::Sqrt(TMath::Power(h->GetBinError(1), 2) +
+                                TMath::Power(h->GetBinError(0), 2)));
 
-  double e_under = h->GetBinError(0);
-  double e_over = h->GetBinError(nb + 1);
-
-  double v_first = h->GetBinContent(1);
-  double v_last = h->GetBinContent(nb);
-
-  double e_first = h->GetBinError(1);
-  double e_last = h->GetBinError(nb);
-
-  h->SetBinContent(1, v_under + v_first);
-  h->SetBinContent(nb, v_over + v_last);
-  h->SetBinError(1, std::sqrt(e_under * e_under + e_first * e_first));
-  h->SetBinError(nb, std::sqrt(e_over * e_over + e_last * e_last));
+  h->AddBinContent(nb, h->GetBinContent(nb + 1));
+  h->SetBinError(nb, TMath::Sqrt(TMath::Power(h->GetBinError(nb), 2) +
+                                 TMath::Power(h->GetBinError(nb + 1), 2)));
 
   h->SetBinContent(0, 0.0);
-  h->SetBinContent(nb + 1, 0, 0);
   h->SetBinError(0, 0.0);
+  h->SetBinContent(nb + 1, 0.0);
   h->SetBinError(nb + 1, 0.0);
 
-  h->SetDirectory(file);
-  h->Write();
+  auto dir = gDirectory;
+  file->cd();
+  h->Write("", TObject::kOverwrite);
+  h->SetDirectory(0);
+  dir->cd();
 }
 """
 
@@ -317,7 +315,11 @@ def rdf_runner(args):
     if not args.disable_imt:
         ROOT.ROOT.EnableImplicitMT()
     file_list = os.listdir(args.directory)
-    with open(args.config, "r") as f:
+    if args.config == "auto":
+        confname = "../WtAna/WtStat/data/rdfconf.yml"
+    else:
+        confname = args.config
+    with open(confname, "r") as f:
         config = yaml.load(f)
 
     nominal_sorted_files = sortfiles_nominal(file_list)
@@ -394,7 +396,7 @@ def rdf_runner(args):
         # fmt: on
 
         for dfh in df_histograms:
-            ROOT.shiftScaleSetDir(dfh.GetPtr(), 140.5, out_file)
+            ROOT.shiftScaleSetDir(dfh.GetPtr(), out_file)
         log.info(
             "Done with ntuple {} ({}) ({}/{})".format(
                 ntuple.name, ntuple.tree_name, i + 1, nntuples
