@@ -126,6 +126,8 @@ def sortfiles_nominal(file_list):
         files[title] = []
 
     for f in file_list:
+        if not f.endswith(".root"):
+            continue
         if "nominal" not in f:
             continue
         if "MCNP" in f:
@@ -156,6 +158,8 @@ def sortfiles_systematic(file_list, args):
     re_tt_sys_FS = re.compile("(ttbar_[0-9]{6}_FS_MC16(a|d|e)_)")
     files = OrderedDict()
     for f in file_list:
+        if not f.endswith(".root"):
+            continue
         if "nominal" in f:
             continue
         if not ("tW_DR" in f or "ttbar" in f):
