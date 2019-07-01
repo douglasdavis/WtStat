@@ -51,13 +51,13 @@ regions:
   - name: reg3j1b_FB
     selection: "reg3j1b && elmu && OS"
     nbins: 20
-    xmin: -0.675
-    xmax: 0.80
+    xmin: -0.475
+    xmax: 0.70
 
   - name: reg3jHb_FB
     selection: "reg3jHb && elmu && OS"
     nbins: 20
-    xmin: -0.675
+    xmin: -0.65
     xmax: 0.80
 
 templates:

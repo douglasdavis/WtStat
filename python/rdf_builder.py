@@ -229,17 +229,25 @@ def template_definitions(yaml_config, args):
         template_defs.append(tdef)
 
     radhilo_template_defs = []
+    fsr2005_template_defs = []
     for entry in template_defs:
-        tdef_hi, tdef_lo = deepcopy(entry), deepcopy(entry)
-        tdef_hi.weight, tdef_lo.weight = "weight_sys_radHi", "weight_sys_radLo"
-        tdef_hi.weight_suffix, tdef_lo.weight_suffix = "radHi", "radLo"
+        tdef_isrhi, tdef_isrlo = deepcopy(entry), deepcopy(entry)
+        tdef_fsr20, tdef_fsr05 = deepcopy(entry), deepcopy(entry)
+        tdef_isrhi.weight, tdef_isrlo.weight = "weight_sys_radHi", "weight_sys_radLo"
+        tdef_isrhi.weight_suffix, tdef_isrlo.weight_suffix = "radHi", "radLo"
+        tdef_fsr20.weight, tdef_fsr05.weight = "weight_sys_fsr20", "weight_sys_fsr05"
+        tdef_fsr20.weight_suffix, tdef_fsr05.weight_suffix = "fsr20", "fsr05"
         if "radHi" not in args.exclude_weights:
-            radhilo_template_defs.append(tdef_hi)
+            radhilo_template_defs.append(tdef_isrhi)
         if "radLo" not in args.exclude_weights:
-            radhilo_template_defs.append(tdef_lo)
+            radhilo_template_defs.append(tdef_isrlo)
+        if "fsr20" not in args.exclude_weights:
+            fsr2005_template_defs.append(tdef_fsr20)
+        if "fsr05" not in args.exclude_weights:
+            fsr2005_template_defs.append(tdef_fsr05)
 
     if args.noweightsys:
-        return template_defs
+        return template_defs + radhilo_template_defs + fsr2005_template_defs
 
     wsys_template_defs = []
     for entry in template_defs:
@@ -263,7 +271,13 @@ def template_definitions(yaml_config, args):
             tdef_pdf.weight_suffix = key
             pdf_template_defs.append(tdef_pdf)
 
-    return template_defs + wsys_template_defs + radhilo_template_defs + pdf_template_defs
+    return (
+        template_defs
+        + radhilo_template_defs
+        + fsr2005_template_defs
+        + wsys_template_defs
+        + pdf_template_defs
+    )
 
 
 def ntuple_definitions(nominal_files, systematic_files, root_dir):
@@ -358,10 +372,13 @@ def rdf_runner(args):
                 if region.name not in template.regions:
                     continue
                 weight_suffix = ""
-                if "radLo" in template.weight or "radHi" in template.weight:
+                if ("radLo" in template.weight or
+                    "radHi" in template.weight or
+                    "fsr20" in template.weight or
+                    "fsr05" in template.weight):
                     if  ntuple.ntype == NtupleType.SYSTEMATIC:
                         continue
-                    if ntuple.name not in ["ttbar_RU_AFII", "ttbar_AFII", "tW"]:
+                    if ntuple.name not in ["ttbar_RU_AFII", "ttbar_AFII", "ttbar", "tW"]:
                         continue
                     weight_suffix = "_{}".format(template.weight_suffix)
                 elif template.weight != "weight_nominal":
@@ -402,7 +419,7 @@ def rdf_runner(args):
         for dfh in df_histograms:
             ROOT.shiftScaleSetDir(dfh.GetPtr(), out_file)
         log.info(
-            "Done with ntuple {} ({}) ({}/{})".format(
+            "Done with <sample: {}, tree: {}> (frame {}/{})".format(
                 ntuple.name, ntuple.tree_name, i + 1, nntuples
             )
         )
