@@ -93,7 +93,7 @@ templates:
   - var: cent_lep1lep2
     xmin: 0.18
     xmax: 1.0
-    nbins: 20
+    nbins: 30
     use_region_binning: false
     regions: [ALL]
     axis_title: " "
@@ -101,7 +101,7 @@ templates:
   - var: HT_jet2jet3
     xmin: 50.0
     xmax: 350.0
-    nbins: 20
+    nbins: 30
     use_region_binning: false
     regions: [ALL]
     axis_title: " "
@@ -109,7 +109,7 @@ templates:
   - var: mT_lep2met
     xmin: 0.0
     xmax: 230.0
-    nbins: 20
+    nbins: 30
     use_region_binning: false
     regions: [ALL]
     axis_title: " "
@@ -133,7 +133,7 @@ templates:
   - var: pT_jet2
     xmin: 25.0
     xmax: 200.0
-    nbins: 20
+    nbins: 30
     use_region_binning: false
     regions: [ALL]
     axis_title: " "
@@ -141,7 +141,7 @@ templates:
   - var: pT_jet3
     xmin: 20.0
     xmax: 140.0
-    nbins: 20
+    nbins: 30
     use_region_binning: false
     regions: [ALL]
     axis_title: " "
@@ -149,7 +149,7 @@ templates:
   - var: deltapT_lep1lep2_jet3
     xmin: -100.0
     xmax: 200.0
-    nbins: 20
+    nbins: 30
     use_region_binning: false
     regions: [ALL]
     axis_title: " "
@@ -157,7 +157,7 @@ templates:
   - var: deltapT_lep1_jet1
     xmin: -300.0
     xmax: 200.0
-    nbins: 20
+    nbins: 30
     use_region_binning: false
     regions: [ALL]
     axis_title: " "
@@ -165,7 +165,7 @@ templates:
   - var: mass_lep2jet1
     xmin: 0.0
     xmax: 500.0
-    nbins: 20
+    nbins: 30
     use_region_binning: false
     regions: [ALL]
     axis_title: " "
@@ -173,7 +173,7 @@ templates:
   - var: mass_lep1jet2
     xmin: 0.0
     xmax: 500.0
-    nbins: 20
+    nbins: 30
     use_region_binning: false
     regions: [ALL]
     axis_title: " "
@@ -181,7 +181,7 @@ templates:
   - var: mass_lep1jet1
     xmin: 0.0
     xmax: 700.0
-    nbins: 20
+    nbins: 30
     use_region_binning: false
     regions: [ALL]
     axis_title: " "
@@ -189,7 +189,7 @@ templates:
   - var: mass_lep1jet3
     xmin: 0.0
     xmax: 425.0
-    nbins: 20
+    nbins: 30
     use_region_binning: false
     regions: [ALL]
     axis_title: " "
@@ -197,7 +197,7 @@ templates:
   - var: mass_lep2jet2
     xmin: 0.0
     xmax: 350.0
-    nbins: 20
+    nbins: 30
     use_region_binning: false
     regions: [ALL]
     axis_title: " "
@@ -229,7 +229,7 @@ templates:
   - var: pTsys_lep1lep2jet1
     xmin: 0.0
     xmax: 375.0
-    nbins: 20
+    nbins: 30
     use_region_binning: false
     regions: [ALL]
     axis_title: " "
@@ -237,7 +237,7 @@ templates:
   - var: pTsys_lep1lep2jet1jet2met
     xmin: 0.0
     xmax: 225.0
-    nbins: 20
+    nbins: 30
     use_region_binning: false
     regions: [ALL]
     axis_title: " "
@@ -245,7 +245,7 @@ templates:
   - var: pTsys_lep1lep2jet1met
     xmin: 0.0
     xmax: 375.0
-    nbins: 20
+    nbins: 30
     use_region_binning: false
     regions: [ALL]
     axis_title: " "
@@ -253,7 +253,7 @@ templates:
   - var: pTsys_lep1lep2
     xmin: 0.0
     xmax: 275.0
-    nbins: 20
+    nbins: 30
     use_region_binning: false
     regions: [ALL]
     axis_title: " "
@@ -261,7 +261,7 @@ templates:
   - var: pTsys_lep1lep2met
     xmin: 0.0
     xmax: 400.0
-    nbins: 20
+    nbins: 30
     use_region_binning: false
     regions: [ALL]
     axis_title: " "
@@ -269,7 +269,7 @@ templates:
   - var: pTsys_lep1lep2jet1jet2jet3met
     xmin: 0.0
     xmax: 150.0
-    nbins: 20
+    nbins: 30
     use_region_binning: false
     regions: [ALL]
     axis_title: " "
@@ -277,7 +277,7 @@ templates:
   - var: deltaR_lep2_jet1
     xmin: 0.5
     xmax: 5.25
-    nbins: 20
+    nbins: 30
     use_region_binning: false
     regions: [ALL]
     axis_title: " "
@@ -285,7 +285,7 @@ templates:
   - var: deltaR_jet1_jet3
     xmin: 0.5
     xmax: 5.25
-    nbins: 20
+    nbins: 30
     use_region_binning: false
     regions: [ALL]
     axis_title: " "
@@ -293,7 +293,7 @@ templates:
   - var: deltaR_lep1_jet1
     xmin: 0.5
     xmax: 5.25
-    nbins: 20
+    nbins: 30
     use_region_binning: false
     regions: [ALL]
     axis_title: " "
@@ -301,7 +301,7 @@ templates:
   - var: deltaR_lep1_lep2
     xmin: 0.25
     xmax: 5.0
-    nbins: 20
+    nbins: 30
     use_region_binning: false
     regions: [ALL]
     axis_title: " "
@@ -309,7 +309,7 @@ templates:
   - var: deltaR_lep1lep2_jet1jet2jet3met
     xmin: 0.2
     xmax: 6.0
-    nbins: 20
+    nbins: 30
     use_region_binning: false
     regions: [ALL]
     axis_title: " "
@@ -317,7 +317,79 @@ templates:
   - var: deltaR_lep1_jet2
     xmin: 0.5
     xmax: 5.2
-    nbins: 20
+    nbins: 30
     use_region_binning: false
     regions: [ALL]
     axis_title: " "
+
+  - var: pT_lep1
+    xmin: 27
+    xmax: 227
+    nbins: 30
+    use_region_binning: false
+    regions: [ALL]
+    axis_title: " "
+
+  - var: pT_lep2
+    xmin: 20
+    xmax: 160
+    nbins: 30
+    use_region_binning: false
+    regions: [ALL]
+    axis_title: " "
+
+  - var: pT_jet1
+    xmin: 25
+    xmax: 275
+    nbins: 30
+    use_region_binning: false
+    regions: [ALL]
+    axis_title: " "
+
+  - var: eta_lep1
+    xmin: -2.5
+    xmax: 2.5
+    nbins: 30
+    use_region_binning: false
+    regions: [ALL]
+    axis_title: " "
+
+  - var: eta_lep2
+    xmin: -2.5
+    xmax: 2.5
+    nbins: 30
+    use_region_binning: false
+    regions: [ALL]
+    axis_title: " "
+
+  - var: eta_jet1
+    xmin: -2.5
+    xmax: 2.5
+    nbins: 30
+    use_region_binning: false
+    regions: [ALL]
+    axis_title: " "
+
+  - var: eta_jet2
+    xmin: -2.5
+    xmax: 2.5
+    nbins: 30
+    use_region_binning: false
+    regions: [ALL]
+    axis_title: " "
+
+  - var: eta_jet3
+    xmin: -2.5
+    xmax: 2.5
+    nbins: 30
+    use_region_binning: false
+    regions: [ALL]
+    axis_title: " "
+
+  - var: met
+    xmin: 0
+    xmax: 270
+    nbins: 30
+    use_region_binning: false
+    axis_title: " "
+    regions: [ALL]
