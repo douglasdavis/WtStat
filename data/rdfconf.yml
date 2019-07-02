@@ -26,39 +26,39 @@ regions:
 
   - name: reg1j1b_FB
     selection: "reg1j1b && elmu && OS"
-    nbins: 20
+    nbins: 25
     xmin: -0.70
     xmax: 0.60
 
   - name: reg2j1b_FB
     selection: "reg2j1b && elmu && OS"
-    nbins: 20
+    nbins: 25
     xmin: -0.70
     xmax: 0.75
 
   - name: reg2j2b_FB
     selection: "reg2j2b && elmu && OS"
-    nbins: 20
+    nbins: 25
     xmin: -0.70
     xmax: 0.90
 
   - name: reg3j_FB
     selection: "reg3j && elmu && OS"
-    nbins: 20
+    nbins: 25
     xmin: -0.675
     xmax: 0.80
 
-  - name: reg3j1b_FB
-    selection: "reg3j1b && elmu && OS"
-    nbins: 20
-    xmin: -0.475
-    xmax: 0.70
+  #- name: reg3j1b_FB
+  #  selection: "reg3j1b && elmu && OS"
+  #  nbins: 25
+  #  xmin: -0.475
+  #  xmax: 0.70
 
-  - name: reg3jHb_FB
-    selection: "reg3jHb && elmu && OS"
-    nbins: 20
-    xmin: -0.65
-    xmax: 0.80
+  #- name: reg3jHb_FB
+  #  selection: "reg3jHb && elmu && OS"
+  #  nbins: 25
+  #  xmin: -0.65
+  #  xmax: 0.80
 
 templates:
 
@@ -72,23 +72,15 @@ templates:
     use_region_binning: true
     axis_title: "Classifier Response"
 
-  - var: bdt_response_3j1b
-    regions: [reg3j1b, reg3j1b_FB]
-    use_region_binning: true
-    axis_title: "Classifier Response"
+  #- var: bdt_response_3j1b
+  #  regions: [reg3j1b, reg3j1b_FB]
+  #  use_region_binning: true
+  #  axis_title: "Classifier Response"
 
-  - var: bdt_response_3jHb
-    regions: [reg3jHb, reg3jHb_FB]
-    use_region_binning: true
-    axis_title: "Classifier Response"
-
-  - var: pT_jet2
-    regions: [reg2j1b_FB, reg2j2b_FB, reg3j_FB, reg3j1b_FB, reg3jHb_FB]
-    use_region_binning: false
-    xmin: 25
-    xmax: 175
-    nbins: 20
-    axis_title: "#it{p}_{T}(jet2) [GeV]"
+  #- var: bdt_response_3jHb
+  #  regions: [reg3jHb, reg3jHb_FB]
+  #  use_region_binning: true
+  #  axis_title: "Classifier Response"
 
   - var: cent_lep1lep2
     xmin: 0.18
@@ -336,6 +328,22 @@ templates:
     nbins: 30
     use_region_binning: false
     regions: [ALL]
+    axis_title: " "
+
+  - var: pT_jet2
+    regions: [reg2j1b_FB, reg2j2b_FB, reg3j_FB]
+    use_region_binning: false
+    xmin: 30
+    xmax: 175
+    nbins: 30
+    axis_title: " "
+
+  - var: pT_jet3
+    regions: [reg3j_FB]
+    use_region_binning: false
+    xmin: 30
+    xmax: 150
+    nbins: 30
     axis_title: " "
 
   - var: eta_lep1
