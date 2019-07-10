@@ -90,6 +90,7 @@ class TemplateDefinition(object):
     xmin = 0
     xmax = 0
     axis_title = "title"
+    is_aux = True
 
     # fmt: off
     def __repr__(self):
@@ -97,7 +98,7 @@ class TemplateDefinition(object):
         return "<TemplateDefinition: {}>".format(
             ", ".join([self.var, self.weight, str(self.weight_suffix), str(self.regions),
                        str(self.use_region_binning), str(self.binning), str(self.nbins),
-                       str(self.xmin), str(self.xmax), self.axis_title]))
+                       str(self.xmin), str(self.xmax), self.axis_title, self.is_aux]))
     # fmt: on
 
 
@@ -216,6 +217,7 @@ def template_definitions(yaml_config, args):
         tdef.regions = entry["regions"]
         tdef.use_region_binning = entry["use_region_binning"]
         tdef.axis_title = entry["axis_title"]
+        tdef.is_aux = entry["is_aux"]
         if "binning" in entry:
             tdef.bin_type = BinType.VARIABLE
             tdef.binning = array("d", entry["binning"])
@@ -369,6 +371,8 @@ def rdf_runner(args):
         for region in regions:
             filt = df.Filter(region.selection)
             for template in templates:
+                if template.is_aux and args.skip_aux:
+                    continue
                 if region.name not in template.regions:
                     continue
                 weight_suffix = ""
@@ -392,26 +396,19 @@ def rdf_runner(args):
                     tree_suffix=tree_suffix, weight_suffix=weight_suffix)
                 log.debug("Working on {}".format(hist_name))
                 if hist_name in file_keys:
-                    log.warn("Skipping {} already in file".format(hist_name))
+                    log.debug("Skipping {} already in file".format(hist_name))
                     continue
+                bin_instructor = template
                 if template.use_region_binning:
-                    if region.bin_type == BinType.VARIABLE:
-                        hmodel = TH1DModel(hist_name, ";{};".format(
-                            template.axis_title), len(region.binning) - 1, region.binning)
-                    elif region.bin_type == BinType.FIXED:
-                        hmodel = TH1DModel(hist_name, ";{};".format(
-                            template.axis_title), region.nbins, region.xmin, region.xmax)
-                    else:
-                        log.error("something is wrong {} {}".format(region.bin_type, region.name))
+                    bin_instructor = region
+                if bin_instructor.bin_type == BinType.VARIABLE:
+                    hmodel = TH1DModel(hist_name, ";{};".format(template.axis_title),
+                                       len(bin_instructor.binning) - 1, bin_instructor.binning)
+                elif bin_instructor.bin_type == BinType.FIXED:
+                    hmodel = TH1DModel(hist_name, ";{};".format(template.axis_title),
+                                       bin_instructor.nbins, bin_instructor.xmin, bin_instructor.xmax)
                 else:
-                    if template.bin_type == BinType.VARIABLE:
-                        hmodel = TH1DModel(hist_name, ";{};".format(
-                            template.axis_title), len(template.binning) - 1, template.binning)
-                    elif template.bin_type == BinType.FIXED:
-                        hmodel = TH1DModel(hist_name, ";{};".format(
-                            template.axis_title), template.nbins, template.xmin, template.xmax)
-                    else:
-                        log.error("something is wrong {} {}".format(template.bin_type, template.var))
+                    log.error("something is wrong {} {}".format(bin_instructor.bin_type, bin_instructor.name))
 
                 df_histograms.append(filt.Histo1D(hmodel, template.var, template.weight))
         # fmt: on

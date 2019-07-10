@@ -82,6 +82,7 @@ def parseargs():
     rdfgen.add_argument("--tree-prefix", type=str, default="WtLoop", help="Wt tree prefix (WtTMVA or WtLoop)")
     rdfgen.add_argument("--disable-imt", action="store_true", help="disable ROOT's implicit multithreading")
     rdfgen.add_argument("--debug", action="store_true", help="turn on debug statements")
+    rdfgen.add_argument("--skip-aux", action="store_true", help="Skip templates with aux property set to true in YAML config")
 
     return parser.parse_args()
 # fmt: on

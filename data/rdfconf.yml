@@ -1,310 +1,366 @@
 regions:
 
-  #- name: reg1j1b
-  #  selection: "reg1j1b && elmu && OS"
-  #  binning: [-1.0, -0.5720, -0.4608, -0.3640, -0.2862, -0.2230, -0.1686, -0.1218, -0.0806, -0.0406, 0.0014, 0.0498, 0.1064, 0.1670, 0.2234, 0.2748, 0.3244, 0.374, 0.4262, 0.4882, 1.0]
-
-  #- name: reg2j1b
-  #  selection: "reg2j1b && elmu && OS"
-  #  binning: [-1.0, -0.5828, -0.4494, -0.3574, -0.2904, -0.236, -0.1868, -0.1398, -0.0932, -0.0478, -0.003, 0.042, 0.0888, 0.1388, 0.1918, 0.2478, 0.306, 0.3712, 0.4502, 0.565, 1.0]
-
-  #- name: reg2j2b
-  #  selection: "reg2j2b && elmu && OS"
-  #  binning: [-0.85, -0.5, -0.325, -0.2, -0.1, 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
-
-  #- name: reg3j
-  #  selection: "reg3j && elmu && OS"
-  #  binning: [-1.0, -0.5348, -0.4432, -0.3702, -0.3074, -0.2492, -0.1936, -0.141, -0.092, -0.0458, -0.002, 0.0416, 0.0852, 0.132, 0.1822, 0.2386, 0.3034, 0.3842, 0.4766, 0.5758, 1.0]
-
-  #- name: reg3j1b
-  #  selection: "reg3j1b && elmu && OS"
-  #  binning: [-1.0, -0.423, -0.3488, -0.293, -0.2456, -0.2034, -0.165, -0.128, -0.0926, -0.0578, -0.0238, 0.0094, 0.0446, 0.0828, 0.1248, 0.1732, 0.234, 0.3086, 0.3998, 0.5124, 1.0]
-
-  #- name: reg3jHb
-  #  selection: "reg3jHb && elmu && OS"
-  #  binning: [-1.0, -0.5312, -0.445, -0.378, -0.3188, -0.2622, -0.2078, -0.1556, -0.106, -0.06, -0.0162, 0.027, 0.07, 0.1166, 0.1684, 0.2328, 0.3132, 0.4044, 0.5002, 0.6022, 1.0]
-
-  - name: reg1j1b_FB
+  - name: reg1j1b_01
     selection: "reg1j1b && elmu && OS"
-    nbins: 25
+    nbins: 1
     xmin: -0.70
     xmax: 0.60
 
-  - name: reg2j1b_FB
+  - name: reg2j1b_01
     selection: "reg2j1b && elmu && OS"
-    nbins: 25
-    xmin: -0.70
+    nbins: 1
+    xmin: -0.75
     xmax: 0.75
 
-  - name: reg2j2b_FB
+  - name: reg2j2b_01
     selection: "reg2j2b && elmu && OS"
-    nbins: 25
-    xmin: -0.70
+    nbins: 1
+    xmin: -0.75
     xmax: 0.90
 
-  - name: reg3j_FB
+  - name: reg3j_01
     selection: "reg3j && elmu && OS"
-    nbins: 25
-    xmin: -0.675
+    nbins: 1
+    xmin: -0.70
     xmax: 0.80
 
-  #- name: reg3j1b_FB
-  #  selection: "reg3j1b && elmu && OS"
-  #  nbins: 25
-  #  xmin: -0.475
-  #  xmax: 0.70
+  - name: reg1j1b_03
+    selection: "reg1j1b && elmu && OS"
+    nbins: 3
+    xmin: -0.70
+    xmax: 0.60
 
-  #- name: reg3jHb_FB
-  #  selection: "reg3jHb && elmu && OS"
-  #  nbins: 25
-  #  xmin: -0.65
-  #  xmax: 0.80
+  - name: reg2j1b_03
+    selection: "reg2j1b && elmu && OS"
+    nbins: 3
+    xmin: -0.75
+    xmax: 0.75
+
+  - name: reg2j2b_03
+    selection: "reg2j2b && elmu && OS"
+    nbins: 3
+    xmin: -0.75
+    xmax: 0.90
+
+  - name: reg3j_03
+    selection: "reg3j && elmu && OS"
+    nbins: 3
+    xmin: -0.70
+    xmax: 0.80
+
+  - name: reg1j1b_05
+    selection: "reg1j1b && elmu && OS"
+    nbins: 5
+    xmin: -0.70
+    xmax: 0.60
+
+  - name: reg2j1b_05
+    selection: "reg2j1b && elmu && OS"
+    nbins: 5
+    xmin: -0.75
+    xmax: 0.75
+
+  - name: reg2j2b_05
+    selection: "reg2j2b && elmu && OS"
+    nbins: 5
+    xmin: -0.75
+    xmax: 0.90
+
+  - name: reg3j_05
+    selection: "reg3j && elmu && OS"
+    nbins: 5
+    xmin: -0.70
+    xmax: 0.80
+
+  - name: reg1j1b_10
+    selection: "reg1j1b && elmu && OS"
+    nbins: 10
+    xmin: -0.70
+    xmax: 0.60
+
+  - name: reg2j1b_10
+    selection: "reg2j1b && elmu && OS"
+    nbins: 10
+    xmin: -0.75
+    xmax: 0.75
+
+  - name: reg2j2b_10
+    selection: "reg2j2b && elmu && OS"
+    nbins: 10
+    xmin: -0.75
+    xmax: 0.90
+
+  - name: reg3j_10
+    selection: "reg3j && elmu && OS"
+    nbins: 10
+    xmin: -0.70
+    xmax: 0.80
 
 templates:
 
   - var: bdt_response
-    regions: [reg1j1b_FB, reg2j1b_FB, reg2j2b_FB]
+    regions: [reg1j1b_01, reg1j1b_03, reg1j1b_05, reg1j1b_10, reg2j1b_01, reg2j1b_03, reg2j1b_05, reg2j1b_10, reg2j2b_01, reg2j2b_03, reg2j2b_05, reg2j2b_10]
     use_region_binning: true
     axis_title: "Classifier Response"
+    is_aux: false
 
   - var: bdt_response_3j
-    regions: [reg3j, reg3j_FB]
+    regions: [reg3j_01, reg3j_03, reg3j_05, reg3j_10]
     use_region_binning: true
     axis_title: "Classifier Response"
-
-  #- var: bdt_response_3j1b
-  #  regions: [reg3j1b, reg3j1b_FB]
-  #  use_region_binning: true
-  #  axis_title: "Classifier Response"
-
-  #- var: bdt_response_3jHb
-  #  regions: [reg3jHb, reg3jHb_FB]
-  #  use_region_binning: true
-  #  axis_title: "Classifier Response"
+    is_aux: false
 
   - var: cent_lep1lep2
     xmin: 0.18
     xmax: 1.0
     nbins: 30
     use_region_binning: false
-    regions: [reg1j1b_FB, reg3j_FB]
+    regions: [reg1j1b, reg3j]
     axis_title: " "
+    is_aux: true
 
   - var: HT_jet2jet3
     xmin: 50.0
     xmax: 350.0
     nbins: 30
     use_region_binning: false
-    regions: [reg3j1b_FB, reg3jHb_FB]
+    regions: [reg3j1b, reg3jHb]
     axis_title: " "
+    is_aux: true
 
   - var: mT_lep2met
     xmin: 0.0
     xmax: 230.0
     nbins: 30
     use_region_binning: false
-    regions: [reg1j1b_FB]
+    regions: [reg1j1b]
     axis_title: " "
+    is_aux: true
 
   - var: nloosejets
-    xmin: 0.5
+    xmin: -0.5
     xmax: 3.5
     nbins: 4
     use_region_binning: false
-    regions: [reg1j1b_FB]
+    regions: [reg1j1b]
     axis_title: " "
+    is_aux: true
 
   - var: nloosebjets
-    xmin: 0.5
+    xmin: -0.5
     xmax: 2.5
     nbins: 3
     use_region_binning: false
-    regions: [reg1j1b_FB]
+    regions: [reg1j1b]
     axis_title: " "
+    is_aux: true
 
   - var: pT_jet3
     xmin: 20.0
     xmax: 140.0
     nbins: 30
     use_region_binning: false
-    regions: [reg3j_FB, reg3jHb_FB, reg3j1b_FB]
+    regions: [reg3j, reg3jHb, reg3j1b]
     axis_title: " "
+    is_aux: true
 
   - var: deltapT_lep1lep2_jet3
     xmin: -100.0
     xmax: 200.0
     nbins: 30
     use_region_binning: false
-    regions: [reg3j_FB, reg3j1b_FB, reg3jHb_FB]
+    regions: [reg3j, reg3j1b, reg3jHb]
     axis_title: " "
+    is_aux: true
 
   - var: deltapT_lep1_jet1
     xmin: -300.0
     xmax: 200.0
     nbins: 30
     use_region_binning: false
-    regions: [reg1j1b_FB]
+    regions: [reg1j1b]
     axis_title: " "
+    is_aux: true
 
   - var: mass_lep2jet1
     xmin: 0.0
     xmax: 500.0
     nbins: 30
     use_region_binning: false
-    regions: [reg1j1b_FB, reg2j1b_FB, reg2j2b_FB, reg3j_FB, reg3j1b_FB, reg3jHb_FB]
+    regions: [reg1j1b, reg2j1b, reg2j2b, reg3j, reg3j1b, reg3jHb]
     axis_title: " "
+    is_aux: true
 
   - var: mass_lep1jet2
     xmin: 0.0
     xmax: 500.0
     nbins: 30
     use_region_binning: false
-    regions: [reg2j1b_FB, reg2j2b_FB, reg3j_FB, reg3j1b_FB, reg3jHb_FB]
+    regions: [reg2j1b, reg2j2b, reg3j, reg3j1b, reg3jHb]
     axis_title: " "
+    is_aux: true
 
   - var: mass_lep1jet1
     xmin: 0.0
     xmax: 700.0
     nbins: 30
     use_region_binning: false
-    regions: [reg1j1b_FB, reg2j1b_FB, reg2j2b_FB, reg3j_FB, reg3j1b_FB, reg3jHb_FB]
+    regions: [reg1j1b, reg2j1b, reg2j2b, reg3j, reg3j1b, reg3jHb]
     axis_title: " "
+    is_aux: true
 
   - var: mass_lep1jet3
     xmin: 0.0
     xmax: 425.0
     nbins: 30
     use_region_binning: false
-    regions: [reg3j_FB, reg3j1b_FB, reg3jHb_FB]
+    regions: [reg3j, reg3j1b, reg3jHb]
     axis_title: " "
+    is_aux: true
 
   - var: mass_lep2jet2
     xmin: 0.0
     xmax: 350.0
     nbins: 30
     use_region_binning: false
-    regions: [reg2j1b_FB, reg2j2b_FB, reg3jHb_FB]
+    regions: [reg2j1b, reg2j2b, reg3jHb]
     axis_title: " "
+    is_aux: true
 
   - var: psuedoContTagBin_jet3
     xmin: -0.5
     xmax: 5.5
     nbins: 6
     use_region_binning: false
-    regions: [reg3j1b_FB, reg3jHB_FB, reg3j_FB]
+    regions: [reg3j1b, reg3jHB, reg3j]
     axis_title: " "
+    is_aux: true
 
   - var: psuedoContTagBin_jet2
     xmin: -0.5
     xmax: 5.5
     nbins: 6
     use_region_binning: false
-    regions: [reg2j1b_FB, reg3j1b_FB, reg3jHB_FB, reg3j_FB]
+    regions: [reg2j1b, reg3j1b, reg3jHB, reg3j]
     axis_title: " "
+    is_aux: true
 
   - var: psuedoContTagBin_jet1
     xmin: -0.5
     xmax: 5.5
     nbins: 6
     use_region_binning: false
-    regions: [reg2j1b_FB, reg3j1b_FB, reg3jHB_FB, reg3j_FB]
+    regions: [reg2j1b, reg3j1b, reg3jHB, reg3j]
     axis_title: " "
+    is_aux: true
 
   - var: pTsys_lep1lep2jet1
     xmin: 0.0
     xmax: 375.0
     nbins: 30
     use_region_binning: false
-    regions: [reg1j1b_FB]
+    regions: [reg1j1b]
     axis_title: " "
+    is_aux: true
 
   - var: pTsys_lep1lep2jet1jet2met
     xmin: 0.0
     xmax: 225.0
     nbins: 30
     use_region_binning: false
-    regions: [reg2j1b_FB]
+    regions: [reg2j1b]
     axis_title: " "
+    is_aux: true
 
   - var: pTsys_lep1lep2jet1met
     xmin: 0.0
     xmax: 375.0
     nbins: 30
     use_region_binning: false
-    regions: [reg1j1b_FB, reg3j_FB, reg3j1b_FB, reg3jHb_FB]
+    regions: [reg1j1b, reg3j, reg3j1b, reg3jHb]
     axis_title: " "
+    is_aux: true
 
   - var: pTsys_lep1lep2
     xmin: 0.0
     xmax: 275.0
     nbins: 30
     use_region_binning: false
-    regions: [reg1j1b_FB]
+    regions: [reg1j1b]
     axis_title: " "
+    is_aux: true
 
   - var: pTsys_lep1lep2met
     xmin: 0.0
     xmax: 400.0
     nbins: 30
     use_region_binning: false
-    regions: [reg2j2b_FB]
+    regions: [reg2j2b]
     axis_title: " "
+    is_aux: true
 
   - var: pTsys_lep1lep2jet1jet2jet3met
     xmin: 0.0
     xmax: 150.0
     nbins: 30
     use_region_binning: false
-    regions: [reg3j_FB, reg3j1b_FB, reg3jHb_FB]
+    regions: [reg3j, reg3j1b, reg3jHb]
     axis_title: " "
+    is_aux: true
 
   - var: deltaR_lep2_jet1
     xmin: 0.5
     xmax: 5.25
     nbins: 30
     use_region_binning: false
-    regions: [reg1j1b_FB, reg3j_FB]
+    regions: [reg1j1b, reg3j]
     axis_title: " "
+    is_aux: true
 
   - var: deltaR_jet1_jet3
     xmin: 0.5
     xmax: 5.25
     nbins: 30
     use_region_binning: false
-    regions: [reg3j_FB, reg3jHB_FB]
+    regions: [reg3j, reg3jHB]
     axis_title: " "
+    is_aux: true
 
   - var: deltaR_lep1_jet1
     xmin: 0.5
     xmax: 5.25
     nbins: 30
     use_region_binning: false
-    regions: [reg2j2b_FB]
+    regions: [reg2j2b]
     axis_title: " "
+    is_aux: true
 
   - var: deltaR_lep1_lep2
     xmin: 0.25
     xmax: 5.0
     nbins: 30
     use_region_binning: false
-    regions: [reg1j1b_FB]
+    regions: [reg1j1b]
     axis_title: " "
+    is_aux: true
 
   - var: deltaR_lep1lep2_jet1jet2jet3met
     xmin: 0.2
     xmax: 6.0
     nbins: 30
     use_region_binning: false
-    regions: [reg3j1b_FB]
+    regions: [reg3j1b]
     axis_title: " "
+    is_aux: true
 
   - var: deltaR_lep1_jet2
     xmin: 0.5
     xmax: 5.2
     nbins: 30
     use_region_binning: false
-    regions: [reg3jHb_FB]
+    regions: [reg3jHb]
     axis_title: " "
+    is_aux: true
 
   - var: pT_lep1
     xmin: 27
@@ -313,6 +369,7 @@ templates:
     use_region_binning: false
     regions: [ALL]
     axis_title: " "
+    is_aux: true
 
   - var: pT_lep2
     xmin: 20
@@ -321,6 +378,7 @@ templates:
     use_region_binning: false
     regions: [ALL]
     axis_title: " "
+    is_aux: true
 
   - var: pT_jet1
     xmin: 25
@@ -329,22 +387,25 @@ templates:
     use_region_binning: false
     regions: [ALL]
     axis_title: " "
+    is_aux: true
 
   - var: pT_jet2
-    regions: [reg2j1b_FB, reg2j2b_FB, reg3j_FB]
+    regions: [reg2j1b, reg2j2b, reg3j]
     use_region_binning: false
     xmin: 30
     xmax: 175
     nbins: 30
     axis_title: " "
+    is_aux: true
 
   - var: pT_jet3
-    regions: [reg3j_FB]
+    regions: [reg3j]
     use_region_binning: false
     xmin: 30
     xmax: 150
     nbins: 30
     axis_title: " "
+    is_aux: true
 
   - var: eta_lep1
     xmin: -2.5
@@ -353,6 +414,7 @@ templates:
     use_region_binning: false
     regions: [ALL]
     axis_title: " "
+    is_aux: true
 
   - var: eta_lep2
     xmin: -2.5
@@ -361,6 +423,7 @@ templates:
     use_region_binning: false
     regions: [ALL]
     axis_title: " "
+    is_aux: true
 
   - var: eta_jet1
     xmin: -2.5
@@ -369,22 +432,25 @@ templates:
     use_region_binning: false
     regions: [ALL]
     axis_title: " "
+    is_aux: true
 
   - var: eta_jet2
     xmin: -2.5
     xmax: 2.5
     nbins: 30
     use_region_binning: false
-    regions: [reg3j1b_FB, reg3jHb_FB, reg3j_FB, reg2j1b_FB, reg2j2b_FB]
+    regions: [reg3j1b, reg3jHb, reg3j, reg2j1b, reg2j2b]
     axis_title: " "
+    is_aux: true
 
   - var: eta_jet3
     xmin: -2.5
     xmax: 2.5
     nbins: 30
     use_region_binning: false
-    regions: [reg3j1b_FB, reg3jHb_FB, reg3j_FB]
+    regions: [reg3j1b, reg3jHb, reg3j]
     axis_title: " "
+    is_aux: true
 
   - var: met
     xmin: 0
@@ -393,3 +459,31 @@ templates:
     use_region_binning: false
     axis_title: " "
     regions: [ALL]
+    is_aux: true
+
+
+# Manual binned regions
+
+#- name: reg1j1b
+#  selection: "reg1j1b && elmu && OS"
+#  binning: [-1.0, -0.5720, -0.4608, -0.3640, -0.2862, -0.2230, -0.1686, -0.1218, -0.0806, -0.0406, 0.0014, 0.0498, 0.1064, 0.1670, 0.2234, 0.2748, 0.3244, 0.374, 0.4262, 0.4882, 1.0]
+
+#- name: reg2j1b
+#  selection: "reg2j1b && elmu && OS"
+#  binning: [-1.0, -0.5828, -0.4494, -0.3574, -0.2904, -0.236, -0.1868, -0.1398, -0.0932, -0.0478, -0.003, 0.042, 0.0888, 0.1388, 0.1918, 0.2478, 0.306, 0.3712, 0.4502, 0.565, 1.0]
+
+#- name: reg2j2b
+#  selection: "reg2j2b && elmu && OS"
+#  binning: [-0.85, -0.5, -0.325, -0.2, -0.1, 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+
+#- name: reg3j
+#  selection: "reg3j && elmu && OS"
+#  binning: [-1.0, -0.5348, -0.4432, -0.3702, -0.3074, -0.2492, -0.1936, -0.141, -0.092, -0.0458, -0.002, 0.0416, 0.0852, 0.132, 0.1822, 0.2386, 0.3034, 0.3842, 0.4766, 0.5758, 1.0]
+
+#- name: reg3j1b
+#  selection: "reg3j1b && elmu && OS"
+#  binning: [-1.0, -0.423, -0.3488, -0.293, -0.2456, -0.2034, -0.165, -0.128, -0.0926, -0.0578, -0.0238, 0.0094, 0.0446, 0.0828, 0.1248, 0.1732, 0.234, 0.3086, 0.3998, 0.5124, 1.0]
+
+#- name: reg3jHb
+#  selection: "reg3jHb && elmu && OS"
+#  binning: [-1.0, -0.5312, -0.445, -0.378, -0.3188, -0.2622, -0.2078, -0.1556, -0.106, -0.06, -0.0162, 0.027, 0.07, 0.1166, 0.1684, 0.2328, 0.3132, 0.4044, 0.5002, 0.6022, 1.0]
