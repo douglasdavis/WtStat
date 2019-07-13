@@ -1,261 +1,197 @@
-from collections import OrderedDict
+from collections import OrderedDict, namedtuple
+
+NTSysWeight = namedtuple("SysWeight", "branch_up branch_down category smoothing title tiny")
+NTSysPDF = namedtuple("SysPDF", "branch category smoothing title tiny")
+NTSysTree2s = namedtuple("SysTree2s", "branch_up branch_down category smoothing title tiny")
+NTSysTree1s = namedtuple("SysTree2s", "branch category smoothing title tiny")
 
 SYS_WEIGHTS = OrderedDict()
-SYS_WEIGHTS['JVT'          ] =  ['weight_sys_jvt_UP'                                        , 'weight_sys_jvt_DOWN'                                        , 'Weights'      , '40' , 'JVT' ]
-SYS_WEIGHTS['Pileup'       ] =  ['weight_sys_pileup_UP'                                     , 'weight_sys_pileup_DOWN'                                     , 'Weights'      , '40' , 'Pileup' ]
-SYS_WEIGHTS['EL_Trig'      ] =  ['weight_sys_leptonSF_EL_SF_Trigger_UP'                     , 'weight_sys_leptonSF_EL_SF_Trigger_DOWN'                     , 'WeightLepSFs' , '40' , 'Electron Trig']
-SYS_WEIGHTS['EL_Reco'      ] =  ['weight_sys_leptonSF_EL_SF_Reco_UP'                        , 'weight_sys_leptonSF_EL_SF_Reco_DOWN'                        , 'WeightLepSFs' , '40' , 'Electron Reco']
-SYS_WEIGHTS['EL_ID'        ] =  ['weight_sys_leptonSF_EL_SF_ID_UP'                          , 'weight_sys_leptonSF_EL_SF_ID_DOWN'                          , 'WeightLepSFs' , '40' , 'Electron ID']
-SYS_WEIGHTS['EL_Isol'      ] =  ['weight_sys_leptonSF_EL_SF_Isol_UP'                        , 'weight_sys_leptonSF_EL_SF_Isol_DOWN'                        , 'WeightLepSFs' , '40' , 'Electron Isol']
-SYS_WEIGHTS['MU_TrigStat'  ] =  ['weight_sys_leptonSF_MU_SF_Trigger_STAT_UP'                , 'weight_sys_leptonSF_MU_SF_Trigger_STAT_DOWN'                , 'WeightLepSFs' , '40' , 'Muon TrigStat']
-SYS_WEIGHTS['MU_TrigSyst'  ] =  ['weight_sys_leptonSF_MU_SF_Trigger_SYST_UP'                , 'weight_sys_leptonSF_MU_SF_Trigger_SYST_DOWN'                , 'WeightLepSFs' , '40' , 'Muon TrigSyst']
-SYS_WEIGHTS['MU_IDStat'    ] =  ['weight_sys_leptonSF_MU_SF_ID_STAT_UP'                     , 'weight_sys_leptonSF_MU_SF_ID_STAT_DOWN'                     , 'WeightLepSFs' , '40' , 'Muon IDStat']
-SYS_WEIGHTS['MU_IDSyst'    ] =  ['weight_sys_leptonSF_MU_SF_ID_SYST_UP'                     , 'weight_sys_leptonSF_MU_SF_ID_SYST_DOWN'                     , 'WeightLepSFs' , '40' , 'Muon IDSyst']
-SYS_WEIGHTS['MU_IDStatLPT' ] =  ['weight_sys_leptonSF_MU_SF_ID_STAT_LOWPT_UP'               , 'weight_sys_leptonSF_MU_SF_ID_STAT_LOWPT_DOWN'               , 'WeightLepSFs' , '40' , 'Muon IDStatLPT' ]
-SYS_WEIGHTS['MU_IDSystLPT' ] =  ['weight_sys_leptonSF_MU_SF_ID_SYST_LOWPT_UP'               , 'weight_sys_leptonSF_MU_SF_ID_SYST_LOWPT_DOWN'               , 'WeightLepSFs' , '40' , 'Muon IDSystLPT' ]
-SYS_WEIGHTS['MU_IsolStat'  ] =  ['weight_sys_leptonSF_MU_SF_Isol_STAT_UP'                   , 'weight_sys_leptonSF_MU_SF_Isol_STAT_DOWN'                   , 'WeightLepSFs' , '40' , 'Muon IsolStat'  ]
-SYS_WEIGHTS['MU_IsolSyst'  ] =  ['weight_sys_leptonSF_MU_SF_Isol_SYST_UP'                   , 'weight_sys_leptonSF_MU_SF_Isol_SYST_DOWN'                   , 'WeightLepSFs' , '40' , 'Muon IsolSyst'  ]
-SYS_WEIGHTS['MU_TTVAStat'  ] =  ['weight_sys_leptonSF_MU_SF_TTVA_STAT_UP'                   , 'weight_sys_leptonSF_MU_SF_TTVA_STAT_DOWN'                   , 'WeightLepSFs' , '40' , 'Muon TTVAStat'  ]
-SYS_WEIGHTS['MU_TTVASyst'  ] =  ['weight_sys_leptonSF_MU_SF_TTVA_SYST_UP'                   , 'weight_sys_leptonSF_MU_SF_TTVA_SYST_DOWN'                   , 'WeightLepSFs' , '40' , 'Muon TTVASyst'  ]
+SYS_WEIGHTS["JVT"] = NTSysWeight("weight_sys_jvt_UP", "weight_sys_jvt_DOWN", "Weights", "40", "JVT", False)
+SYS_WEIGHTS["Pileup"] = NTSysWeight("weight_sys_pileup_UP", "weight_sys_pileup_DOWN", "Weights", "40", "Pileup", False)
+SYS_WEIGHTS["EL_Trig"] = NTSysWeight("weight_sys_leptonSF_EL_SF_Trigger_UP", "weight_sys_leptonSF_EL_SF_Trigger_DOWN", "WeightLepSFs", "40", "Electron Trig", False)
+SYS_WEIGHTS["EL_Reco"] = NTSysWeight("weight_sys_leptonSF_EL_SF_Reco_UP", "weight_sys_leptonSF_EL_SF_Reco_DOWN", "WeightLepSFs", "40", "Electron Reco", False)
+SYS_WEIGHTS["EL_ID"] = NTSysWeight("weight_sys_leptonSF_EL_SF_ID_UP", "weight_sys_leptonSF_EL_SF_ID_DOWN", "WeightLepSFs", "40", "Electron ID", False)
+SYS_WEIGHTS["EL_Isol"] = NTSysWeight("weight_sys_leptonSF_EL_SF_Isol_UP", "weight_sys_leptonSF_EL_SF_Isol_DOWN", "WeightLepSFs", "40", "Electron Isol", False)
+SYS_WEIGHTS["MU_TrigStat"] = NTSysWeight("weight_sys_leptonSF_MU_SF_Trigger_STAT_UP", "weight_sys_leptonSF_MU_SF_Trigger_STAT_DOWN", "WeightLepSFs", "40", "Muon Trig Stat", False)
+SYS_WEIGHTS["MU_TrigSyst"] = NTSysWeight("weight_sys_leptonSF_MU_SF_Trigger_SYST_UP", "weight_sys_leptonSF_MU_SF_Trigger_SYST_DOWN", "WeightLepSFs", "40", "Muon Trig Syst", False)
+SYS_WEIGHTS["MU_IDStat"] = NTSysWeight("weight_sys_leptonSF_MU_SF_ID_STAT_UP", "weight_sys_leptonSF_MU_SF_ID_STAT_DOWN", "WeightLepSFs", "40", "Muon ID Stat", False)
+SYS_WEIGHTS["MU_IDSyst"] = NTSysWeight("weight_sys_leptonSF_MU_SF_ID_SYST_UP", "weight_sys_leptonSF_MU_SF_ID_SYST_DOWN", "WeightLepSFs", "40", "Muon ID Syst", False)
+SYS_WEIGHTS["MU_IDStatLPT"] = NTSysWeight("weight_sys_leptonSF_MU_SF_ID_STAT_LOWPT_UP", "weight_sys_leptonSF_MU_SF_ID_STAT_LOWPT_DOWN", "WeightLepSFs", "40", "Muon ID Stat Low PT", False)
+SYS_WEIGHTS["MU_IDSystLPT"] = NTSysWeight("weight_sys_leptonSF_MU_SF_ID_SYST_LOWPT_UP", "weight_sys_leptonSF_MU_SF_ID_SYST_LOWPT_DOWN", "WeightLepSFs", "40", "Muon ID Syst Low PT", False)
+SYS_WEIGHTS["MU_IsolStat"] = NTSysWeight("weight_sys_leptonSF_MU_SF_Isol_STAT_UP", "weight_sys_leptonSF_MU_SF_Isol_STAT_DOWN", "WeightLepSFs", "40", "Muon Isol Stat", False)
+SYS_WEIGHTS["MU_IsolSyst"] = NTSysWeight("weight_sys_leptonSF_MU_SF_Isol_SYST_UP", "weight_sys_leptonSF_MU_SF_Isol_SYST_DOWN", "WeightLepSFs", "40", "Muon Isol Syst", False)
+SYS_WEIGHTS["MU_TTVAStat"] = NTSysWeight("weight_sys_leptonSF_MU_SF_TTVA_STAT_UP", "weight_sys_leptonSF_MU_SF_TTVA_STAT_DOWN", "WeightLepSFs", "40", "Muon TTVA Stat", False)
+SYS_WEIGHTS["MU_TTVASyst"] = NTSysWeight("weight_sys_leptonSF_MU_SF_TTVA_SYST_UP", "weight_sys_leptonSF_MU_SF_TTVA_SYST_DOWN", "WeightLepSFs", "40", "Muon TTVA Syst", False)
 
-SYS_WEIGHTS['B_ev_B_0'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_0_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_0_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B0'     ]
-SYS_WEIGHTS['B_ev_B_1'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_1_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_1_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B1'     ]
-SYS_WEIGHTS['B_ev_B_2'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_2_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_2_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B2'     ]
-SYS_WEIGHTS['B_ev_B_3'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_3_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_3_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B3'     ]
-SYS_WEIGHTS['B_ev_B_4'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_4_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_4_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B4'     ]
-SYS_WEIGHTS['B_ev_B_5'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_5_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_5_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B5'     ]
-SYS_WEIGHTS['B_ev_B_6'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_6_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_6_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B6'     ]
-SYS_WEIGHTS['B_ev_B_7'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_7_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_7_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B7'     ]
-SYS_WEIGHTS['B_ev_B_8'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_8_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_8_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B8'     ]
-SYS_WEIGHTS['B_ev_B_9'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_9_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_9_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B9'     ]
-SYS_WEIGHTS['B_ev_B_10'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_10_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_10_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B10'     ]
-SYS_WEIGHTS['B_ev_B_11'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_11_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_11_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B11'     ]
-SYS_WEIGHTS['B_ev_B_12'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_12_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_12_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B12'     ]
-SYS_WEIGHTS['B_ev_B_13'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_13_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_13_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B13'     ]
-SYS_WEIGHTS['B_ev_B_14'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_14_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_14_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B14'     ]
-SYS_WEIGHTS['B_ev_B_15'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_15_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_15_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B15'     ]
-SYS_WEIGHTS['B_ev_B_16'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_16_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_16_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B16'     ]
-SYS_WEIGHTS['B_ev_B_17'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_17_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_17_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B17'     ]
-SYS_WEIGHTS['B_ev_B_18'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_18_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_18_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B18'     ]
-SYS_WEIGHTS['B_ev_B_19'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_19_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_19_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B19'     ]
-SYS_WEIGHTS['B_ev_B_20'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_20_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_20_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B20'     ]
-SYS_WEIGHTS['B_ev_B_21'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_21_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_21_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B21'     ]
-SYS_WEIGHTS['B_ev_B_22'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_22_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_22_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B22'     ]
-SYS_WEIGHTS['B_ev_B_23'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_23_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_23_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B23'     ]
-SYS_WEIGHTS['B_ev_B_24'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_24_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_24_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B24'     ]
-SYS_WEIGHTS['B_ev_B_25'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_25_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_25_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B25'     ]
-SYS_WEIGHTS['B_ev_B_26'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_26_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_26_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B26'     ]
-SYS_WEIGHTS['B_ev_B_27'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_27_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_27_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B27'     ]
-SYS_WEIGHTS['B_ev_B_28'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_28_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_28_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B28'     ]
-SYS_WEIGHTS['B_ev_B_29'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_29_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_29_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B29'     ]
-SYS_WEIGHTS['B_ev_B_30'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_30_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_30_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B30'     ]
-SYS_WEIGHTS['B_ev_B_31'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_31_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_31_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B31'     ]
-SYS_WEIGHTS['B_ev_B_32'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_32_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_32_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B32'     ]
-SYS_WEIGHTS['B_ev_B_33'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_33_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_33_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B33'     ]
-SYS_WEIGHTS['B_ev_B_34'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_34_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_34_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B34'     ]
-SYS_WEIGHTS['B_ev_B_35'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_35_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_35_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B35'     ]
-SYS_WEIGHTS['B_ev_B_36'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_36_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_36_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B36'     ]
-SYS_WEIGHTS['B_ev_B_37'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_37_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_37_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B37'     ]
-SYS_WEIGHTS['B_ev_B_38'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_38_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_38_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B38'     ]
-SYS_WEIGHTS['B_ev_B_39'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_39_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_39_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B39'     ]
-SYS_WEIGHTS['B_ev_B_40'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_40_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_40_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B40'     ]
-SYS_WEIGHTS['B_ev_B_41'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_41_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_41_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B41'     ]
-SYS_WEIGHTS['B_ev_B_42'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_42_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_42_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B42'     ]
-SYS_WEIGHTS['B_ev_B_43'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_43_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_43_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B43'     ]
-SYS_WEIGHTS['B_ev_B_44'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_44_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_44_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv B44'     ]
+SYS_WEIGHTS["B_ev_B_0"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_0_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_0_down", "WeightBTag", "40", "b-tag eigenv B0", False)
+SYS_WEIGHTS["B_ev_B_1"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_1_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_1_down", "WeightBTag", "40", "b-tag eigenv B1", False)
+SYS_WEIGHTS["B_ev_B_2"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_2_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_2_down", "WeightBTag", "40", "b-tag eigenv B2", False)
+SYS_WEIGHTS["B_ev_B_3"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_3_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_3_down", "WeightBTag", "40", "b-tag eigenv B3", False)
+SYS_WEIGHTS["B_ev_B_4"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_4_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_4_down", "WeightBTag", "40", "b-tag eigenv B4", False)
+SYS_WEIGHTS["B_ev_B_5"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_5_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_5_down", "WeightBTag", "40", "b-tag eigenv B5", False)
+SYS_WEIGHTS["B_ev_B_6"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_6_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_6_down", "WeightBTag", "40", "b-tag eigenv B6", False)
+SYS_WEIGHTS["B_ev_B_7"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_7_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_7_down", "WeightBTag", "40", "b-tag eigenv B7", False)
+SYS_WEIGHTS["B_ev_B_8"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_8_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_8_down", "WeightBTag", "40", "b-tag eigenv B8", False)
+SYS_WEIGHTS["B_ev_B_9"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_9_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_9_down", "WeightBTag", "40", "b-tag eigenv B9", False)
+SYS_WEIGHTS["B_ev_B_10"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_10_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_10_down", "WeightBTag", "40", "b-tag eigenv B10", False)
+SYS_WEIGHTS["B_ev_B_11"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_11_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_11_down", "WeightBTag", "40", "b-tag eigenv B11", False)
+SYS_WEIGHTS["B_ev_B_12"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_12_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_12_down", "WeightBTag", "40", "b-tag eigenv B12", False)
+SYS_WEIGHTS["B_ev_B_13"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_13_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_13_down", "WeightBTag", "40", "b-tag eigenv B13", False)
+SYS_WEIGHTS["B_ev_B_14"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_14_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_14_down", "WeightBTag", "40", "b-tag eigenv B14", False)
+SYS_WEIGHTS["B_ev_B_15"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_15_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_15_down", "WeightBTag", "40", "b-tag eigenv B15", False)
+SYS_WEIGHTS["B_ev_B_16"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_16_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_16_down", "WeightBTag", "40", "b-tag eigenv B16", False)
+SYS_WEIGHTS["B_ev_B_17"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_17_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_17_down", "WeightBTag", "40", "b-tag eigenv B17", False)
+SYS_WEIGHTS["B_ev_B_18"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_18_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_18_down", "WeightBTag", "40", "b-tag eigenv B18", False)
+SYS_WEIGHTS["B_ev_B_19"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_19_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_19_down", "WeightBTag", "40", "b-tag eigenv B19", False)
+SYS_WEIGHTS["B_ev_B_20"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_20_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_20_down", "WeightBTag", "40", "b-tag eigenv B20", False)
+SYS_WEIGHTS["B_ev_B_21"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_21_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_21_down", "WeightBTag", "40", "b-tag eigenv B21", False)
+SYS_WEIGHTS["B_ev_B_22"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_22_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_22_down", "WeightBTag", "40", "b-tag eigenv B22", False)
+SYS_WEIGHTS["B_ev_B_23"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_23_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_23_down", "WeightBTag", "40", "b-tag eigenv B23", False)
+SYS_WEIGHTS["B_ev_B_24"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_24_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_24_down", "WeightBTag", "40", "b-tag eigenv B24", False)
+SYS_WEIGHTS["B_ev_B_25"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_25_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_25_down", "WeightBTag", "40", "b-tag eigenv B25", False)
+SYS_WEIGHTS["B_ev_B_26"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_26_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_26_down", "WeightBTag", "40", "b-tag eigenv B26", False)
+SYS_WEIGHTS["B_ev_B_27"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_27_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_27_down", "WeightBTag", "40", "b-tag eigenv B27", False)
+SYS_WEIGHTS["B_ev_B_28"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_28_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_28_down", "WeightBTag", "40", "b-tag eigenv B28", False)
+SYS_WEIGHTS["B_ev_B_29"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_29_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_29_down", "WeightBTag", "40", "b-tag eigenv B29", False)
+SYS_WEIGHTS["B_ev_B_30"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_30_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_30_down", "WeightBTag", "40", "b-tag eigenv B30", False)
+SYS_WEIGHTS["B_ev_B_31"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_31_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_31_down", "WeightBTag", "40", "b-tag eigenv B31", False)
+SYS_WEIGHTS["B_ev_B_32"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_32_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_32_down", "WeightBTag", "40", "b-tag eigenv B32", False)
+SYS_WEIGHTS["B_ev_B_33"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_33_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_33_down", "WeightBTag", "40", "b-tag eigenv B33", False)
+SYS_WEIGHTS["B_ev_B_34"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_34_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_34_down", "WeightBTag", "40", "b-tag eigenv B34", False)
+SYS_WEIGHTS["B_ev_B_35"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_35_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_35_down", "WeightBTag", "40", "b-tag eigenv B35", False)
+SYS_WEIGHTS["B_ev_B_36"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_36_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_36_down", "WeightBTag", "40", "b-tag eigenv B36", False)
+SYS_WEIGHTS["B_ev_B_37"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_37_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_37_down", "WeightBTag", "40", "b-tag eigenv B37", False)
+SYS_WEIGHTS["B_ev_B_38"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_38_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_38_down", "WeightBTag", "40", "b-tag eigenv B38", False)
+SYS_WEIGHTS["B_ev_B_39"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_39_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_39_down", "WeightBTag", "40", "b-tag eigenv B39", False)
+SYS_WEIGHTS["B_ev_B_40"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_40_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_40_down", "WeightBTag", "40", "b-tag eigenv B40", False)
+SYS_WEIGHTS["B_ev_B_41"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_41_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_41_down", "WeightBTag", "40", "b-tag eigenv B41", False)
+SYS_WEIGHTS["B_ev_B_42"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_42_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_42_down", "WeightBTag", "40", "b-tag eigenv B42", False)
+SYS_WEIGHTS["B_ev_B_43"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_43_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_43_down", "WeightBTag", "40", "b-tag eigenv B43", False)
+SYS_WEIGHTS["B_ev_B_44"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_44_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_B_44_down", "WeightBTag", "40", "b-tag eigenv B44", False)
 
-SYS_WEIGHTS['B_ev_C_0'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_0_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_0_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv C0'     ]
-SYS_WEIGHTS['B_ev_C_1'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_1_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_1_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv C1'     ]
-SYS_WEIGHTS['B_ev_C_2'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_2_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_2_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv C2'     ]
-SYS_WEIGHTS['B_ev_C_3'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_3_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_3_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv C3'     ]
-SYS_WEIGHTS['B_ev_C_4'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_4_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_4_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv C4'     ]
-SYS_WEIGHTS['B_ev_C_5'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_5_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_5_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv C5'     ]
-SYS_WEIGHTS['B_ev_C_6'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_6_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_6_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv C6'     ]
-SYS_WEIGHTS['B_ev_C_7'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_7_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_7_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv C7'     ]
-SYS_WEIGHTS['B_ev_C_8'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_8_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_8_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv C8'     ]
-SYS_WEIGHTS['B_ev_C_9'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_9_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_9_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv C9'     ]
-SYS_WEIGHTS['B_ev_C_10'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_10_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_10_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv C10'     ]
-SYS_WEIGHTS['B_ev_C_11'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_11_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_11_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv C11'     ]
-SYS_WEIGHTS['B_ev_C_12'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_12_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_12_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv C12'     ]
-SYS_WEIGHTS['B_ev_C_13'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_13_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_13_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv C13'     ]
-SYS_WEIGHTS['B_ev_C_14'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_14_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_14_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv C14'     ]
-SYS_WEIGHTS['B_ev_C_15'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_15_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_15_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv C15'     ]
-SYS_WEIGHTS['B_ev_C_16'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_16_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_16_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv C16'     ]
-SYS_WEIGHTS['B_ev_C_17'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_17_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_17_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv C17'     ]
-SYS_WEIGHTS['B_ev_C_18'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_18_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_18_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv C18'     ]
-SYS_WEIGHTS['B_ev_C_19'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_19_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_19_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv C19'     ]
+SYS_WEIGHTS["B_ev_C_0"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_0_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_0_down", "WeightBTag", "40", "b-tag eigenv C0", False)
+SYS_WEIGHTS["B_ev_C_1"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_1_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_1_down", "WeightBTag", "40", "b-tag eigenv C1", False)
+SYS_WEIGHTS["B_ev_C_2"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_2_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_2_down", "WeightBTag", "40", "b-tag eigenv C2", True)
+SYS_WEIGHTS["B_ev_C_3"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_3_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_3_down", "WeightBTag", "40", "b-tag eigenv C3", True)
+SYS_WEIGHTS["B_ev_C_4"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_4_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_4_down", "WeightBTag", "40", "b-tag eigenv C4", True)
+SYS_WEIGHTS["B_ev_C_5"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_5_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_5_down", "WeightBTag", "40", "b-tag eigenv C5", True)
+SYS_WEIGHTS["B_ev_C_6"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_6_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_6_down", "WeightBTag", "40", "b-tag eigenv C6", True)
+SYS_WEIGHTS["B_ev_C_7"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_7_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_7_down", "WeightBTag", "40", "b-tag eigenv C7", True)
+SYS_WEIGHTS["B_ev_C_8"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_8_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_8_down", "WeightBTag", "40", "b-tag eigenv C8", True)
+SYS_WEIGHTS["B_ev_C_9"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_9_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_9_down", "WeightBTag", "40", "b-tag eigenv C9", True)
+SYS_WEIGHTS["B_ev_C_10"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_10_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_10_down", "WeightBTag", "40", "b-tag eigenv C10", True)
+SYS_WEIGHTS["B_ev_C_11"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_11_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_11_down", "WeightBTag", "40", "b-tag eigenv C11", True)
+SYS_WEIGHTS["B_ev_C_12"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_12_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_12_down", "WeightBTag", "40", "b-tag eigenv C12", True)
+SYS_WEIGHTS["B_ev_C_13"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_13_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_13_down", "WeightBTag", "40", "b-tag eigenv C13", True)
+SYS_WEIGHTS["B_ev_C_14"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_14_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_14_down", "WeightBTag", "40", "b-tag eigenv C14", True)
+SYS_WEIGHTS["B_ev_C_15"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_15_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_15_down", "WeightBTag", "40", "b-tag eigenv C15", True)
+SYS_WEIGHTS["B_ev_C_16"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_16_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_16_down", "WeightBTag", "40", "b-tag eigenv C16", True)
+SYS_WEIGHTS["B_ev_C_17"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_17_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_17_down", "WeightBTag", "40", "b-tag eigenv C17", True)
+SYS_WEIGHTS["B_ev_C_18"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_18_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_18_down", "WeightBTag", "40", "b-tag eigenv C18", True)
+SYS_WEIGHTS["B_ev_C_19"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_19_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_C_19_down", "WeightBTag", "40", "b-tag eigenv C19", True)
 
-SYS_WEIGHTS['B_ev_L_0'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_0_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_0_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv L0'     ]
-SYS_WEIGHTS['B_ev_L_1'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_1_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_1_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv L1'     ]
-SYS_WEIGHTS['B_ev_L_2'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_2_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_2_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv L2'     ]
-SYS_WEIGHTS['B_ev_L_3'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_3_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_3_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv L3'     ]
-SYS_WEIGHTS['B_ev_L_4'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_4_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_4_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv L4'     ]
-SYS_WEIGHTS['B_ev_L_5'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_5_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_5_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv L5'     ]
-SYS_WEIGHTS['B_ev_L_6'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_6_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_6_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv L6'     ]
-SYS_WEIGHTS['B_ev_L_7'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_7_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_7_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv L7'     ]
-SYS_WEIGHTS['B_ev_L_8'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_8_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_8_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv L8'     ]
-SYS_WEIGHTS['B_ev_L_9'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_9_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_9_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv L9'     ]
-SYS_WEIGHTS['B_ev_L_10'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_10_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_10_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv L10'     ]
-SYS_WEIGHTS['B_ev_L_11'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_11_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_11_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv L11'     ]
-SYS_WEIGHTS['B_ev_L_12'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_12_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_12_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv L12'     ]
-SYS_WEIGHTS['B_ev_L_13'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_13_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_13_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv L13'     ]
-SYS_WEIGHTS['B_ev_L_14'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_14_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_14_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv L14'     ]
-SYS_WEIGHTS['B_ev_L_15'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_15_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_15_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv L15'     ]
-SYS_WEIGHTS['B_ev_L_16'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_16_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_16_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv L16'     ]
-SYS_WEIGHTS['B_ev_L_17'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_17_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_17_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv L17'     ]
-SYS_WEIGHTS['B_ev_L_18'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_18_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_18_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv L18'     ]
-SYS_WEIGHTS['B_ev_L_19'     ] =  ['weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_19_up'     , 'weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_19_down'     , 'WeightBTag'   , '40' , 'b-tag eigenv L19'     ]
+SYS_WEIGHTS["B_ev_L_0"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_0_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_0_down", "WeightBTag", "40", "b-tag eigenv L0", False)
+SYS_WEIGHTS["B_ev_L_1"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_1_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_1_down", "WeightBTag", "40", "b-tag eigenv L1", False)
+SYS_WEIGHTS["B_ev_L_2"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_2_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_2_down", "WeightBTag", "40", "b-tag eigenv L2", False)
+SYS_WEIGHTS["B_ev_L_3"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_3_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_3_down", "WeightBTag", "40", "b-tag eigenv L3", False)
+SYS_WEIGHTS["B_ev_L_4"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_4_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_4_down", "WeightBTag", "40", "b-tag eigenv L4", False)
+SYS_WEIGHTS["B_ev_L_5"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_5_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_5_down", "WeightBTag", "40", "b-tag eigenv L5", False)
+SYS_WEIGHTS["B_ev_L_6"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_6_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_6_down", "WeightBTag", "40", "b-tag eigenv L6", False)
+SYS_WEIGHTS["B_ev_L_7"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_7_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_7_down", "WeightBTag", "40", "b-tag eigenv L7", False)
+SYS_WEIGHTS["B_ev_L_8"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_8_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_8_down", "WeightBTag", "40", "b-tag eigenv L8", False)
+SYS_WEIGHTS["B_ev_L_9"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_9_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_9_down", "WeightBTag", "40", "b-tag eigenv L9", False)
+SYS_WEIGHTS["B_ev_L_10"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_10_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_10_down", "WeightBTag", "40", "b-tag eigenv L10", False)
+SYS_WEIGHTS["B_ev_L_11"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_11_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_11_down", "WeightBTag", "40", "b-tag eigenv L11", False)
+SYS_WEIGHTS["B_ev_L_12"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_12_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_12_down", "WeightBTag", "40", "b-tag eigenv L12", False)
+SYS_WEIGHTS["B_ev_L_13"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_13_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_13_down", "WeightBTag", "40", "b-tag eigenv L13", False)
+SYS_WEIGHTS["B_ev_L_14"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_14_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_14_down", "WeightBTag", "40", "b-tag eigenv L14", False)
+SYS_WEIGHTS["B_ev_L_15"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_15_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_15_down", "WeightBTag", "40", "b-tag eigenv L15", False)
+SYS_WEIGHTS["B_ev_L_16"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_16_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_16_down", "WeightBTag", "40", "b-tag eigenv L16", False)
+SYS_WEIGHTS["B_ev_L_17"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_17_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_17_down", "WeightBTag", "40", "b-tag eigenv L17", False)
+SYS_WEIGHTS["B_ev_L_18"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_18_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_18_down", "WeightBTag", "40", "b-tag eigenv L18", False)
+SYS_WEIGHTS["B_ev_L_19"] = NTSysWeight("weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_19_up", "weight_sys_bTagSF_MV2c10_Continuous_eigenvars_Light_19_down", "WeightBTag", "40", "b-tag eigenv L19", False)
 
 
 PDF_WEIGHTS = OrderedDict()
-PDF_WEIGHTS['PDFset90900'] = ['weight_sys_PDFset=90900', 'PDF', '40' ]
-PDF_WEIGHTS['PDFset90901'] = ['weight_sys_PDFset=90901', 'PDF', '40' ]
-PDF_WEIGHTS['PDFset90902'] = ['weight_sys_PDFset=90902', 'PDF', '40' ]
-PDF_WEIGHTS['PDFset90903'] = ['weight_sys_PDFset=90903', 'PDF', '40' ]
-PDF_WEIGHTS['PDFset90904'] = ['weight_sys_PDFset=90904', 'PDF', '40' ]
-PDF_WEIGHTS['PDFset90905'] = ['weight_sys_PDFset=90905', 'PDF', '40' ]
-PDF_WEIGHTS['PDFset90906'] = ['weight_sys_PDFset=90906', 'PDF', '40' ]
-PDF_WEIGHTS['PDFset90907'] = ['weight_sys_PDFset=90907', 'PDF', '40' ]
-PDF_WEIGHTS['PDFset90908'] = ['weight_sys_PDFset=90908', 'PDF', '40' ]
-PDF_WEIGHTS['PDFset90909'] = ['weight_sys_PDFset=90909', 'PDF', '40' ]
-PDF_WEIGHTS['PDFset90910'] = ['weight_sys_PDFset=90910', 'PDF', '40' ]
-PDF_WEIGHTS['PDFset90911'] = ['weight_sys_PDFset=90911', 'PDF', '40' ]
-PDF_WEIGHTS['PDFset90912'] = ['weight_sys_PDFset=90912', 'PDF', '40' ]
-PDF_WEIGHTS['PDFset90913'] = ['weight_sys_PDFset=90913', 'PDF', '40' ]
-PDF_WEIGHTS['PDFset90914'] = ['weight_sys_PDFset=90914', 'PDF', '40' ]
-PDF_WEIGHTS['PDFset90915'] = ['weight_sys_PDFset=90915', 'PDF', '40' ]
-PDF_WEIGHTS['PDFset90916'] = ['weight_sys_PDFset=90916', 'PDF', '40' ]
-PDF_WEIGHTS['PDFset90917'] = ['weight_sys_PDFset=90917', 'PDF', '40' ]
-PDF_WEIGHTS['PDFset90918'] = ['weight_sys_PDFset=90918', 'PDF', '40' ]
-PDF_WEIGHTS['PDFset90919'] = ['weight_sys_PDFset=90919', 'PDF', '40' ]
-PDF_WEIGHTS['PDFset90920'] = ['weight_sys_PDFset=90920', 'PDF', '40' ]
-PDF_WEIGHTS['PDFset90921'] = ['weight_sys_PDFset=90921', 'PDF', '40' ]
-PDF_WEIGHTS['PDFset90922'] = ['weight_sys_PDFset=90922', 'PDF', '40' ]
-PDF_WEIGHTS['PDFset90923'] = ['weight_sys_PDFset=90923', 'PDF', '40' ]
-PDF_WEIGHTS['PDFset90924'] = ['weight_sys_PDFset=90924', 'PDF', '40' ]
-PDF_WEIGHTS['PDFset90925'] = ['weight_sys_PDFset=90925', 'PDF', '40' ]
-PDF_WEIGHTS['PDFset90926'] = ['weight_sys_PDFset=90926', 'PDF', '40' ]
-PDF_WEIGHTS['PDFset90927'] = ['weight_sys_PDFset=90927', 'PDF', '40' ]
-PDF_WEIGHTS['PDFset90928'] = ['weight_sys_PDFset=90928', 'PDF', '40' ]
-PDF_WEIGHTS['PDFset90929'] = ['weight_sys_PDFset=90929', 'PDF', '40' ]
-PDF_WEIGHTS['PDFset90930'] = ['weight_sys_PDFset=90930', 'PDF', '40' ]
+PDF_WEIGHTS["PDFset90900"] = NTSysPDF("weight_sys_PDFset=90900", "PDF", "40", "PDF 90900", False)
+PDF_WEIGHTS["PDFset90901"] = NTSysPDF("weight_sys_PDFset=90901", "PDF", "40", "PDF 90901", False)
+PDF_WEIGHTS["PDFset90902"] = NTSysPDF("weight_sys_PDFset=90902", "PDF", "40", "PDF 90902", False)
+PDF_WEIGHTS["PDFset90903"] = NTSysPDF("weight_sys_PDFset=90903", "PDF", "40", "PDF 90903", False)
+PDF_WEIGHTS["PDFset90904"] = NTSysPDF("weight_sys_PDFset=90904", "PDF", "40", "PDF 90904", False)
+PDF_WEIGHTS["PDFset90905"] = NTSysPDF("weight_sys_PDFset=90905", "PDF", "40", "PDF 90905", False)
+PDF_WEIGHTS["PDFset90906"] = NTSysPDF("weight_sys_PDFset=90906", "PDF", "40", "PDF 90906", False)
+PDF_WEIGHTS["PDFset90907"] = NTSysPDF("weight_sys_PDFset=90907", "PDF", "40", "PDF 90907", False)
+PDF_WEIGHTS["PDFset90908"] = NTSysPDF("weight_sys_PDFset=90908", "PDF", "40", "PDF 90908", False)
+PDF_WEIGHTS["PDFset90909"] = NTSysPDF("weight_sys_PDFset=90909", "PDF", "40", "PDF 90909", False)
+PDF_WEIGHTS["PDFset90910"] = NTSysPDF("weight_sys_PDFset=90910", "PDF", "40", "PDF 90910", False)
+PDF_WEIGHTS["PDFset90911"] = NTSysPDF("weight_sys_PDFset=90911", "PDF", "40", "PDF 90911", False)
+PDF_WEIGHTS["PDFset90912"] = NTSysPDF("weight_sys_PDFset=90912", "PDF", "40", "PDF 90912", False)
+PDF_WEIGHTS["PDFset90913"] = NTSysPDF("weight_sys_PDFset=90913", "PDF", "40", "PDF 90913", False)
+PDF_WEIGHTS["PDFset90914"] = NTSysPDF("weight_sys_PDFset=90914", "PDF", "40", "PDF 90914", False)
+PDF_WEIGHTS["PDFset90915"] = NTSysPDF("weight_sys_PDFset=90915", "PDF", "40", "PDF 90915", False)
+PDF_WEIGHTS["PDFset90916"] = NTSysPDF("weight_sys_PDFset=90916", "PDF", "40", "PDF 90916", False)
+PDF_WEIGHTS["PDFset90917"] = NTSysPDF("weight_sys_PDFset=90917", "PDF", "40", "PDF 90917", False)
+PDF_WEIGHTS["PDFset90918"] = NTSysPDF("weight_sys_PDFset=90918", "PDF", "40", "PDF 90918", False)
+PDF_WEIGHTS["PDFset90919"] = NTSysPDF("weight_sys_PDFset=90919", "PDF", "40", "PDF 90919", False)
+PDF_WEIGHTS["PDFset90920"] = NTSysPDF("weight_sys_PDFset=90920", "PDF", "40", "PDF 90920", False)
+PDF_WEIGHTS["PDFset90921"] = NTSysPDF("weight_sys_PDFset=90921", "PDF", "40", "PDF 90921", False)
+PDF_WEIGHTS["PDFset90922"] = NTSysPDF("weight_sys_PDFset=90922", "PDF", "40", "PDF 90922", False)
+PDF_WEIGHTS["PDFset90923"] = NTSysPDF("weight_sys_PDFset=90923", "PDF", "40", "PDF 90923", False)
+PDF_WEIGHTS["PDFset90924"] = NTSysPDF("weight_sys_PDFset=90924", "PDF", "40", "PDF 90924", False)
+PDF_WEIGHTS["PDFset90925"] = NTSysPDF("weight_sys_PDFset=90925", "PDF", "40", "PDF 90925", False)
+PDF_WEIGHTS["PDFset90926"] = NTSysPDF("weight_sys_PDFset=90926", "PDF", "40", "PDF 90926", False)
+PDF_WEIGHTS["PDFset90927"] = NTSysPDF("weight_sys_PDFset=90927", "PDF", "40", "PDF 90927", False)
+PDF_WEIGHTS["PDFset90928"] = NTSysPDF("weight_sys_PDFset=90928", "PDF", "40", "PDF 90928", False)
+PDF_WEIGHTS["PDFset90929"] = NTSysPDF("weight_sys_PDFset=90929", "PDF", "40", "PDF 90929", False)
+PDF_WEIGHTS["PDFset90930"] = NTSysPDF("weight_sys_PDFset=90930", "PDF", "40", "PDF 90930", False)
 
 SYS_TREES_TWOSIDED = OrderedDict()
-SYS_TREES_TWOSIDED['EG_RES_ALL'                        ] = ['EG_RESOLUTION_ALL__1up'                                               , 'EG_RESOLUTION_ALL__1down'                                               , 'Egamma' , '40' ]
-SYS_TREES_TWOSIDED['EG_SCALE_ALL'                      ] = ['EG_SCALE_ALL__1up'                                                    , 'EG_SCALE_ALL__1down'                                                    , 'Egamma' , '40' ]
-SYS_TREES_TWOSIDED['Jet_BJES_Response'                 ] = ['JET_CategoryReduction_JET_BJES_Response__1up'                         , 'JET_CategoryReduction_JET_BJES_Response__1down'                         , 'Jets'   , '40' ]
-SYS_TREES_TWOSIDED['Jet_EffectiveNP_Detector1'         ] = ['JET_CategoryReduction_JET_EffectiveNP_Detector1__1up'                 , 'JET_CategoryReduction_JET_EffectiveNP_Detector1__1down'                 , 'Jets'   , '40' ]
-SYS_TREES_TWOSIDED['Jet_EffectiveNP_Detector2'         ] = ['JET_CategoryReduction_JET_EffectiveNP_Detector2__1up'                 , 'JET_CategoryReduction_JET_EffectiveNP_Detector2__1down'                 , 'Jets'   , '40' ]
-SYS_TREES_TWOSIDED['Jet_EffNP_Mixed1'                  ] = ['JET_CategoryReduction_JET_EffectiveNP_Mixed1__1up'                    , 'JET_CategoryReduction_JET_EffectiveNP_Mixed1__1down'                    , 'Jets'   , '40' ]
-SYS_TREES_TWOSIDED['Jet_EffNP_Mixed2'                  ] = ['JET_CategoryReduction_JET_EffectiveNP_Mixed2__1up'                    , 'JET_CategoryReduction_JET_EffectiveNP_Mixed2__1down'                    , 'Jets'   , '40' ]
-SYS_TREES_TWOSIDED['Jet_EffNP_Mixed3'                  ] = ['JET_CategoryReduction_JET_EffectiveNP_Mixed3__1up'                    , 'JET_CategoryReduction_JET_EffectiveNP_Mixed3__1down'                    , 'Jets'   , '40' ]
-SYS_TREES_TWOSIDED['Jet_EffNP_Modelling1'              ] = ['JET_CategoryReduction_JET_EffectiveNP_Modelling1__1up'                , 'JET_CategoryReduction_JET_EffectiveNP_Modelling1__1down'                , 'Jets'   , '40' ]
-SYS_TREES_TWOSIDED['Jet_EffNP_Modelling2'              ] = ['JET_CategoryReduction_JET_EffectiveNP_Modelling2__1up'                , 'JET_CategoryReduction_JET_EffectiveNP_Modelling2__1down'                , 'Jets'   , '40' ]
-SYS_TREES_TWOSIDED['Jet_EffNP_Modelling3'              ] = ['JET_CategoryReduction_JET_EffectiveNP_Modelling3__1up'                , 'JET_CategoryReduction_JET_EffectiveNP_Modelling3__1down'                , 'Jets'   , '40' ]
-SYS_TREES_TWOSIDED['Jet_EffNP_Modelling4'              ] = ['JET_CategoryReduction_JET_EffectiveNP_Modelling4__1up'                , 'JET_CategoryReduction_JET_EffectiveNP_Modelling4__1down'                , 'Jets'   , '40' ]
-SYS_TREES_TWOSIDED['Jet_EffNP_Statistical1'            ] = ['JET_CategoryReduction_JET_EffectiveNP_Statistical1__1up'              , 'JET_CategoryReduction_JET_EffectiveNP_Statistical1__1down'              , 'Jets'   , '40' ]
-SYS_TREES_TWOSIDED['Jet_EffNP_Statistical2'            ] = ['JET_CategoryReduction_JET_EffectiveNP_Statistical2__1up'              , 'JET_CategoryReduction_JET_EffectiveNP_Statistical2__1down'              , 'Jets'   , '40' ]
-SYS_TREES_TWOSIDED['Jet_EffNP_Statistical3'            ] = ['JET_CategoryReduction_JET_EffectiveNP_Statistical3__1up'              , 'JET_CategoryReduction_JET_EffectiveNP_Statistical3__1down'              , 'Jets'   , '40' ]
-SYS_TREES_TWOSIDED['Jet_EffNP_Statistical4'            ] = ['JET_CategoryReduction_JET_EffectiveNP_Statistical4__1up'              , 'JET_CategoryReduction_JET_EffectiveNP_Statistical4__1down'              , 'Jets'   , '40' ]
-SYS_TREES_TWOSIDED['Jet_EffNP_Statistical5'            ] = ['JET_CategoryReduction_JET_EffectiveNP_Statistical5__1up'              , 'JET_CategoryReduction_JET_EffectiveNP_Statistical5__1down'              , 'Jets'   , '40' ]
-SYS_TREES_TWOSIDED['Jet_EffNP_Statistical6'            ] = ['JET_CategoryReduction_JET_EffectiveNP_Statistical6__1up'              , 'JET_CategoryReduction_JET_EffectiveNP_Statistical6__1down'              , 'Jets'   , '40' ]
-SYS_TREES_TWOSIDED['Jet_EtaIntercal_Modelling'         ] = ['JET_CategoryReduction_JET_EtaIntercalibration_Modelling__1up'         , 'JET_CategoryReduction_JET_EtaIntercalibration_Modelling__1down'         , 'Jets'   , '40' ]
-SYS_TREES_TWOSIDED['Jet_EtaIntercal_NonClosure_highE'  ] = ['JET_CategoryReduction_JET_EtaIntercalibration_NonClosure_highE__1up'  , 'JET_CategoryReduction_JET_EtaIntercalibration_NonClosure_highE__1down'  , 'Jets'   , '40' ]
-SYS_TREES_TWOSIDED['Jet_EtaIntercal_NonClosure_negEta' ] = ['JET_CategoryReduction_JET_EtaIntercalibration_NonClosure_negEta__1up' , 'JET_CategoryReduction_JET_EtaIntercalibration_NonClosure_negEta__1down' , 'Jets'   , '40' ]
-SYS_TREES_TWOSIDED['Jet_EtaIntercal_NonClosure_posEta' ] = ['JET_CategoryReduction_JET_EtaIntercalibration_NonClosure_posEta__1up' , 'JET_CategoryReduction_JET_EtaIntercalibration_NonClosure_posEta__1down' , 'Jets'   , '40' ]
-SYS_TREES_TWOSIDED['Jet_EtaIntercal_TotalStat'         ] = ['JET_CategoryReduction_JET_EtaIntercalibration_TotalStat__1up'         , 'JET_CategoryReduction_JET_EtaIntercalibration_TotalStat__1down'         , 'Jets'   , '40' ]
-SYS_TREES_TWOSIDED['Jet_Flavor_Composition'            ] = ['JET_CategoryReduction_JET_Flavor_Composition__1up'                    , 'JET_CategoryReduction_JET_Flavor_Composition__1down'                    , 'Jets'   , '40' ]
-SYS_TREES_TWOSIDED['Jet_Flavor_Response'               ] = ['JET_CategoryReduction_JET_Flavor_Response__1up'                       , 'JET_CategoryReduction_JET_Flavor_Response__1down'                       , 'Jets'   , '40' ]
-SYS_TREES_TWOSIDED['Jet_Pileup_OffsetMu'               ] = ['JET_CategoryReduction_JET_Pileup_OffsetMu__1up'                       , 'JET_CategoryReduction_JET_Pileup_OffsetMu__1down'                       , 'Jets'   , '40' ]
-SYS_TREES_TWOSIDED['Jet_Pileup_OffsetNPV'              ] = ['JET_CategoryReduction_JET_Pileup_OffsetNPV__1up'                      , 'JET_CategoryReduction_JET_Pileup_OffsetNPV__1down'                      , 'Jets'   , '40' ]
-SYS_TREES_TWOSIDED['Jet_Pileup_PtTerm'                 ] = ['JET_CategoryReduction_JET_Pileup_PtTerm__1up'                         , 'JET_CategoryReduction_JET_Pileup_PtTerm__1down'                         , 'Jets'   , '40' ]
-SYS_TREES_TWOSIDED['Jet_Pileup_RhoTopology'            ] = ['JET_CategoryReduction_JET_Pileup_RhoTopology__1up'                    , 'JET_CategoryReduction_JET_Pileup_RhoTopology__1down'                    , 'Jets'   , '40' ]
-SYS_TREES_TWOSIDED['Jet_PunchThrough_MC16'             ] = ['JET_CategoryReduction_JET_PunchThrough_MC16__1up'                     , 'JET_CategoryReduction_JET_PunchThrough_MC16__1down'                     , 'Jets'   , '40' ]
-SYS_TREES_TWOSIDED['Jet_SingleParticle_HighPt'         ] = ['JET_CategoryReduction_JET_SingleParticle_HighPt__1up'                 , 'JET_CategoryReduction_JET_SingleParticle_HighPt__1down'                 , 'Jets'   , '40' ]
-SYS_TREES_TWOSIDED['MET_SoftTrk_Scale'                 ] = ['MET_SoftTrk_ScaleUp'                                                  , 'MET_SoftTrk_ScaleDown'                                                  , 'MET'    , '40' ]
-SYS_TREES_TWOSIDED['MUON_ID'                           ] = ['MUON_ID__1up'                                                         , 'MUON_ID__1down'                                                         , 'Muon'   , '40' ]
-SYS_TREES_TWOSIDED['MUON_MS'                           ] = ['MUON_MS__1up'                                                         , 'MUON_MS__1down'                                                         , 'Muon'   , '40' ]
-SYS_TREES_TWOSIDED['MUON_SAGITTA_RESBIAS'              ] = ['MUON_SAGITTA_RESBIAS__1up'                                            , 'MUON_SAGITTA_RESBIAS__1down'                                            , 'Muon'   , '40' ]
-SYS_TREES_TWOSIDED['MUON_SAGITTA_RHO'                  ] = ['MUON_SAGITTA_RHO__1up'                                                , 'MUON_SAGITTA_RHO__1down'                                                , 'Muon'   , '40' ]
-SYS_TREES_TWOSIDED['MUON_SCALE'                        ] = ['MUON_SCALE__1up'                                                      , 'MUON_SCALE__1down'                                                      , 'Muon'   , '40' ]
-
+SYS_TREES_TWOSIDED["EG_RES_ALL"                        ] = NTSysTree2s("EG_RESOLUTION_ALL__1up"                                               , "EG_RESOLUTION_ALL__1down"                                               , "Egamma" , "40", "EGamma Resolution"                 , False)
+SYS_TREES_TWOSIDED["EG_SCALE_ALL"                      ] = NTSysTree2s("EG_SCALE_ALL__1up"                                                    , "EG_SCALE_ALL__1down"                                                    , "Egamma" , "40", "EGamma Scale"                      , False)
+SYS_TREES_TWOSIDED["Jet_BJES_Response"                 ] = NTSysTree2s("JET_CategoryReduction_JET_BJES_Response__1up"                         , "JET_CategoryReduction_JET_BJES_Response__1down"                         , "Jets"   , "40", "Jet BJES Response"                 , False)
+SYS_TREES_TWOSIDED["Jet_EffectiveNP_Detector1"         ] = NTSysTree2s("JET_CategoryReduction_JET_EffectiveNP_Detector1__1up"                 , "JET_CategoryReduction_JET_EffectiveNP_Detector1__1down"                 , "Jets"   , "40", "Jet EffectiveNP Detector1"         , False)
+SYS_TREES_TWOSIDED["Jet_EffectiveNP_Detector2"         ] = NTSysTree2s("JET_CategoryReduction_JET_EffectiveNP_Detector2__1up"                 , "JET_CategoryReduction_JET_EffectiveNP_Detector2__1down"                 , "Jets"   , "40", "Jet EffectiveNP Detector2"         , False)
+SYS_TREES_TWOSIDED["Jet_EffNP_Mixed1"                  ] = NTSysTree2s("JET_CategoryReduction_JET_EffectiveNP_Mixed1__1up"                    , "JET_CategoryReduction_JET_EffectiveNP_Mixed1__1down"                    , "Jets"   , "40", "Jet EffNP Mixed1"                  , False)
+SYS_TREES_TWOSIDED["Jet_EffNP_Mixed2"                  ] = NTSysTree2s("JET_CategoryReduction_JET_EffectiveNP_Mixed2__1up"                    , "JET_CategoryReduction_JET_EffectiveNP_Mixed2__1down"                    , "Jets"   , "40", "Jet EffNP Mixed2"                  , False)
+SYS_TREES_TWOSIDED["Jet_EffNP_Mixed3"                  ] = NTSysTree2s("JET_CategoryReduction_JET_EffectiveNP_Mixed3__1up"                    , "JET_CategoryReduction_JET_EffectiveNP_Mixed3__1down"                    , "Jets"   , "40", "Jet EffNP Mixed3"                  , False)
+SYS_TREES_TWOSIDED["Jet_EffNP_Modelling1"              ] = NTSysTree2s("JET_CategoryReduction_JET_EffectiveNP_Modelling1__1up"                , "JET_CategoryReduction_JET_EffectiveNP_Modelling1__1down"                , "Jets"   , "40", "Jet EffNP Modelling1"              , False)
+SYS_TREES_TWOSIDED["Jet_EffNP_Modelling2"              ] = NTSysTree2s("JET_CategoryReduction_JET_EffectiveNP_Modelling2__1up"                , "JET_CategoryReduction_JET_EffectiveNP_Modelling2__1down"                , "Jets"   , "40", "Jet EffNP Modelling2"              , False)
+SYS_TREES_TWOSIDED["Jet_EffNP_Modelling3"              ] = NTSysTree2s("JET_CategoryReduction_JET_EffectiveNP_Modelling3__1up"                , "JET_CategoryReduction_JET_EffectiveNP_Modelling3__1down"                , "Jets"   , "40", "Jet EffNP Modelling3"              , False)
+SYS_TREES_TWOSIDED["Jet_EffNP_Modelling4"              ] = NTSysTree2s("JET_CategoryReduction_JET_EffectiveNP_Modelling4__1up"                , "JET_CategoryReduction_JET_EffectiveNP_Modelling4__1down"                , "Jets"   , "40", "Jet EffNP Modelling4"              , False)
+SYS_TREES_TWOSIDED["Jet_EffNP_Statistical1"            ] = NTSysTree2s("JET_CategoryReduction_JET_EffectiveNP_Statistical1__1up"              , "JET_CategoryReduction_JET_EffectiveNP_Statistical1__1down"              , "Jets"   , "40", "Jet EffNP Statistical1"            , False)
+SYS_TREES_TWOSIDED["Jet_EffNP_Statistical2"            ] = NTSysTree2s("JET_CategoryReduction_JET_EffectiveNP_Statistical2__1up"              , "JET_CategoryReduction_JET_EffectiveNP_Statistical2__1down"              , "Jets"   , "40", "Jet EffNP Statistical2"            , False)
+SYS_TREES_TWOSIDED["Jet_EffNP_Statistical3"            ] = NTSysTree2s("JET_CategoryReduction_JET_EffectiveNP_Statistical3__1up"              , "JET_CategoryReduction_JET_EffectiveNP_Statistical3__1down"              , "Jets"   , "40", "Jet EffNP Statistical3"            , False)
+SYS_TREES_TWOSIDED["Jet_EffNP_Statistical4"            ] = NTSysTree2s("JET_CategoryReduction_JET_EffectiveNP_Statistical4__1up"              , "JET_CategoryReduction_JET_EffectiveNP_Statistical4__1down"              , "Jets"   , "40", "Jet EffNP Statistical4"            , False)
+SYS_TREES_TWOSIDED["Jet_EffNP_Statistical5"            ] = NTSysTree2s("JET_CategoryReduction_JET_EffectiveNP_Statistical5__1up"              , "JET_CategoryReduction_JET_EffectiveNP_Statistical5__1down"              , "Jets"   , "40", "Jet EffNP Statistical5"            , False)
+SYS_TREES_TWOSIDED["Jet_EffNP_Statistical6"            ] = NTSysTree2s("JET_CategoryReduction_JET_EffectiveNP_Statistical6__1up"              , "JET_CategoryReduction_JET_EffectiveNP_Statistical6__1down"              , "Jets"   , "40", "Jet EffNP Statistical6"            , False)
+SYS_TREES_TWOSIDED["Jet_EtaIntercal_Modelling"         ] = NTSysTree2s("JET_CategoryReduction_JET_EtaIntercalibration_Modelling__1up"         , "JET_CategoryReduction_JET_EtaIntercalibration_Modelling__1down"         , "Jets"   , "40", "Jet EtaIntercal Modelling"         , False)
+SYS_TREES_TWOSIDED["Jet_EtaIntercal_NonClosure_highE"  ] = NTSysTree2s("JET_CategoryReduction_JET_EtaIntercalibration_NonClosure_highE__1up"  , "JET_CategoryReduction_JET_EtaIntercalibration_NonClosure_highE__1down"  , "Jets"   , "40", "Jet EtaIntercal NonClosure highE"  , False)
+SYS_TREES_TWOSIDED["Jet_EtaIntercal_NonClosure_negEta" ] = NTSysTree2s("JET_CategoryReduction_JET_EtaIntercalibration_NonClosure_negEta__1up" , "JET_CategoryReduction_JET_EtaIntercalibration_NonClosure_negEta__1down" , "Jets"   , "40", "Jet EtaIntercal NonClosure negEta" , False)
+SYS_TREES_TWOSIDED["Jet_EtaIntercal_NonClosure_posEta" ] = NTSysTree2s("JET_CategoryReduction_JET_EtaIntercalibration_NonClosure_posEta__1up" , "JET_CategoryReduction_JET_EtaIntercalibration_NonClosure_posEta__1down" , "Jets"   , "40", "Jet EtaIntercal NonClosure posEta" , False)
+SYS_TREES_TWOSIDED["Jet_EtaIntercal_TotalStat"         ] = NTSysTree2s("JET_CategoryReduction_JET_EtaIntercalibration_TotalStat__1up"         , "JET_CategoryReduction_JET_EtaIntercalibration_TotalStat__1down"         , "Jets"   , "40", "Jet EtaIntercal TotalStat"         , False)
+SYS_TREES_TWOSIDED["Jet_Flavor_Composition"            ] = NTSysTree2s("JET_CategoryReduction_JET_Flavor_Composition__1up"                    , "JET_CategoryReduction_JET_Flavor_Composition__1down"                    , "Jets"   , "40", "Jet Flavor Composition"            , False)
+SYS_TREES_TWOSIDED["Jet_Flavor_Response"               ] = NTSysTree2s("JET_CategoryReduction_JET_Flavor_Response__1up"                       , "JET_CategoryReduction_JET_Flavor_Response__1down"                       , "Jets"   , "40", "Jet Flavor Response"               , False)
+SYS_TREES_TWOSIDED["Jet_Pileup_OffsetMu"               ] = NTSysTree2s("JET_CategoryReduction_JET_Pileup_OffsetMu__1up"                       , "JET_CategoryReduction_JET_Pileup_OffsetMu__1down"                       , "Jets"   , "40", "Jet Pileup OffsetMu"               , False)
+SYS_TREES_TWOSIDED["Jet_Pileup_OffsetNPV"              ] = NTSysTree2s("JET_CategoryReduction_JET_Pileup_OffsetNPV__1up"                      , "JET_CategoryReduction_JET_Pileup_OffsetNPV__1down"                      , "Jets"   , "40", "Jet Pileup OffsetNPV"              , False)
+SYS_TREES_TWOSIDED["Jet_Pileup_PtTerm"                 ] = NTSysTree2s("JET_CategoryReduction_JET_Pileup_PtTerm__1up"                         , "JET_CategoryReduction_JET_Pileup_PtTerm__1down"                         , "Jets"   , "40", "Jet Pileup PtTerm"                 , False)
+SYS_TREES_TWOSIDED["Jet_Pileup_RhoTopology"            ] = NTSysTree2s("JET_CategoryReduction_JET_Pileup_RhoTopology__1up"                    , "JET_CategoryReduction_JET_Pileup_RhoTopology__1down"                    , "Jets"   , "40", "Jet Pileup RhoTopology"            , False)
+SYS_TREES_TWOSIDED["Jet_PunchThrough_MC16"             ] = NTSysTree2s("JET_CategoryReduction_JET_PunchThrough_MC16__1up"                     , "JET_CategoryReduction_JET_PunchThrough_MC16__1down"                     , "Jets"   , "40", "Jet PunchThrough MC16"             , False)
+SYS_TREES_TWOSIDED["Jet_SingleParticle_HighPt"         ] = NTSysTree2s("JET_CategoryReduction_JET_SingleParticle_HighPt__1up"                 , "JET_CategoryReduction_JET_SingleParticle_HighPt__1down"                 , "Jets"   , "40", "Jet SingleParticle HighPt"         , False)
+SYS_TREES_TWOSIDED["MET_SoftTrk_Scale"                 ] = NTSysTree2s("MET_SoftTrk_ScaleUp"                                                  , "MET_SoftTrk_ScaleDown"                                                  , "MET"    , "40", "MET SoftTrk Scale"                 , False)
+SYS_TREES_TWOSIDED["MUON_ID"                           ] = NTSysTree2s("MUON_ID__1up"                                                         , "MUON_ID__1down"                                                         , "Muon"   , "40", "Muon ID"                           , False)
+SYS_TREES_TWOSIDED["MUON_MS"                           ] = NTSysTree2s("MUON_MS__1up"                                                         , "MUON_MS__1down"                                                         , "Muon"   , "40", "Muon MS"                           , False)
+SYS_TREES_TWOSIDED["MUON_SAGITTA_RESBIAS"              ] = NTSysTree2s("MUON_SAGITTA_RESBIAS__1up"                                            , "MUON_SAGITTA_RESBIAS__1down"                                            , "Muon"   , "40", "Muon Sagitta Resbias"              , False)
+SYS_TREES_TWOSIDED["MUON_SAGITTA_RHO"                  ] = NTSysTree2s("MUON_SAGITTA_RHO__1up"                                                , "MUON_SAGITTA_RHO__1down"                                                , "Muon"   , "40", "Muon Sagitta Rho"                  , False)
+SYS_TREES_TWOSIDED["MUON_SCALE"                        ] = NTSysTree2s("MUON_SCALE__1up"                                                      , "MUON_SCALE__1down"                                                      , "Muon"   , "40", "Muon Scale"                        , False)
 
 SYS_TREES_ONESIDED = OrderedDict()
-SYS_TREES_ONESIDED['MET_SoftTrk_ResoPara'          ] = ['MET_SoftTrk_ResoPara'                                        , 'MET'   , '40' ]
-SYS_TREES_ONESIDED['MET_SoftTrk_ResoPerp'          ] = ['MET_SoftTrk_ResoPerp'                                        , 'MET'   , '40' ]
-SYS_TREES_ONESIDED['Jet_JER_DataVsMC'              ] = ['JET_CategoryReduction_JET_JER_DataVsMC__1up'                 , 'JER'   , '40' ]
-SYS_TREES_ONESIDED['Jet_JER_EffNP_1'               ] = ['JET_CategoryReduction_JET_JER_EffectiveNP_1__1up'            , 'JER'   , '40' ]
-SYS_TREES_ONESIDED['Jet_JER_EffNP_2'               ] = ['JET_CategoryReduction_JET_JER_EffectiveNP_2__1up'            , 'JER'   , '40' ]
-SYS_TREES_ONESIDED['Jet_JER_EffNP_3'               ] = ['JET_CategoryReduction_JET_JER_EffectiveNP_3__1up'            , 'JER'   , '40' ]
-SYS_TREES_ONESIDED['Jet_JER_EffNP_4'               ] = ['JET_CategoryReduction_JET_JER_EffectiveNP_4__1up'            , 'JER'   , '40' ]
-SYS_TREES_ONESIDED['Jet_JER_EffNP_5'               ] = ['JET_CategoryReduction_JET_JER_EffectiveNP_5__1up'            , 'JER'   , '40' ]
-SYS_TREES_ONESIDED['Jet_JER_EffNP_6'               ] = ['JET_CategoryReduction_JET_JER_EffectiveNP_6__1up'            , 'JER'   , '40' ]
-SYS_TREES_ONESIDED['Jet_JER_EffectiveNP_7restTerm' ] = ['JET_CategoryReduction_JET_JER_EffectiveNP_7restTerm__1up'    , 'JER'   , '40' ]
-
-
-def to_json():
-    import json
-
-    entries = {
-        'SYS_WEIGHTS' : {},
-        'SYS_TREES_TWOSIDED': {},
-        'SYS_TREES_ONESIDED': {},
-        'PDF_WEIGHTS' : {},
-    }
-
-    for k, v in SYS_WEIGHTS.items():
-        name = k
-        up = v[0]
-        down = v[1]
-        cat = v[2]
-        smooth = v[3]
-        entries['SYS_WEIGHTS'][name] = {
-            'name': name,
-            'up': up,
-            'down': down,
-            'cat': cat,
-            'smoothing': smooth
-        }
-
-    for k, v in SYS_TREES_TWOSIDED.items():
-        name = k
-        up = v[0]
-        down = v[1]
-        cat = v[2]
-        smooth = v[3]
-        entries['SYS_TREES_TWOSIDED'][name] = {
-            'name': name,
-            'up': up,
-            'down': down,
-            'cat': cat,
-            'smoothing': smooth
-        }
-
-    for k, v in SYS_TREES_ONESIDED.items():
-        name = k
-        up = v[0]
-        cat = v[1]
-        smooth = v[2]
-        entries['SYS_TREES_ONESIDED'][name] = {
-            'name': name,
-            'up': up,
-            'cat': cat,
-            'smoothing': smooth
-        }
-
-    for k, v in PDF_WEIGHTS.items():
-        name = k
-        up = v[0]
-        var = v[1],
-        smooth = v[2]
-        entries['PDF_WEIGHTS'][name] = {
-            'name': name,
-            'up': up,
-            'cat': cat,
-            'smoothing': smooth
-        }
-
-    print(json.dumps(entries, indent=2))
-
-if __name__ == '__main__':
-    to_json()
+SYS_TREES_ONESIDED["MET_SoftTrk_ResoPara"          ] = NTSysTree1s("MET_SoftTrk_ResoPara"                                        , "MET"   , "40", "MET SoftTrk ResoPara"          , False)
+SYS_TREES_ONESIDED["MET_SoftTrk_ResoPerp"          ] = NTSysTree1s("MET_SoftTrk_ResoPerp"                                        , "MET"   , "40", "MET SoftTrk ResoPerp"          , False)
+SYS_TREES_ONESIDED["Jet_JER_DataVsMC"              ] = NTSysTree1s("JET_CategoryReduction_JET_JER_DataVsMC__1up"                 , "JER"   , "40", "Jet JER DataVsMC"              , False)
+SYS_TREES_ONESIDED["Jet_JER_EffNP_1"               ] = NTSysTree1s("JET_CategoryReduction_JET_JER_EffectiveNP_1__1up"            , "JER"   , "40", "Jet JER EffNP 1"               , False)
+SYS_TREES_ONESIDED["Jet_JER_EffNP_2"               ] = NTSysTree1s("JET_CategoryReduction_JET_JER_EffectiveNP_2__1up"            , "JER"   , "40", "Jet JER EffNP 2"               , False)
+SYS_TREES_ONESIDED["Jet_JER_EffNP_3"               ] = NTSysTree1s("JET_CategoryReduction_JET_JER_EffectiveNP_3__1up"            , "JER"   , "40", "Jet JER EffNP 3"               , False)
+SYS_TREES_ONESIDED["Jet_JER_EffNP_4"               ] = NTSysTree1s("JET_CategoryReduction_JET_JER_EffectiveNP_4__1up"            , "JER"   , "40", "Jet JER EffNP 4"               , False)
+SYS_TREES_ONESIDED["Jet_JER_EffNP_5"               ] = NTSysTree1s("JET_CategoryReduction_JET_JER_EffectiveNP_5__1up"            , "JER"   , "40", "Jet JER EffNP 5"               , False)
+SYS_TREES_ONESIDED["Jet_JER_EffNP_6"               ] = NTSysTree1s("JET_CategoryReduction_JET_JER_EffectiveNP_6__1up"            , "JER"   , "40", "Jet JER EffNP 6"               , False)
+SYS_TREES_ONESIDED["Jet_JER_EffectiveNP_7restTerm" ] = NTSysTree1s("JET_CategoryReduction_JET_JER_EffectiveNP_7restTerm__1up"    , "JER"   , "40", "Jet JER EffectiveNP 7restTerm" , False)

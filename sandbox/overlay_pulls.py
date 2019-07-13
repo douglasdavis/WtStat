@@ -69,7 +69,7 @@ def run(args, prefixes):
             if alpha1.name == alpha2.name and alpha1.name not in ylabels:
                 name = alpha1.name
                 name = name.replace("ttbar", r"$t\bar{t}$").replace("tW", r"$tW$").replace(" PS", " Parton Shower")
-                name = name.replace(" HS", " NLO matching/Hard Scatter").replace(" AR", " Add. Rad.")
+                name = name.replace(" HS", " NLO matching/Hard Scatter").replace(" AR", "")
                 name = name.replace(" DRDS", " DR vs DS")
                 ylabels.append(name)
                 yval.append(i + 1)
@@ -118,10 +118,13 @@ if __name__ == "__main__":
 
     prefix_sets = (["tW", "ttbar"],
                    ["B_ev"],
-                   ["Jet", "MET", "JVT", "Pileup"],
+                   ["Jet_E", "Jet_F", "Jet_B", "Jet_P", "MET", "JVT", "Pileup"],
                    ["Norm", "Lumi"],
                    ["EG", "EL", "MU"],
-                   ["PDF"])
+                   ["PDF"],
+                   ["Jet_JER"],
+                   ["tW", "ttbar", "B_ev_B_0"])
+
 
     for pref in prefix_sets:
         run(args, pref)

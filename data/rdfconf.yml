@@ -1,5 +1,29 @@
 regions:
 
+  - name: reg1j1b
+    selection: "reg1j1b && elmu && OS"
+    nbins: 25
+    xmin: -0.70
+    xmax: 0.60
+
+  - name: reg2j1b
+    selection: "reg2j1b && elmu && OS"
+    nbins: 25
+    xmin: -0.70
+    xmax: 0.75
+
+  - name: reg2j2b
+    selection: "reg2j2b && elmu && OS"
+    nbins: 25
+    xmin: -0.70
+    xmax: 0.90
+
+  - name: reg3j
+    selection: "reg3j && elmu && OS"
+    nbins: 25
+    xmin: -0.675
+    xmax: 0.80
+
   - name: reg1j1b_01
     selection: "reg1j1b && elmu && OS"
     nbins: 1
@@ -21,6 +45,30 @@ regions:
   - name: reg3j_01
     selection: "reg3j && elmu && OS"
     nbins: 1
+    xmin: -0.70
+    xmax: 0.80
+
+  - name: reg1j1b_02
+    selection: "reg1j1b && elmu && OS"
+    nbins: 2
+    xmin: -0.70
+    xmax: 0.60
+
+  - name: reg2j1b_02
+    selection: "reg2j1b && elmu && OS"
+    nbins: 2
+    xmin: -0.75
+    xmax: 0.75
+
+  - name: reg2j2b_02
+    selection: "reg2j2b && elmu && OS"
+    nbins: 2
+    xmin: -0.75
+    xmax: 0.90
+
+  - name: reg3j_02
+    selection: "reg3j && elmu && OS"
+    nbins: 2
     xmin: -0.70
     xmax: 0.80
 
@@ -96,19 +144,69 @@ regions:
     xmin: -0.70
     xmax: 0.80
 
+  - name: reg1j1b_20
+    selection: "reg1j1b && elmu && OS"
+    nbins: 20
+    xmin: -0.70
+    xmax: 0.60
+
+  - name: reg2j1b_20
+    selection: "reg2j1b && elmu && OS"
+    nbins: 20
+    xmin: -0.75
+    xmax: 0.75
+
+  - name: reg2j2b_20
+    selection: "reg2j2b && elmu && OS"
+    nbins: 20
+    xmin: -0.75
+    xmax: 0.90
+
+  - name: reg3j_20
+    selection: "reg3j && elmu && OS"
+    nbins: 20
+    xmin: -0.70
+    xmax: 0.80
+
+
 templates:
 
   - var: bdt_response
-    regions: [reg1j1b_01, reg1j1b_03, reg1j1b_05, reg1j1b_10, reg2j1b_01, reg2j1b_03, reg2j1b_05, reg2j1b_10, reg2j2b_01, reg2j2b_03, reg2j2b_05, reg2j2b_10]
+    regions:
+      - reg1j1b
+      - reg1j1b_01
+      - reg1j1b_02
+      - reg1j1b_03
+      - reg1j1b_05
+      - reg1j1b_10
+      - reg1j1b_20
+      - reg2j1b
+      - reg2j1b_01
+      - reg2j1b_02
+      - reg2j1b_03
+      - reg2j1b_05
+      - reg2j1b_10
+      - reg2j1b_20
+      - reg2j2b
+      - reg2j2b_01
+      - reg2j2b_02
+      - reg2j2b_03
+      - reg2j2b_05
+      - reg2j2b_10
+      - reg2j2b_20
     use_region_binning: true
     axis_title: "Classifier Response"
+    mpl_title: "Classifier Response"
     is_aux: false
+    unit: ""
 
   - var: bdt_response_3j
-    regions: [reg3j_01, reg3j_03, reg3j_05, reg3j_10]
+    regions: [reg3j, reg3j_01, reg3j_02, reg3j_03, reg3j_05, reg3j_10, reg3j_20]
     use_region_binning: true
     axis_title: "Classifier Response"
+    mpl_title: "Classifier Response"
     is_aux: false
+    unit: ""
 
   - var: cent_lep1lep2
     xmin: 0.18
@@ -116,26 +214,21 @@ templates:
     nbins: 30
     use_region_binning: false
     regions: [reg1j1b, reg3j]
-    axis_title: " "
+    axis_title: "Cent(lep1lep2)"
+    mpl_title: "Centrality($\\ell_1\\ell_2$)"
     is_aux: true
-
-  - var: HT_jet2jet3
-    xmin: 50.0
-    xmax: 350.0
-    nbins: 30
-    use_region_binning: false
-    regions: [reg3j1b, reg3jHb]
-    axis_title: " "
-    is_aux: true
+    unit: ""
 
   - var: mT_lep2met
     xmin: 0.0
-    xmax: 230.0
+    xmax: 210.0
     nbins: 30
     use_region_binning: false
     regions: [reg1j1b]
-    axis_title: " "
+    axis_title: "#it{m}_{T}(lep2#it{E}_{T}^{miss})"
+    mpl_title: "$m_{\\mathrm{T}}(\\ell_2E_\\mathrm{T}^{\\mathrm{miss}})$"
     is_aux: true
+    unit: "GeV"
 
   - var: nloosejets
     xmin: -0.5
@@ -143,8 +236,10 @@ templates:
     nbins: 4
     use_region_binning: false
     regions: [reg1j1b]
-    axis_title: " "
+    axis_title: "N(soft jets)"
+    mpl_title: "$N_j^{\\mathrm{soft}}$"
     is_aux: true
+    unit: ""
 
   - var: nloosebjets
     xmin: -0.5
@@ -152,315 +247,522 @@ templates:
     nbins: 3
     use_region_binning: false
     regions: [reg1j1b]
-    axis_title: " "
+    axis_title: "N(soft b-jets)"
+    mpl_title: "$N_b^{\\mathrm{soft}}$"
     is_aux: true
+    unit: ""
 
   - var: pT_jet3
     xmin: 20.0
     xmax: 140.0
     nbins: 30
     use_region_binning: false
-    regions: [reg3j, reg3jHb, reg3j1b]
-    axis_title: " "
+    regions: [reg3j]
+    axis_title: "x"
+    mpl_title: "x"
     is_aux: true
+    unit: "GeV"
 
   - var: deltapT_lep1lep2_jet3
-    xmin: -100.0
+    xmin: -80.0
     xmax: 200.0
     nbins: 30
     use_region_binning: false
-    regions: [reg3j, reg3j1b, reg3jHb]
-    axis_title: " "
+    regions: [reg3j]
+    axis_title: "x"
+    mpl_title: "x"
     is_aux: true
+    unit: "GeV"
 
   - var: deltapT_lep1_jet1
-    xmin: -300.0
-    xmax: 200.0
+    xmin: -125.0
+    xmax: 175.0
     nbins: 30
     use_region_binning: false
     regions: [reg1j1b]
-    axis_title: " "
+    axis_title: "x"
+    mpl_title: "x"
     is_aux: true
+    unit: "GeV"
 
   - var: mass_lep2jet1
-    xmin: 0.0
-    xmax: 500.0
+    xmin: 20.0
+    xmax: 300.0
     nbins: 30
     use_region_binning: false
-    regions: [reg1j1b, reg2j1b, reg2j2b, reg3j, reg3j1b, reg3jHb]
-    axis_title: " "
+    regions: [reg1j1b]
+    axis_title: "x"
+    mpl_title: "x"
     is_aux: true
+    unit: "GeV"
+
+  - var: mass_lep2jet1
+    xmin: 20.0
+    xmax: 360.0
+    nbins: 30
+    use_region_binning: false
+    regions: [reg2j1b]
+    axis_title: "x"
+    mpl_title: "x"
+    is_aux: true
+    unit: "GeV"
+
+  - var: mass_lep2jet1
+    xmin: 20.0
+    xmax: 340.0
+    nbins: 30
+    use_region_binning: false
+    regions: [reg2j2b]
+    axis_title: "x"
+    mpl_title: "x"
+    is_aux: true
+    unit: "GeV"
+
+  - var: mass_lep2jet1
+    xmin: 20.0
+    xmax: 480.0
+    nbins: 30
+    use_region_binning: false
+    regions: [reg3j]
+    axis_title: "x"
+    mpl_title: "x"
+    is_aux: true
+    unit: "GeV"
 
   - var: mass_lep1jet2
-    xmin: 0.0
-    xmax: 500.0
+    xmin: 20.0
+    xmax: 450.0
     nbins: 30
     use_region_binning: false
-    regions: [reg2j1b, reg2j2b, reg3j, reg3j1b, reg3jHb]
-    axis_title: " "
+    regions: [reg2j1b]
+    axis_title: "x"
+    mpl_title: "x"
     is_aux: true
+    unit: "GeV"
 
-  - var: mass_lep1jet1
-    xmin: 0.0
-    xmax: 700.0
-    nbins: 30
-    use_region_binning: false
-    regions: [reg1j1b, reg2j1b, reg2j2b, reg3j, reg3j1b, reg3jHb]
-    axis_title: " "
-    is_aux: true
-
-  - var: mass_lep1jet3
-    xmin: 0.0
-    xmax: 425.0
-    nbins: 30
-    use_region_binning: false
-    regions: [reg3j, reg3j1b, reg3jHb]
-    axis_title: " "
-    is_aux: true
-
-  - var: mass_lep2jet2
-    xmin: 0.0
+  - var: mass_lep1jet2
+    xmin: 20.0
     xmax: 350.0
     nbins: 30
     use_region_binning: false
-    regions: [reg2j1b, reg2j2b, reg3jHb]
-    axis_title: " "
+    regions: [reg2j2b]
+    axis_title: "x"
+    mpl_title: "x"
     is_aux: true
+    unit: "GeV"
 
-  - var: psuedoContTagBin_jet3
-    xmin: -0.5
-    xmax: 5.5
-    nbins: 6
+  - var: mass_lep1jet2
+    xmin: 20.0
+    xmax: 500.0
+    nbins: 30
     use_region_binning: false
-    regions: [reg3j1b, reg3jHB, reg3j]
-    axis_title: " "
+    regions: [reg3j]
+    axis_title: "x"
+    mpl_title: "x"
     is_aux: true
+    unit: "GeV"
 
-  - var: psuedoContTagBin_jet2
-    xmin: -0.5
-    xmax: 5.5
-    nbins: 6
-    use_region_binning: false
-    regions: [reg2j1b, reg3j1b, reg3jHB, reg3j]
-    axis_title: " "
-    is_aux: true
-
-  - var: psuedoContTagBin_jet1
-    xmin: -0.5
-    xmax: 5.5
-    nbins: 6
-    use_region_binning: false
-    regions: [reg2j1b, reg3j1b, reg3jHB, reg3j]
-    axis_title: " "
-    is_aux: true
-
-  - var: pTsys_lep1lep2jet1
-    xmin: 0.0
-    xmax: 375.0
+  - var: mass_lep1jet1
+    xmin: 20.0
+    xmax: 500.0
     nbins: 30
     use_region_binning: false
     regions: [reg1j1b]
-    axis_title: " "
+    axis_title: "x"
+    mpl_title: "x"
     is_aux: true
+    unit: "GeV"
 
-  - var: pTsys_lep1lep2jet1jet2met
+  - var: mass_lep1jet1
+    xmin: 20.0
+    xmax: 540.0
+    nbins: 30
+    use_region_binning: false
+    regions: [reg2j1b]
+    axis_title: "x"
+    mpl_title: "x"
+    is_aux: true
+    unit: "GeV"
+
+  - var: mass_lep1jet1
+    xmin: 20.0
+    xmax: 540.0
+    nbins: 30
+    use_region_binning: false
+    regions: [reg2j2b]
+    axis_title: "x"
+    mpl_title: "x"
+    is_aux: true
+    unit: "GeV"
+
+  - var: mass_lep1jet1
+    xmin: 20.0
+    xmax: 700.0
+    nbins: 30
+    use_region_binning: false
+    regions: [reg3j]
+    axis_title: "x"
+    mpl_title: "x"
+    is_aux: true
+    unit: "GeV"
+
+  - var: mass_lep1jet3
+    xmin: 20.0
+    xmax: 425.0
+    nbins: 30
+    use_region_binning: false
+    regions: [reg3j]
+    axis_title: "x"
+    mpl_title: "x"
+    is_aux: true
+    unit: "GeV"
+
+  - var: mass_lep2jet2
+    xmin: 20.0
+    xmax: 350.0
+    nbins: 30
+    use_region_binning: false
+    regions: [reg2j1b, reg2j2b]
+    axis_title: "x"
+    mpl_title: "x"
+    is_aux: true
+    unit: "GeV"
+
+  - var: psuedoContTagBin_jet3
+    xmin: 0.5
+    xmax: 5.5
+    nbins: 5
+    use_region_binning: false
+    regions: [reg3j]
+    axis_title: "x"
+    mpl_title: "x"
+    is_aux: true
+    unit: ""
+
+  - var: psuedoContTagBin_jet2
+    xmin: 0.5
+    xmax: 5.5
+    nbins: 5
+    use_region_binning: false
+    regions: [reg2j1b, reg3j]
+    axis_title: "x"
+    mpl_title: "x"
+    is_aux: true
+    unit: ""
+
+  - var: psuedoContTagBin_jet1
+    xmin: 0.5
+    xmax: 5.5
+    nbins: 5
+    use_region_binning: false
+    regions: [reg2j1b, reg3j]
+    axis_title: "x"
+    mpl_title: "x"
+    is_aux: true
+    unit: ""
+
+  - var: pTsys_lep1lep2jet1
     xmin: 0.0
     xmax: 225.0
     nbins: 30
     use_region_binning: false
-    regions: [reg2j1b]
-    axis_title: " "
+    regions: [reg1j1b]
+    axis_title: "x"
+    mpl_title: "x"
     is_aux: true
+    unit: "GeV"
+
+  - var: pTsys_lep1lep2jet1jet2met
+    xmin: 0.0
+    xmax: 150.0
+    nbins: 30
+    use_region_binning: false
+    regions: [reg2j1b]
+    axis_title: "x"
+    mpl_title: "x"
+    is_aux: true
+    unit: "GeV"
 
   - var: pTsys_lep1lep2jet1met
     xmin: 0.0
-    xmax: 375.0
-    nbins: 30
-    use_region_binning: false
-    regions: [reg1j1b, reg3j, reg3j1b, reg3jHb]
-    axis_title: " "
-    is_aux: true
-
-  - var: pTsys_lep1lep2
-    xmin: 0.0
-    xmax: 275.0
+    xmax: 150.0
     nbins: 30
     use_region_binning: false
     regions: [reg1j1b]
-    axis_title: " "
+    axis_title: "x"
+    mpl_title: "x"
     is_aux: true
+    unit: "GeV"
+
+  - var: pTsys_lep1lep2jet1met
+    xmin: 0.0
+    xmax: 350.0
+    nbins: 30
+    use_region_binning: false
+    regions: [reg3j]
+    axis_title: "x"
+    mpl_title: "x"
+    is_aux: true
+    unit: "GeV"
+
+  - var: pTsys_lep1lep2
+    xmin: 0.0
+    xmax: 200.0
+    nbins: 30
+    use_region_binning: false
+    regions: [reg1j1b]
+    axis_title: "x"
+    mpl_title: "x"
+    is_aux: true
+    unit: "GeV"
 
   - var: pTsys_lep1lep2met
     xmin: 0.0
-    xmax: 400.0
+    xmax: 250.0
     nbins: 30
     use_region_binning: false
-    regions: [reg2j2b]
-    axis_title: " "
+    regions: [reg2j2b, reg3j]
+    axis_title: "x"
+    mpl_title: "x"
     is_aux: true
+    unit: "GeV"
+
+  - var: pTsys_lep1lep2met
+    xmin: 0.0
+    xmax: 350.0
+    nbins: 30
+    use_region_binning: false
+    regions: [reg3j]
+    axis_title: "x"
+    mpl_title: "x"
+    is_aux: true
+    unit: "GeV"
 
   - var: pTsys_lep1lep2jet1jet2jet3met
     xmin: 0.0
     xmax: 150.0
     nbins: 30
     use_region_binning: false
-    regions: [reg3j, reg3j1b, reg3jHb]
-    axis_title: " "
+    regions: [reg3j]
+    axis_title: "x"
+    mpl_title: "x"
     is_aux: true
+    unit: "GeV"
 
   - var: deltaR_lep2_jet1
-    xmin: 0.5
-    xmax: 5.25
+    xmin: 0.4
+    xmax: 4.4
     nbins: 30
     use_region_binning: false
     regions: [reg1j1b, reg3j]
-    axis_title: " "
+    axis_title: "x"
+    mpl_title: "x"
     is_aux: true
+    unit: ""
 
-  - var: deltaR_jet1_jet3
-    xmin: 0.5
-    xmax: 5.25
+  - var: deltaR_lep2_jet1
+    xmin: 0.4
+    xmax: 4.8
     nbins: 30
     use_region_binning: false
-    regions: [reg3j, reg3jHB]
-    axis_title: " "
+    regions: [reg3j]
+    axis_title: "x"
+    mpl_title: "x"
     is_aux: true
+    unit: ""
+
+  - var: deltaR_jet1_jet3
+    xmin: 0.4
+    xmax: 5.00
+    nbins: 30
+    use_region_binning: false
+    regions: [reg3j]
+    axis_title: "x"
+    mpl_title: "x"
+    is_aux: true
+    unit: ""
 
   - var: deltaR_lep1_jet1
-    xmin: 0.5
-    xmax: 5.25
+    xmin: 0.4
+    xmax: 4.6
     nbins: 30
     use_region_binning: false
     regions: [reg2j2b]
-    axis_title: " "
+    axis_title: "x"
+    mpl_title: "x"
     is_aux: true
+    unit: ""
 
-  - var: deltaR_lep1_lep2
-    xmin: 0.25
+  - var: deltaR_lep1_jet1
+    xmin: 0.4
     xmax: 5.0
     nbins: 30
     use_region_binning: false
+    regions: [reg3j]
+    axis_title: "x"
+    mpl_title: "x"
+    is_aux: true
+    unit: ""
+
+  - var: deltaR_lep1_lep2
+    xmin: 0.25
+    xmax: 4.5
+    nbins: 30
+    use_region_binning: false
     regions: [reg1j1b]
-    axis_title: " "
+    axis_title: "x"
+    mpl_title: "x"
     is_aux: true
-
-  - var: deltaR_lep1lep2_jet1jet2jet3met
-    xmin: 0.2
-    xmax: 6.0
-    nbins: 30
-    use_region_binning: false
-    regions: [reg3j1b]
-    axis_title: " "
-    is_aux: true
-
-  - var: deltaR_lep1_jet2
-    xmin: 0.5
-    xmax: 5.2
-    nbins: 30
-    use_region_binning: false
-    regions: [reg3jHb]
-    axis_title: " "
-    is_aux: true
+    unit: ""
 
   - var: pT_lep1
     xmin: 27
     xmax: 227
     nbins: 30
     use_region_binning: false
-    regions: [ALL]
-    axis_title: " "
+    regions: [reg1j1b, reg2j1b, reg2j2b, reg3j]
+    axis_title: "x"
+    mpl_title: "x"
     is_aux: true
+    unit: "GeV"
 
   - var: pT_lep2
     xmin: 20
     xmax: 160
     nbins: 30
     use_region_binning: false
-    regions: [ALL]
-    axis_title: " "
+    regions: [reg1j1b, reg2j1b, reg2j2b, reg3j]
+    axis_title: "x"
+    mpl_title: "x"
     is_aux: true
+    unit: "GeV"
 
   - var: pT_jet1
     xmin: 25
     xmax: 275
     nbins: 30
     use_region_binning: false
-    regions: [ALL]
-    axis_title: " "
+    regions: [reg1j1b, reg2j1b, reg2j2b, reg3j]
+    axis_title: "x"
+    mpl_title: "x"
     is_aux: true
+    unit: "GeV"
 
   - var: pT_jet2
     regions: [reg2j1b, reg2j2b, reg3j]
     use_region_binning: false
-    xmin: 30
-    xmax: 175
+    xmin: 25
+    xmax: 150
     nbins: 30
-    axis_title: " "
+    axis_title: "x"
+    mpl_title: "x"
     is_aux: true
+    unit: "GeV"
 
   - var: pT_jet3
     regions: [reg3j]
     use_region_binning: false
-    xmin: 30
+    xmin: 25
     xmax: 150
     nbins: 30
-    axis_title: " "
+    axis_title: "x"
+    mpl_title: "x"
     is_aux: true
+    unit: "GeV"
 
   - var: eta_lep1
     xmin: -2.5
     xmax: 2.5
     nbins: 30
     use_region_binning: false
-    regions: [ALL]
-    axis_title: " "
+    regions: [reg1j1b, reg2j1b, reg2j2b, reg3j]
+    axis_title: "x"
+    mpl_title: "x"
     is_aux: true
+    unit: ""
 
   - var: eta_lep2
     xmin: -2.5
     xmax: 2.5
     nbins: 30
     use_region_binning: false
-    regions: [ALL]
-    axis_title: " "
+    regions: [reg1j1b, reg2j1b, reg2j2b, reg3j]
+    axis_title: "x"
+    mpl_title: "x"
     is_aux: true
+    unit: ""
 
   - var: eta_jet1
     xmin: -2.5
     xmax: 2.5
     nbins: 30
     use_region_binning: false
-    regions: [ALL]
-    axis_title: " "
+    regions: [reg1j1b, reg2j1b, reg2j2b, reg3j]
+    axis_title: "x"
+    mpl_title: "x"
     is_aux: true
+    unit: ""
 
   - var: eta_jet2
     xmin: -2.5
     xmax: 2.5
     nbins: 30
     use_region_binning: false
-    regions: [reg3j1b, reg3jHb, reg3j, reg2j1b, reg2j2b]
-    axis_title: " "
+    regions: [reg3j, reg2j1b, reg2j2b]
+    axis_title: "x"
+    mpl_title: "x"
     is_aux: true
+    unit: ""
 
   - var: eta_jet3
     xmin: -2.5
     xmax: 2.5
     nbins: 30
     use_region_binning: false
-    regions: [reg3j1b, reg3jHb, reg3j]
-    axis_title: " "
+    regions: [reg3j]
+    axis_title: "x"
+    mpl_title: "x"
     is_aux: true
+    unit: ""
 
   - var: met
     xmin: 0
-    xmax: 270
+    xmax: 240
     nbins: 30
     use_region_binning: false
-    axis_title: " "
-    regions: [ALL]
+    axis_title: "x"
+    mpl_title: "x"
+    regions: [reg1j1b, reg2j1b, reg2j2b, reg3j]
     is_aux: true
+    unit: "GeV"
 
+
+samples:
+
+  - name: tW
+    signature: tW
+    color: "#1f77b4"
+    tex: "$tW$"
+
+  - name: ttbar
+    signature: ttbar
+    color: "#d62728"
+    tex: "$t\\bar{t}$"
+
+  - name: Diboson
+    signature: Diboson
+    color: "#2ca02c"
+    tex: "Diboson"
+
+  - name: Zjets
+    signature: Zjets
+    color: "#ff7f0e"
+    tex: "$Z+$jets"
+
+  - name: MCNP
+    signature: MCNP
+    color: "#9467bd"
+    tex: "MCNP"
 
 # Manual binned regions
 

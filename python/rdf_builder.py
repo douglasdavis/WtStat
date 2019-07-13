@@ -2,8 +2,8 @@
 
 from __future__ import print_function
 from __future__ import absolute_import
-from __future__ import division
 
+import sys
 import os
 import re
 import math
@@ -11,18 +11,40 @@ from copy import deepcopy
 from array import array
 from collections import OrderedDict
 import yaml
-from WtStat.enum import Enum
-from WtStat.systematics import SYS_WEIGHTS, PDF_WEIGHTS
+import six
+
+IN_ATLAS_RELEASE = "ATLAS_RELEASE_BASE" in os.environ
+
+if IN_ATLAS_RELEASE:
+    from WtStat.enum_py2 import Enum
+    from WtStat.systematics import SYS_WEIGHTS, PDF_WEIGHTS
+else:
+    if sys.version_info.major == 2:
+        from .enum_py2 import Enum
+    else:
+        from enum import Enum
 
 import logging
+if IN_ATLAS_RELEASE:
+    if __name__ == "__main__":
+        log = logging.getLogger("in_release-standalone-rdf_builder")
+    else:
+        log = logging.getLogger(__name__)
+else:
+    logging.basicConfig(level=logging.INFO, format="{:15}  %(levelname)s  %(message)s".format("[%(name)s]"))
+    logging.addLevelName(logging.WARNING, "\033[1;31m{:8}\033[1;0m".format(logging.getLevelName(logging.WARNING)))
+    logging.addLevelName(logging.ERROR, "\033[1;35m{:8}\033[1;0m".format(logging.getLevelName(logging.ERROR)))
+    logging.addLevelName(logging.INFO, "\033[1;32m{:8}\033[1;0m".format(logging.getLevelName(logging.INFO)))
+    logging.addLevelName(logging.DEBUG, "\033[1;34m{:8}\033[1;0m".format(logging.getLevelName(logging.DEBUG)))
+    log = logging.getLogger("standalone-rdf_builder")
 
-log = logging.getLogger(__name__)
 
 # fmt: off
 import ROOT
 ROOT.PyConfig.IgnoreCommandLineOptions = True
 RDataFrame = ROOT.ROOT.RDataFrame
 TH1DModel = ROOT.ROOT.RDF.TH1DModel
+SaveGraph = ROOT.ROOT.RDF.SaveGraph
 # fmt: on
 
 
@@ -94,11 +116,10 @@ class TemplateDefinition(object):
 
     # fmt: off
     def __repr__(self):
-
         return "<TemplateDefinition: {}>".format(
             ", ".join([self.var, self.weight, str(self.weight_suffix), str(self.regions),
                        str(self.use_region_binning), str(self.binning), str(self.nbins),
-                       str(self.xmin), str(self.xmax), self.axis_title, self.is_aux]))
+                       str(self.xmin), str(self.xmax), self.axis_title, str(self.is_aux)]))
     # fmt: on
 
 
@@ -114,6 +135,23 @@ NOMINAL_REGEXES = {
     "tW_H7_AFII": re.compile("tW_DR_41103(8|9)_AFII"),
     "tW_MCaNLO_AFII": re.compile("tW_412003_AFII"),
 }
+
+
+def rdf_args(parser):
+    parser.add_argument("-d", "--directory", type=str, required=True, help="directory containing Wt ROOT files")
+    parser.add_argument("-c", "--config", type=str, default="auto", required=False, help="configuration file")
+    parser.add_argument("-o", "--outfile", type=str, required=True, help="output file")
+    parser.add_argument("--exclude-weights", type=str, nargs="+", default=[], help="set of weight systematics to exclude")
+    parser.add_argument("--exclude-trees", type=str, nargs="+", default=[], help="set of tree systematics to exclude")
+    parser.add_argument("--no-tree-systematics", dest="notreesys", action="store_true", help="ignore all tree  systematics")
+    parser.add_argument("--no-weight-systematics", dest="noweightsys", action="store_true", help="ignore all weight systematics")
+    parser.add_argument("--tree-prefix", type=str, default="WtLoop", help="Wt tree prefix (WtTMVA or WtLoop)")
+    parser.add_argument("--disable-imt", action="store_true", help="disable ROOT's implicit multithreading")
+    parser.add_argument("--debug", action="store_true", help="turn on debug statements")
+    parser.add_argument("--do-aux", action="store_true", help="Do templates with aux property set to true in YAML config")
+    parser.add_argument("--do-tiny", action="store_true", help="Do systematics labeled as tiny")
+    parser.add_argument("--force-graph", action="store_true", help="force graph (somehow avoids crash with aux variables)")
+    return 0
 
 
 def sortfiles_nominal(file_list):
@@ -143,7 +181,7 @@ def sortfiles_nominal(file_list):
             files["ttV"].append(f)
 
         elif "nominal" in f:
-            for k, v in NOMINAL_REGEXES.items():
+            for k, v in six.iteritems(NOMINAL_REGEXES):
                 if v.search(f):
                     files[k].append(f)
 
@@ -253,24 +291,32 @@ def template_definitions(yaml_config, args):
 
     wsys_template_defs = []
     for entry in template_defs:
-        for key, value in SYS_WEIGHTS.iteritems():
-            if key in args.exclude_weights:
+        for title, sysweight in six.iteritems(SYS_WEIGHTS):
+            if sysweight.tiny and not args.do_tiny:
+                log.debug("Skipping because tiny: {} {}".format(title, sysweight))
+                continue
+            if title in args.exclude_weights:
+                log.debug("Skipping because excluded: {} {}".format(title, sysweight))
                 continue
             tdef_up, tdef_dn = deepcopy(entry), deepcopy(entry)
-            tdef_up.weight, tdef_dn.weight = value[0], value[1]
-            tdef_up.weight_suffix = "{}_{}".format(key, "Up")
-            tdef_dn.weight_suffix = "{}_{}".format(key, "Down")
+            tdef_up.weight, tdef_dn.weight = sysweight.branch_up, sysweight.branch_down
+            tdef_up.weight_suffix = "{}_{}".format(title, "Up")
+            tdef_dn.weight_suffix = "{}_{}".format(title, "Down")
             wsys_template_defs.append(tdef_up)
             wsys_template_defs.append(tdef_dn)
 
     pdf_template_defs = []
     for entry in template_defs:
-        for key, value in PDF_WEIGHTS.iteritems():
-            if key in args.exclude_weights:
+        for title, pdfweight in six.iteritems(PDF_WEIGHTS):
+            if pdfweight.tiny and not args.do_tiny:
+                log.debug("Skipping because tiny: {} {}".format(title, sysweight))
+                continue
+            if title in args.exclude_weights:
+                log.debug("Skipping because excluded: {} {}".format(title, sysweight))
                 continue
             tdef_pdf = deepcopy(entry)
-            tdef_pdf.weight = value[0]
-            tdef_pdf.weight_suffix = key
+            tdef_pdf.weight = pdfweight.branch
+            tdef_pdf.weight_suffix = title
             pdf_template_defs.append(tdef_pdf)
 
     return (
@@ -284,7 +330,7 @@ def template_definitions(yaml_config, args):
 
 def ntuple_definitions(nominal_files, systematic_files, root_dir):
     ntuple_defs = []
-    for key, value in nominal_files.iteritems():
+    for key, value in six.iteritems(nominal_files):
         sdef = NtupleDefinition()
         sdef.name = key
         sdef.files = ["{}/{}".format(root_dir, f) for f in value]
@@ -293,7 +339,7 @@ def ntuple_definitions(nominal_files, systematic_files, root_dir):
         else:
             sdef.ntype = NtupleType.NOMINAL
         ntuple_defs.append(sdef)
-    for key, value in systematic_files.iteritems():
+    for key, value in six.iteritems(systematic_files):
         sdef = NtupleDefinition()
         sdef.name = key[0]
         sdef.files = ["{}/{}".format(root_dir, f) for f in value]
@@ -305,11 +351,14 @@ def ntuple_definitions(nominal_files, systematic_files, root_dir):
 
 CPP_SHIFT_CODE = """
 void shiftScaleSetDir(TH1* h, TFile* file) {
+  if (h == nullptr) {
+    return;
+  }
   int nb = h->GetNbinsX();
 
   h->AddBinContent(1, h->GetBinContent(0));
-  h->SetBinError(1, TMath::Sqrt(TMath::Power(h->GetBinError(1), 2) +
-                                TMath::Power(h->GetBinError(0), 2)));
+  h->SetBinError(1, TMath::Sqrt(TMath::Power(h->GetBinError(0), 2) +
+                                TMath::Power(h->GetBinError(1), 2)));
 
   h->AddBinContent(nb, h->GetBinContent(nb + 1));
   h->SetBinError(nb, TMath::Sqrt(TMath::Power(h->GetBinError(nb), 2) +
@@ -330,6 +379,10 @@ void shiftScaleSetDir(TH1* h, TFile* file) {
 
 
 def rdf_runner(args):
+    if IN_ATLAS_RELEASE:
+        log.info("Operating in ATLAS release")
+    else:
+        log.info("Operating standalone")
     if args.debug:
         log.setLevel(logging.DEBUG)
     if not args.disable_imt:
@@ -340,7 +393,10 @@ def rdf_runner(args):
     else:
         confname = args.config
     with open(confname, "r") as f:
-        config = yaml.load(f)
+        if IN_ATLAS_RELEASE:
+            config = yaml.load(f)
+        else:
+            config = yaml.load(f, Loader=yaml.FullLoader)
 
     nominal_sorted_files = sortfiles_nominal(file_list)
     if args.notreesys:
@@ -353,6 +409,7 @@ def rdf_runner(args):
 
     out_file = ROOT.TFile.Open(args.outfile, "UPDATE")
     file_keys = [str(k.GetName()) for k in out_file.GetListOfKeys()]
+    started_empty = len(file_keys) < 5
 
     ROOT.gInterpreter.ProcessLine(CPP_SHIFT_CODE)
 
@@ -371,7 +428,7 @@ def rdf_runner(args):
         for region in regions:
             filt = df.Filter(region.selection)
             for template in templates:
-                if template.is_aux and args.skip_aux:
+                if template.is_aux and not args.do_aux:
                     continue
                 if region.name not in template.regions:
                     continue
@@ -395,7 +452,7 @@ def rdf_runner(args):
                     rname=region.name, vname=template.var, sname=ntuple.name,
                     tree_suffix=tree_suffix, weight_suffix=weight_suffix)
                 log.debug("Working on {}".format(hist_name))
-                if hist_name in file_keys:
+                if out_file.GetListOfKeys().Contains(hist_name):
                     log.debug("Skipping {} already in file".format(hist_name))
                     continue
                 bin_instructor = template
@@ -409,12 +466,15 @@ def rdf_runner(args):
                                        bin_instructor.nbins, bin_instructor.xmin, bin_instructor.xmax)
                 else:
                     log.error("something is wrong {} {}".format(bin_instructor.bin_type, bin_instructor.name))
-
                 df_histograms.append(filt.Histo1D(hmodel, template.var, template.weight))
+
+            if args.force_graph:
+                SaveGraph(filt, "test.dot")
         # fmt: on
 
         for dfh in df_histograms:
-            ROOT.shiftScaleSetDir(dfh.GetPtr(), out_file)
+            if dfh:
+                ROOT.shiftScaleSetDir(dfh.GetPtr(), out_file)
         log.info(
             "Done with <sample: {}, tree: {}> (frame {}/{})".format(
                 ntuple.name, ntuple.tree_name, i + 1, nntuples
@@ -423,3 +483,11 @@ def rdf_runner(args):
 
     out_file.Close()
     return 0
+
+
+if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(description="WtStat executions")
+    rdf_args(parser)
+    args = parser.parse_args()
+    rdf_runner(args)
