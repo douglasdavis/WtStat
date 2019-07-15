@@ -13,16 +13,18 @@ from collections import OrderedDict
 import yaml
 
 
-IN_ATLAS_RELEASE = "ATLAS_RELEASE_BASE" in os.environ
+IN_ATLAS_RELEASE = "AnalysisTop_VERSION" in os.environ
 
 if IN_ATLAS_RELEASE:
-    from WtStat.enum_py2 import Enum
+    import WtPyext.six as six
+    from WtPyext.enum import Enum
     from WtStat.systematics import SYS_WEIGHTS, PDF_WEIGHTS
 else:
     if sys.version_info.major == 2:
-        from .enum_py2 import Enum
-    else:
-        from enum import Enum
+        print("Standalone mode requires python3")
+        sys.exit(1)
+    import six
+    from enum import Enum
 
 import logging
 if IN_ATLAS_RELEASE:
@@ -38,12 +40,6 @@ else:
     logging.addLevelName(logging.DEBUG, "\033[1;34m{:8}\033[1;0m".format(logging.getLevelName(logging.DEBUG)))
     log = logging.getLogger("standalone-rdf_builder")
 
-if sys.version_info.major == 2:
-    def iteritems(d, **kw):
-        return d.iteritems(**kw)
-else:
-    def iteritems(d, **kw):
-        return iter(d.items(**kw))
 
 # fmt: off
 import ROOT
@@ -187,7 +183,7 @@ def sortfiles_nominal(file_list):
             files["ttV"].append(f)
 
         elif "nominal" in f:
-            for k, v in iteritems(NOMINAL_REGEXES):
+            for k, v in six.iteritems(NOMINAL_REGEXES):
                 if v.search(f):
                     files[k].append(f)
 
@@ -297,7 +293,7 @@ def template_definitions(yaml_config, args):
 
     wsys_template_defs = []
     for entry in template_defs:
-        for title, sysweight in iteritems(SYS_WEIGHTS):
+        for title, sysweight in six.iteritems(SYS_WEIGHTS):
             if sysweight.tiny and not args.do_tiny:
                 log.debug("Skipping because tiny: {} {}".format(title, sysweight))
                 continue
@@ -313,7 +309,7 @@ def template_definitions(yaml_config, args):
 
     pdf_template_defs = []
     for entry in template_defs:
-        for title, pdfweight in iteritems(PDF_WEIGHTS):
+        for title, pdfweight in six.iteritems(PDF_WEIGHTS):
             if pdfweight.tiny and not args.do_tiny:
                 log.debug("Skipping because tiny: {} {}".format(title, sysweight))
                 continue
@@ -336,7 +332,7 @@ def template_definitions(yaml_config, args):
 
 def ntuple_definitions(nominal_files, systematic_files, root_dir):
     ntuple_defs = []
-    for key, value in iteritems(nominal_files):
+    for key, value in six.iteritems(nominal_files):
         sdef = NtupleDefinition()
         sdef.name = key
         sdef.files = ["{}/{}".format(root_dir, f) for f in value]
@@ -345,7 +341,7 @@ def ntuple_definitions(nominal_files, systematic_files, root_dir):
         else:
             sdef.ntype = NtupleType.NOMINAL
         ntuple_defs.append(sdef)
-    for key, value in iteritems(systematic_files):
+    for key, value in six.iteritems(systematic_files):
         sdef = NtupleDefinition()
         sdef.name = key[0]
         sdef.files = ["{}/{}".format(root_dir, f) for f in value]

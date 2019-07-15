@@ -2,7 +2,7 @@
 
 from __future__ import print_function
 import os
-from WtStat.yattag import Doc, indent
+from WtPyext.yattag import Doc, indent
 from WtStat._css import CSS
 
 def top_level(doc, tag, text):
