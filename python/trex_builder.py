@@ -2,6 +2,9 @@ import os
 import yaml
 import WtStat.systematics as systematics
 
+import logging
+log = logging.getLogger(__name__)
+
 def block(block_type, block_title, **options):
     ret = '{}: "{}"'.format(block_type, block_title)
     for k, v in options.items():
@@ -506,6 +509,7 @@ def Systematics_trees(args):
     return "\n".join(los)
 
 def tcgen(args):
+    log.warn("Always check configuration file. By-hand modifications are expected.")
     job = Job(args)
     fit = Fit(args)
     regions = Regions(args)
@@ -515,6 +519,8 @@ def tcgen(args):
     systematics_trees = Systematics_trees(args)
     config = "{}{}{}{}{}{}\n{}".format(job, fit, regions, samples, systematics_fixed, systematics_weights, systematics_trees)
 
+    if os.path.exists(args.out_file):
+        log.warn("overwriting file {}".format(args.out_file))
     with open(args.out_file, "w") as f:
         f.write(config)
     return 0
