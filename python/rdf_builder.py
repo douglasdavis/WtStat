@@ -11,28 +11,24 @@ from copy import deepcopy
 from array import array
 from collections import OrderedDict
 import yaml
-
+import logging
 
 IN_ATLAS_RELEASE = "AnalysisTop_VERSION" in os.environ
-
 if IN_ATLAS_RELEASE:
     import WtPyext.six as six
     from WtPyext.enum import Enum
     from WtStat.systematics import SYS_WEIGHTS, PDF_WEIGHTS
+    if __name__ == "__main__":
+        log = logging.getLogger("in_release-standalone-rdf_builder")
+    else:
+        log = logging.getLogger(__name__)
+
 else:
     if sys.version_info.major == 2:
         print("Standalone mode requires python3")
         sys.exit(1)
     import six
     from enum import Enum
-
-import logging
-if IN_ATLAS_RELEASE:
-    if __name__ == "__main__":
-        log = logging.getLogger("in_release-standalone-rdf_builder")
-    else:
-        log = logging.getLogger(__name__)
-else:
     logging.basicConfig(level=logging.INFO, format="{:15}  %(levelname)s  %(message)s".format("[%(name)s]"))
     logging.addLevelName(logging.WARNING, "\033[1;31m{:8}\033[1;0m".format(logging.getLevelName(logging.WARNING)))
     logging.addLevelName(logging.ERROR, "\033[1;35m{:8}\033[1;0m".format(logging.getLevelName(logging.ERROR)))
@@ -391,7 +387,7 @@ def rdf_runner(args):
         ROOT.ROOT.EnableImplicitMT()
     file_list = os.listdir(args.directory)
     if args.config == "auto":
-        confname = "../WtAna/WtStat/data/rdfconf.yml"
+        confname = "../WtAna/WtStat/data/config.yml"
     else:
         confname = args.config
     with open(confname, "r") as f:
