@@ -5,6 +5,8 @@ from WtStat.fitgen import fit_workspace
 from WtStat.ntuple_fitgen import ntuple_fit
 from WtStat.trex2html import trex2html
 from WtStat.rdf_builder import rdf_runner
+from WtStat.rdf_builder import rdf_args
+from WtStat.trex_builder import tcgen
 import subprocess
 import argparse
 import time
@@ -21,48 +23,28 @@ def parseargs():
 
     subcommands = parser.add_subparsers(dest="topcommand")
 
-    histgen = subcommands.add_parser("histgen", help="generate templates (histograms) from ntuples")
-    histgen.add_argument("--files", dest="files", type=str, nargs="+",
-                         help="file list to sort and histogram", required=True)
-    histgen.add_argument("--run-sys-weights", dest="sys_weights", action="store_true",
-                         help="run systematic weights")
-    histgen.add_argument("--out-file", dest="outfile_name", default="histograms.root", required=False,
-                         help="output file name")
-    histgen.add_argument("--yaml-config", dest="yaml_config", type=str, required=True,
-                         help="YAML filter and template config")
-    histgen.add_argument("--tree-prefix", dest="tree_prefix", type=str, required=False, default="WtTMVA",
-                         help="ROOT Tree prefix (WtLoop or WtTMVA)")
-    histgen.add_argument("--dry", dest="dry", action="store_true", help="don't execute, just print commands")
+    ## args are handled in the module
+    templategen = subcommands.add_parser("templategen", help="generate templates from rdf_builder module")
+    rdf_args(templategen)
 
-    hfitgen = subcommands.add_parser("fitgen", help="generate fit config which uses pre-made templates")
-    hfitgen.add_argument("-n", "--name", dest="name", type=str, help="fit name", required=True)
-    hfitgen.add_argument("-f", "--hfile", dest="hfile", type=str, help="file containing histogram", required=True)
-    hfitgen.add_argument("-o", "--outdir", dest="outdir", type=str, help="output directory", required=True)
-    hfitgen.add_argument("-l", "--lumi", dest="lumi", type=float, help="luminosity", required=False, default=140.5)
-    hfitgen.add_argument("--ncpu", dest="ncpu", type=int, help="NumCPU TRExFitter option", required=False, default=2)
-    hfitgen.add_argument("--vrplots", dest="vrplots", type=str, required=False,
-                         help="YAML config for blocks which will request the generation of VR plots")
-    hfitgen.add_argument("--skip-pdfs", dest="skip_pdfs", action="store_true", help="Skip PDF uncertainties")
-    hfitgen.add_argument("--skip-weightsys", action="store_true", help="dont do weight systematics")
-    hfitgen.add_argument("--skip-treesys", action="store_true", help="dont do tree systematics")
-    hfitgen.add_argument("--imgf", dest="imgf", default="pdf", help="image format")
-
-    nfitgen = subcommands.add_parser("ntupfitgen", help="generate fit config which uses ntuples")
-    nfitgen.add_argument("-n", "--name", dest="name", type=str, help="fit name", required=True)
-    nfitgen.add_argument("-d", "--ntupdir", dest="ntupdir", type=str, help="dir with ntuples", required=True)
-    nfitgen.add_argument("-o", "--outdir", dest="outdir", type=str, help="output directory", required=True)
-    nfitgen.add_argument("-l", "--lumi", dest="lumi", type=float, help="lumi", default=140.5, required=False)
-    nfitgen.add_argument("-r", "--regions", dest="regs", type=str, nargs="+", required=True, help="regions to put in config")
-    nfitgen.add_argument("--ncpu", dest="ncpu", type=int, help="number of CPUs", default=2, required=False)
-    nfitgen.add_argument("--imgf", dest="imgf", default="pdf", help="image format")
-
-    ntupling = subcommands.add_parser("ntupling", help="steer TRExFitter to run the 'n' step in parallel")
-    ntupling.add_argument("-c", "--config", dest="config", type=str, required=True, help="TRExFitter config")
-    ntupling.add_argument("-r", "--regions", dest="regions", type=str, nargs="+", required=True, help="Region names")
-    ntupling.add_argument("-m", "--max-tasks", dest="maxt", type=int, required=False, default=4, help="Max parallel tasks")
+    trexgen = subcommands.add_parser("trexgen", help="TRExFitter config generation")
+    trexgen.add_argument("-j", "--job-name", type=str, default="tW", help="Job name")
+    trexgen.add_argument("-n", "--fit-name", type=str, default="tW", help="Fit name")
+    trexgen.add_argument("-f", "--hfile", type=str, required=True, help="Histogram file")
+    trexgen.add_argument("-c", "--config", type=str, required=True, help="wt-stat configuration file")
+    trexgen.add_argument("-r", "--reg-suff", type=str, default="", help="special region suffix")
+    trexgen.add_argument("-l", "--lumi", type=float, default=140.5, help="Luminosity")
+    trexgen.add_argument("-o", "--out-file", type=str, default="fit.conf", help="output config file name")
+    trexgen.add_argument("--vr-plots", action="store_true", help="produce the VR plots")
+    trexgen.add_argument("--pruning", type=float, nargs=3, default=[0.001, 0.0005, 0.001], help="pruning settings (MCstat, SystNorm, SystShape)")
+    trexgen.add_argument("--img-format", type=str, default="pdf", help="image format")
+    trexgen.add_argument("--no-tables", action="store_true", help="Set do tables to FALSE")
+    trexgen.add_argument("--no-sysplots", action="store_true", help="Set do sys control plots to FALSE")
+    trexgen.add_argument("--num-cpu", type=int, default=1, help="NumCPU option")
+    trexgen.add_argument("--skip-tiny", action="store_true", help="Skip uncertainties tagged as tiny")
 
     rank = subcommands.add_parser("rank", help="perform ranking processing in parallel")
-    rank.add_argument("-c", "--config", dest="config", type=str, required=True, help="TRExFitter config")
+    rank.add_argument("config", type=str, help="TRExFitter config")
     rank.add_argument("-m", "--max-tasks", dest="maxt", type=int, required=False, default=4, help="Max parallel tasks")
     rank.add_argument("-e", "--exclude", dest="exclude", type=str, required=False, nargs="+", help="Exclude these systematics")
     rank.add_argument("-s", "--sys", dest="sys", type=str, required=False, nargs="+", help="Manually define systematics")
@@ -71,17 +53,40 @@ def parseargs():
     tohtml.add_argument("workspace", type=str, help="TRExFitter workspace directory")
     tohtml.add_argument("-r", "--regions", type=str, nargs="+", default=[], required=False, help="Only show specific regions")
 
-    rdfgen = subcommands.add_parser("rdfgen", help="generate templates from rdf_builder module")
-    rdfgen.add_argument("-d", "--directory", type=str, required=True, help="directory containing Wt ROOT files")
-    rdfgen.add_argument("-c", "--config", type=str, default="auto", required=False, help="configuration file")
-    rdfgen.add_argument("-o", "--outfile", type=str, required=True, help="output file")
-    rdfgen.add_argument("--exclude-weights", type=str, nargs="+", default=[], help="set of weight systematics to exclude")
-    rdfgen.add_argument("--exclude-trees", type=str, nargs="+", default=[], help="set of tree systematics to exclude")
-    rdfgen.add_argument("--no-tree-systematics", dest="notreesys", action="store_true", help="ignore all tree  systematics")
-    rdfgen.add_argument("--no-weight-systematics", dest="noweightsys", action="store_true", help="ignore all weight systematics")
-    rdfgen.add_argument("--tree-prefix", type=str, default="WtLoop", help="Wt tree prefix (WtTMVA or WtLoop)")
-    rdfgen.add_argument("--disable-imt", action="store_true", help="disable ROOT's implicit multithreading")
-    rdfgen.add_argument("--debug", action="store_true", help="turn on debug statements")
+    # histgen = subcommands.add_parser("histgen", help="generate templates (histograms) from ntuples")
+    # histgen.add_argument("--files", dest="files", type=str, nargs="+", help="file list to sort and histogram", required=True)
+    # histgen.add_argument("--run-sys-weights", dest="sys_weights", action="store_true", help="run systematic weights")
+    # histgen.add_argument("--out-file", dest="outfile_name", default="histograms.root", required=False, help="output file name")
+    # histgen.add_argument("--yaml-config", dest="yaml_config", type=str, required=True, help="YAML filter and template config")
+    # histgen.add_argument("--tree-prefix", dest="tree_prefix", type=str, required=False, default="WtTMVA", help="ROOT Tree prefix (WtLoop or WtTMVA)")
+    # histgen.add_argument("--dry", dest="dry", action="store_true", help="don't execute, just print commands")
+
+    # hfitgen = subcommands.add_parser("fitgen", help="generate fit config which uses pre-made templates")
+    # hfitgen.add_argument("-n", "--name", dest="name", type=str, help="fit name", required=True)
+    # hfitgen.add_argument("-f", "--hfile", dest="hfile", type=str, help="file containing histogram", required=True)
+    # hfitgen.add_argument("-o", "--outdir", dest="outdir", type=str, help="output directory", required=True)
+    # hfitgen.add_argument("-l", "--lumi", dest="lumi", type=float, help="luminosity", required=False, default=140.5)
+    # hfitgen.add_argument("--ncpu", dest="ncpu", type=int, help="NumCPU TRExFitter option", required=False, default=2)
+    # hfitgen.add_argument("--vrplots", dest="vrplots", type=str, required=False,
+    #                      help="YAML config for blocks which will request the generation of VR plots")
+    # hfitgen.add_argument("--skip-pdfs", dest="skip_pdfs", action="store_true", help="Skip PDF uncertainties")
+    # hfitgen.add_argument("--skip-weightsys", action="store_true", help="dont do weight systematics")
+    # hfitgen.add_argument("--skip-treesys", action="store_true", help="dont do tree systematics")
+    # hfitgen.add_argument("--imgf", dest="imgf", default="pdf", help="image format")
+
+    # nfitgen = subcommands.add_parser("ntupfitgen", help="generate fit config which uses ntuples")
+    # nfitgen.add_argument("-n", "--name", dest="name", type=str, help="fit name", required=True)
+    # nfitgen.add_argument("-d", "--ntupdir", dest="ntupdir", type=str, help="dir with ntuples", required=True)
+    # nfitgen.add_argument("-o", "--outdir", dest="outdir", type=str, help="output directory", required=True)
+    # nfitgen.add_argument("-l", "--lumi", dest="lumi", type=float, help="lumi", default=140.5, required=False)
+    # nfitgen.add_argument("-r", "--regions", dest="regs", type=str, nargs="+", required=True, help="regions to put in config")
+    # nfitgen.add_argument("--ncpu", dest="ncpu", type=int, help="number of CPUs", default=2, required=False)
+    # nfitgen.add_argument("--imgf", dest="imgf", default="pdf", help="image format")
+
+    # ntupling = subcommands.add_parser("ntupling", help="steer TRExFitter to run the 'n' step in parallel")
+    # ntupling.add_argument("-c", "--config", dest="config", type=str, required=True, help="TRExFitter config")
+    # ntupling.add_argument("-r", "--regions", dest="regions", type=str, nargs="+", required=True, help="Region names")
+    # ntupling.add_argument("-m", "--max-tasks", dest="maxt", type=int, required=False, default=4, help="Max parallel tasks")
 
     return parser.parse_args()
 # fmt: on
@@ -89,25 +94,8 @@ def parseargs():
 
 def histgen(args):
     log = logging.getLogger("wt-stat histgen")
-    log.warn("The histgen command is deprecated. Use the rdfgen.")
+    log.warn("The histgen command is deprecated. Use the templategen.")
     return 0
-    # nominal_sorted = sort_for_nominal_tree(args.files)
-    # sys_sorted = sort_for_systematic_trees(args.files)
-    # nom_exes = create_nominal_executions(
-    #     nominal_sorted,
-    #     outfile=args.outfile_name,
-    #     sys_weights=args.sys_weights,
-    #     tree_prefix=args.tree_prefix,
-    # )
-    # sys_exes = create_systtree_executions(
-    #     sys_sorted, outfile=args.outfile_name, tree_prefix=args.tree_prefix
-    # )
-    # for i, exe in enumerate(nom_exes + sys_exes):
-    #     if args.dry:
-    #         log.info("{} -y {}".format(exe, args.yaml_config))
-    #     else:
-    #         subprocess.call("{} -y {}".format(exe, args.yaml_config), shell=True)
-    #     log.info("{}/{}".format(i + 1, len(nom_exes) + len(sys_exes)))
 
 
 def fitgen(args):
@@ -185,17 +173,11 @@ def rank(args):
 def main():
     args = parseargs()
 
-    if args.topcommand == "histgen":
-        return histgen(args)
+    if args.topcommand == "templategen":
+        return rdf_runner(args)
 
-    if args.topcommand == "fitgen":
-        return fitgen(args)
-
-    if args.topcommand == "ntupfitgen":
-        return ntupfitgen(args)
-
-    if args.topcommand == "ntupling":
-        return ntupling(args)
+    if args.topcommand == "trexgen":
+        return tcgen(args)
 
     if args.topcommand == "rank":
         return rank(args)
@@ -203,8 +185,17 @@ def main():
     if args.topcommand == "html":
         return trex2html(args)
 
-    if args.topcommand == "rdfgen":
-        return rdf_runner(args)
+    # if args.topcommand == "histgen":
+    #     return histgen(args)
+
+    # if args.topcommand == "fitgen":
+    #     return fitgen(args)
+
+    # if args.topcommand == "ntupfitgen":
+    #     return ntupfitgen(args)
+
+    # if args.topcommand == "ntupling":
+    #     return ntupling(args)
 
 
 if __name__ == "__main__":
