@@ -13,6 +13,7 @@ from collections import OrderedDict
 import yaml
 import logging
 
+# fmt: off
 IN_ATLAS_RELEASE = "AnalysisTop_VERSION" in os.environ
 if IN_ATLAS_RELEASE:
     import WtPyext.six as six
@@ -29,6 +30,7 @@ else:
         sys.exit(1)
     import six
     from enum import Enum
+    from systematics import SYS_WEIGHTS, PDF_WEIGHTS
     logging.basicConfig(level=logging.INFO, format="{:15}  %(levelname)s  %(message)s".format("[%(name)s]"))
     logging.addLevelName(logging.WARNING, "\033[1;31m{:8}\033[1;0m".format(logging.getLevelName(logging.WARNING)))
     logging.addLevelName(logging.ERROR, "\033[1;35m{:8}\033[1;0m".format(logging.getLevelName(logging.ERROR)))
@@ -36,8 +38,6 @@ else:
     logging.addLevelName(logging.DEBUG, "\033[1;34m{:8}\033[1;0m".format(logging.getLevelName(logging.DEBUG)))
     log = logging.getLogger("standalone-rdf_builder")
 
-
-# fmt: off
 import ROOT
 ROOT.PyConfig.IgnoreCommandLineOptions = True
 RDataFrame = ROOT.ROOT.RDataFrame
