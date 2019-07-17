@@ -183,7 +183,13 @@ def sortfiles_nominal(file_list):
                 if v.search(f):
                     files[k].append(f)
 
-    return files
+    retdict = OrderedDict()
+    for files_key, files_val in six.iteritems(files):
+        if files_val:
+            retdict[files_key] = files_val
+        else:
+            log.debug("Skipping {} because no associated files were found".format(files_key))
+    return retdict
 
 
 def sortfiles_systematic(file_list, args):
