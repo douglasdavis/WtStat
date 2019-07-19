@@ -136,7 +136,8 @@ NOMINAL_REGEXES = {
 
 
 def rdf_args(parser):
-    parser.add_argument("-d", "--directory", type=str, required=True, help="directory containing Wt ROOT files")
+    parser.add_argument("-d", "--directory", type=str, required=False, help="directory containing all relevant Wt ntuples")
+    parser.add_argument("-x", "--txt-file", type=str, required=False, help="text file listing all relevant Wt ntuples")
     parser.add_argument("-c", "--config", type=str, default="auto", required=False, help="configuration file")
     parser.add_argument("-o", "--outfile", type=str, required=True, help="output file")
     parser.add_argument("--exclude-weights", type=str, nargs="+", default=[], help="set of weight systematics to exclude")
@@ -334,10 +335,14 @@ def template_definitions(yaml_config, args):
 
 def ntuple_definitions(nominal_files, systematic_files, root_dir):
     ntuple_defs = []
+    if root_dir is None:
+        file_pref = "/"
+    else:
+        file_pref = root_dir
     for key, value in six.iteritems(nominal_files):
         sdef = NtupleDefinition()
         sdef.name = key
-        sdef.files = ["{}/{}".format(root_dir, f) for f in value]
+        sdef.files = ["{}/{}".format(file_pref, f) for f in value]
         if key == "Data":
             sdef.ntype = NtupleType.DATA
         else:
@@ -346,7 +351,7 @@ def ntuple_definitions(nominal_files, systematic_files, root_dir):
     for key, value in six.iteritems(systematic_files):
         sdef = NtupleDefinition()
         sdef.name = key[0]
-        sdef.files = ["{}/{}".format(root_dir, f) for f in value]
+        sdef.files = ["{}/{}".format(file_pref, f) for f in value]
         sdef.ntype = NtupleType.SYSTEMATIC
         sdef.tree_systematic = key[1]
         ntuple_defs.append(sdef)
@@ -382,6 +387,24 @@ void shiftScaleSetDir(TH1* h, TFile* file) {
 """
 
 
+def prepare_files(args):
+    if args.directory:
+        file_list = os.listdir(args.directory)
+    elif args.txt_file:
+        file_list = []
+        with open(args.txt_file) as f:
+            for line in f:
+                iline = line.strip()
+                print(iline)
+                if iline.startswith("#"):
+                    continue
+                file_list.append(iline)
+    else:
+        log.error("require --directory or --in-txt")
+        exit(1)
+    return file_list
+
+
 def rdf_runner(args):
     if IN_ATLAS_RELEASE:
         log.info("Operating in ATLAS release")
@@ -391,7 +414,8 @@ def rdf_runner(args):
         log.setLevel(logging.DEBUG)
     if not args.disable_imt:
         ROOT.ROOT.EnableImplicitMT()
-    file_list = os.listdir(args.directory)
+
+    file_list = prepare_files(args)
     if args.config == "auto":
         confname = "../WtAna/WtStat/data/config.yml"
     else:
