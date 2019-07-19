@@ -1,3 +1,3 @@
 # WtStat
 
-Built as part of WtAna.
+Built as part of WtAna; [docs section](https://twrun2.web.cern.ch/WtAna/fit.html).

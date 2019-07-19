@@ -152,7 +152,6 @@ def rdf_args(parser):
     parser.add_argument("--debug", action="store_true", help="turn on debug statements")
     parser.add_argument("--do-aux", action="store_true", help="Do templates with aux property set to true in YAML config")
     parser.add_argument("--do-tiny", action="store_true", help="Do systematics labeled as tiny")
-    parser.add_argument("--force-graph", action="store_true", help="force graph (somehow avoids crash with aux variables)")
     # fmt: on
     return 0
 
@@ -491,7 +490,7 @@ def rdf_runner(args):
         systematic_sorted_files = sortfiles_systematic(file_list, args)
     regions = region_definitions(config)
     templates = template_definitions(config, args)
-    ntuples = ntuple_definitions(nominal_sorted_files, systematic_sorted_files, args.directory)
+    ntuple_sets = ntuple_definitions(nominal_sorted_files, systematic_sorted_files, args.directory)
 
     out_file = ROOT.TFile.Open(args.outfile, "UPDATE")
     file_keys = [str(k.GetName()) for k in out_file.GetListOfKeys()]
@@ -499,8 +498,8 @@ def rdf_runner(args):
 
     ROOT.gInterpreter.ProcessLine(CPP_SHIFT_CODE)
 
-    nntuples = len(ntuples)
-    for i, ntuple in enumerate(ntuples):
+    nntuples = len(ntuple_sets)
+    for i, ntuple in enumerate(ntuple_sets):
         ntuple_is_ttbar_or_tW = ntuple.name == "tW" or ntuple.name == "ttbar"
         chain = ROOT.TChain("{}_{}".format(args.tree_prefix, ntuple.tree_name))
         tree_suffix = ""
@@ -510,6 +509,7 @@ def rdf_runner(args):
             chain.Add(fname)
         df = RDataFrame(chain)
         df_histograms = []
+        df_filters = [] ## keep list of filters to prevent dangling histograms
         # fmt: off
         for region in regions:
             filt = df.Filter(region.selection)
@@ -550,9 +550,9 @@ def rdf_runner(args):
                 else:
                     log.error("something is wrong {} {}".format(bin_instructor.bin_type, bin_instructor.name))
                 df_histograms.append(filt.Histo1D(hmodel, template.var, template.weight))
+            ## have to save the filter to prevent dangling histograms
+            df_filters.append(filt)
 
-            if args.force_graph:
-                SaveGraph(filt, "test.dot")
         # fmt: on
 
         for dfh in df_histograms:
