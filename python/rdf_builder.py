@@ -395,7 +395,6 @@ def prepare_files(args):
         with open(args.txt_file) as f:
             for line in f:
                 iline = line.strip()
-                print(iline)
                 if iline.startswith("#"):
                     continue
                 file_list.append(iline)
