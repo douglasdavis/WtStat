@@ -111,13 +111,15 @@ class TemplateDefinition(object):
     xmax = 0
     axis_title = "title"
     is_aux = True
+    is_addrad = False
 
     # fmt: off
     def __repr__(self):
         return "<TemplateDefinition: {}>".format(
             ", ".join([self.var, self.weight, str(self.weight_suffix), str(self.regions),
                        str(self.use_region_binning), str(self.binning), str(self.nbins),
-                       str(self.xmin), str(self.xmax), self.axis_title, str(self.is_aux)]))
+                       str(self.xmin), str(self.xmax), self.axis_title, str(self.is_aux),
+                       str(self.is_addrad)]))
     # fmt: on
 
 
@@ -136,6 +138,7 @@ NOMINAL_REGEXES = {
 
 
 def rdf_args(parser):
+    # fmt: off
     parser.add_argument("-d", "--directory", type=str, required=False, help="directory containing all relevant Wt ntuples")
     parser.add_argument("-x", "--txt-file", type=str, required=False, help="text file listing all relevant Wt ntuples")
     parser.add_argument("-c", "--config", type=str, default="auto", required=False, help="configuration file")
@@ -150,6 +153,7 @@ def rdf_args(parser):
     parser.add_argument("--do-aux", action="store_true", help="Do templates with aux property set to true in YAML config")
     parser.add_argument("--do-tiny", action="store_true", help="Do systematics labeled as tiny")
     parser.add_argument("--force-graph", action="store_true", help="force graph (somehow avoids crash with aux variables)")
+    # fmt: on
     return 0
 
 
@@ -251,6 +255,101 @@ def region_definitions(yaml_config):
     return region_defs
 
 
+def addrad_template_defs(template_defs, args):
+    isrComb_template_defs = []
+    isr2005_template_defs = []
+    fsr2005_template_defs = []
+    var3cud_template_defs = []
+    for entry in template_defs:
+        tdef_isrhi, tdef_isrlo = deepcopy(entry), deepcopy(entry)
+        tdef_isrhi.weight = "weight_sys_isrCombRadHi"
+        tdef_isrlo.weight = "weight_sys_isrCombRadLo"
+        tdef_isrhi.weight_suffix = "isrCombRadHi"
+        tdef_isrlo.weight_suffix = "isrCombRadLo"
+        tdef_isrhi.is_addrad, tdef_isrlo.is_addrad = True, True
+
+        tdef_fsr20, tdef_fsr05 = deepcopy(entry), deepcopy(entry)
+        tdef_fsr20.weight = "weight_sys_fsr20"
+        tdef_fsr05.weight = "weight_sys_fsr05"
+        tdef_fsr20.weight_suffix = "fsr20"
+        tdef_fsr05.weight_suffix = "fsr05"
+        tdef_fsr20.is_addrad, tdef_fsr05.is_addrad = True, True
+
+        tdef_isr20, tdef_isr05 = deepcopy(entry), deepcopy(entry)
+        tdef_isr20.weight = "weight_sys_20muRF"
+        tdef_isr05.weight = "weight_sys_05muRF"
+        tdef_isr20.weight_suffix = "20muRF"
+        tdef_isr05.weight_suffix = "05muRF"
+        tdef_isr20.is_addrad, tdef_isr05.is_addrad = True, True
+
+        tdef_v3cup, tdef_v3cdn = deepcopy(entry), deepcopy(entry)
+        tdef_v3cup.weight = "weight_sys_Var3cUp"
+        tdef_v3cdn.weight = "weight_sys_Var3cDown"
+        tdef_v3cup.weight_suffix = "Var3cUp"
+        tdef_v3cdn.weight_suffix = "Var3cDown"
+        tdef_v3cup.is_addrad, tdef_v3cdn.is_addrad = True, True
+
+        if "isrCombRadHi" not in args.exclude_weights:
+            isrComb_template_defs.append(tdef_isrhi)
+        if "isrCombRadLo" not in args.exclude_weights:
+            isrComb_template_defs.append(tdef_isrlo)
+        if "fsr20" not in args.exclude_weights:
+            fsr2005_template_defs.append(tdef_fsr20)
+        if "fsr05" not in args.exclude_weights:
+            fsr2005_template_defs.append(tdef_fsr05)
+        if "20muRF" not in args.exclude_weights:
+            isr2005_template_defs.append(tdef_isr20)
+        if "05muRF" not in args.exclude_weights:
+            isr2005_template_defs.append(tdef_isr05)
+        if "Var3cUp" not in args.exclude_weights:
+            var3cud_template_defs.append(tdef_v3cup)
+        if "Var3cDown" not in args.exclude_weights:
+            var3cud_template_defs.append(tdef_v3cdn)
+
+    return (
+        isrComb_template_defs
+        + fsr2005_template_defs
+        + isr2005_template_defs
+        + var3cud_template_defs
+    )
+
+
+def wsys_template_defs(template_defs, args):
+    wsys_tdefs = []
+    for entry in template_defs:
+        for title, sysweight in six.iteritems(SYS_WEIGHTS):
+            if sysweight.tiny and not args.do_tiny:
+                log.debug("Skipping because tiny: {} {}".format(title, sysweight))
+                continue
+            if title in args.exclude_weights:
+                log.debug("Skipping because excluded: {} {}".format(title, sysweight))
+                continue
+            tdef_up, tdef_dn = deepcopy(entry), deepcopy(entry)
+            tdef_up.weight, tdef_dn.weight = sysweight.branch_up, sysweight.branch_down
+            tdef_up.weight_suffix = "{}_{}".format(title, "Up")
+            tdef_dn.weight_suffix = "{}_{}".format(title, "Down")
+            wsys_tdefs.append(tdef_up)
+            wsys_tdefs.append(tdef_dn)
+    return wsys_tdefs
+
+
+def pdfsys_template_defs(template_defs, args):
+    pdf_template_defs = []
+    for entry in template_defs:
+        for title, pdfweight in six.iteritems(PDF_WEIGHTS):
+            if pdfweight.tiny and not args.do_tiny:
+                log.debug("Skipping because tiny: {} {}".format(title, sysweight))
+                continue
+            if title in args.exclude_weights:
+                log.debug("Skipping because excluded: {} {}".format(title, sysweight))
+                continue
+            tdef_pdf = deepcopy(entry)
+            tdef_pdf.weight = pdfweight.branch
+            tdef_pdf.weight_suffix = title
+            pdf_template_defs.append(tdef_pdf)
+    return pdf_template_defs
+
+
 def template_definitions(yaml_config, args):
     template_defs = []
     all_regions = [entry["name"] for entry in yaml_config["regions"]]
@@ -273,63 +372,19 @@ def template_definitions(yaml_config, args):
             tdef.regions = all_regions
         template_defs.append(tdef)
 
-    radhilo_template_defs = []
-    fsr2005_template_defs = []
-    for entry in template_defs:
-        tdef_isrhi, tdef_isrlo = deepcopy(entry), deepcopy(entry)
-        tdef_fsr20, tdef_fsr05 = deepcopy(entry), deepcopy(entry)
-        tdef_isrhi.weight, tdef_isrlo.weight = "weight_sys_radHi", "weight_sys_radLo"
-        tdef_isrhi.weight_suffix, tdef_isrlo.weight_suffix = "radHi", "radLo"
-        tdef_fsr20.weight, tdef_fsr05.weight = "weight_sys_fsr20", "weight_sys_fsr05"
-        tdef_fsr20.weight_suffix, tdef_fsr05.weight_suffix = "fsr20", "fsr05"
-        if "radHi" not in args.exclude_weights:
-            radhilo_template_defs.append(tdef_isrhi)
-        if "radLo" not in args.exclude_weights:
-            radhilo_template_defs.append(tdef_isrlo)
-        if "fsr20" not in args.exclude_weights:
-            fsr2005_template_defs.append(tdef_fsr20)
-        if "fsr05" not in args.exclude_weights:
-            fsr2005_template_defs.append(tdef_fsr05)
+    addrad_tdefs = addrad_template_defs(template_defs, args)
 
     if args.noweightsys:
-        return template_defs + radhilo_template_defs + fsr2005_template_defs
+        return template_defs + addrad_tdefs
 
-    wsys_template_defs = []
-    for entry in template_defs:
-        for title, sysweight in six.iteritems(SYS_WEIGHTS):
-            if sysweight.tiny and not args.do_tiny:
-                log.debug("Skipping because tiny: {} {}".format(title, sysweight))
-                continue
-            if title in args.exclude_weights:
-                log.debug("Skipping because excluded: {} {}".format(title, sysweight))
-                continue
-            tdef_up, tdef_dn = deepcopy(entry), deepcopy(entry)
-            tdef_up.weight, tdef_dn.weight = sysweight.branch_up, sysweight.branch_down
-            tdef_up.weight_suffix = "{}_{}".format(title, "Up")
-            tdef_dn.weight_suffix = "{}_{}".format(title, "Down")
-            wsys_template_defs.append(tdef_up)
-            wsys_template_defs.append(tdef_dn)
-
-    pdf_template_defs = []
-    for entry in template_defs:
-        for title, pdfweight in six.iteritems(PDF_WEIGHTS):
-            if pdfweight.tiny and not args.do_tiny:
-                log.debug("Skipping because tiny: {} {}".format(title, sysweight))
-                continue
-            if title in args.exclude_weights:
-                log.debug("Skipping because excluded: {} {}".format(title, sysweight))
-                continue
-            tdef_pdf = deepcopy(entry)
-            tdef_pdf.weight = pdfweight.branch
-            tdef_pdf.weight_suffix = title
-            pdf_template_defs.append(tdef_pdf)
+    wsys_tdefs = wsys_template_defs(template_defs, args)
+    pdfsys_tdefs = pdfsys_template_defs(template_defs, args)
 
     return (
         template_defs
-        + radhilo_template_defs
-        + fsr2005_template_defs
-        + wsys_template_defs
-        + pdf_template_defs
+        + addrad_tdefs
+        + wsys_tdefs
+        + pdfsys_tdefs
     )
 
 
@@ -361,29 +416,31 @@ def ntuple_definitions(nominal_files, systematic_files, root_dir):
 
 
 CPP_SHIFT_CODE = """
-void shiftScaleSetDir(TH1* h, TFile* file) {
-  if (h == nullptr) {
-    return;
+void shiftScaleSetDir(TH1* hist, TFile* file) {
+  if (hist == nullptr) {
+    std::cerr << "[shiftScaleSetDir] :: hist is nullptr" << std::endl;
   }
-  int nb = h->GetNbinsX();
+  if (file == nullptr) {
+    std::cerr << "[shiftScaleSetDir] :: file is nullptr" << std::endl;
+  }
 
-  h->AddBinContent(1, h->GetBinContent(0));
-  h->SetBinError(1, TMath::Sqrt(TMath::Power(h->GetBinError(0), 2) +
-                                TMath::Power(h->GetBinError(1), 2)));
+  Int_t nbins = hist->GetNbinsX();
+  hist->AddBinContent(1, hist->GetBinContent(0) );
+  hist->SetBinError(1, TMath::Sqrt(TMath::Power(hist->GetBinError(1), 2) +
+                                   TMath::Power(hist->GetBinError(0), 2)));
+  hist->AddBinContent(nbins, hist->GetBinContent(nbins + 1));
+  hist->SetBinError(nbins, TMath::Sqrt(TMath::Power(hist->GetBinError(nbins), 2) +
+                                       TMath::Power(hist->GetBinError(nbins + 1), 2)));
 
-  h->AddBinContent(nb, h->GetBinContent(nb + 1));
-  h->SetBinError(nb, TMath::Sqrt(TMath::Power(h->GetBinError(nb), 2) +
-                                 TMath::Power(h->GetBinError(nb + 1), 2)));
+  hist->SetBinContent(0, 0.0);
+  hist->SetBinContent(nbins + 1, 0.0);
+  hist->SetBinError(0, 0.0);
+  hist->SetBinError(nbins + 1, 0.0);
 
-  h->SetBinContent(0, 0.0);
-  h->SetBinError(0, 0.0);
-  h->SetBinContent(nb + 1, 0.0);
-  h->SetBinError(nb + 1, 0.0);
-
-  auto dir = gDirectory;
+  TDirectory* dir = gDirectory;
   file->cd();
-  h->Write("", TObject::kOverwrite);
-  h->SetDirectory(0);
+  hist->Write("", TObject::kOverwrite);
+  hist->SetDirectory(0);
   dir->cd();
 }
 """
@@ -462,10 +519,7 @@ def rdf_runner(args):
                 if region.name not in template.regions:
                     continue
                 weight_suffix = ""
-                if ("radLo" in template.weight or
-                    "radHi" in template.weight or
-                    "fsr20" in template.weight or
-                    "fsr05" in template.weight):
+                if template.is_addrad:
                     if  ntuple.ntype == NtupleType.SYSTEMATIC:
                         continue
                     if ntuple.name not in ["ttbar_RU_AFII", "ttbar_AFII", "ttbar", "tW"]:
@@ -516,6 +570,7 @@ def rdf_runner(args):
 
 if __name__ == "__main__":
     import argparse
+
     parser = argparse.ArgumentParser(description="WtStat executions")
     rdf_args(parser)
     args = parser.parse_args()
