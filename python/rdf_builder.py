@@ -335,14 +335,13 @@ def template_definitions(yaml_config, args):
 
 def ntuple_definitions(nominal_files, systematic_files, root_dir):
     ntuple_defs = []
-    if root_dir is None:
-        file_pref = "/"
-    else:
-        file_pref = root_dir
     for key, value in six.iteritems(nominal_files):
         sdef = NtupleDefinition()
         sdef.name = key
-        sdef.files = ["{}/{}".format(file_pref, f) for f in value]
+        if root_dir is None:
+            sdef.files = value
+        else:
+            sdef.files = ["{}/{}".format(file_pref, f) for f in value]
         if key == "Data":
             sdef.ntype = NtupleType.DATA
         else:
@@ -351,7 +350,10 @@ def ntuple_definitions(nominal_files, systematic_files, root_dir):
     for key, value in six.iteritems(systematic_files):
         sdef = NtupleDefinition()
         sdef.name = key[0]
-        sdef.files = ["{}/{}".format(file_pref, f) for f in value]
+        if root_dir is None:
+            sdef.files = value
+        else:
+            sdef.files = ["{}/{}".format(file_pref, f) for f in value]
         sdef.ntype = NtupleType.SYSTEMATIC
         sdef.tree_systematic = key[1]
         ntuple_defs.append(sdef)
