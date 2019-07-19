@@ -341,7 +341,7 @@ def ntuple_definitions(nominal_files, systematic_files, root_dir):
         if root_dir is None:
             sdef.files = value
         else:
-            sdef.files = ["{}/{}".format(file_pref, f) for f in value]
+            sdef.files = ["{}/{}".format(root_dir, f) for f in value]
         if key == "Data":
             sdef.ntype = NtupleType.DATA
         else:
@@ -353,7 +353,7 @@ def ntuple_definitions(nominal_files, systematic_files, root_dir):
         if root_dir is None:
             sdef.files = value
         else:
-            sdef.files = ["{}/{}".format(file_pref, f) for f in value]
+            sdef.files = ["{}/{}".format(root_dir, f) for f in value]
         sdef.ntype = NtupleType.SYSTEMATIC
         sdef.tree_systematic = key[1]
         ntuple_defs.append(sdef)
