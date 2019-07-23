@@ -313,6 +313,20 @@ def addrad_template_defs(template_defs, args):
     )
 
 
+def reweighted_template_defs(template_defs, args):
+    rw_tool_template_defs = []
+    rw_adhoc_template_defs = []
+    for entry in template_defs:
+        tdef_rw_tool, tdef_rw_adhoc = deepcopy(entry), deepcopy(entry)
+        tdef_rw_tool.weight = "weight_nominal_rw_tool"
+        tdef_rw_adhoc.weight = "weight_nominal_rw_adhoc"
+        tdef_rw_tool.weight_suffix = "rw_tool"
+        tdef_rw_adhoc.weight_suffix = "rw_adhoc"
+        rw_tool_template_defs.append(tdef_rw_tool)
+        rw_adhoc_template_defs.append(tdef_rw_adhoc)
+    return rw_tool_template_defs + rw_adhoc_template_defs
+
+
 def wsys_template_defs(template_defs, args):
     wsys_tdefs = []
     for entry in template_defs:
@@ -371,17 +385,17 @@ def template_definitions(yaml_config, args):
             tdef.regions = all_regions
         template_defs.append(tdef)
 
-    addrad_tdefs = addrad_template_defs(template_defs, args)
+    template_defs += reweighted_template_defs(template_defs, args)
+    template_defs += addrad_template_defs(template_defs, args)
 
     if args.noweightsys:
-        return template_defs + addrad_tdefs
+        return template_defs
 
     wsys_tdefs = wsys_template_defs(template_defs, args)
     pdfsys_tdefs = pdfsys_template_defs(template_defs, args)
 
     return (
         template_defs
-        + addrad_tdefs
         + wsys_tdefs
         + pdfsys_tdefs
     )
@@ -529,6 +543,8 @@ def rdf_runner(args):
                     if  ntuple.ntype == NtupleType.SYSTEMATIC:
                         continue
                     if not ntuple_is_ttbar_or_tW:
+                        continue
+                    if "nominal_rw" in template.weight and ntuple.name != "ttbar":
                         continue
                     weight_suffix = "_{}".format(template.weight_suffix)
                 hist_name = "{rname}_{vname}_{sname}{tree_suffix}{weight_suffix}".format(
