@@ -152,6 +152,7 @@ def rdf_args(parser):
     parser.add_argument("--debug", action="store_true", help="turn on debug statements")
     parser.add_argument("--do-aux", action="store_true", help="Do templates with aux property set to true in YAML config")
     parser.add_argument("--do-tiny", action="store_true", help="Do systematics labeled as tiny")
+    parser.add_argument("--tptrw", type=str, choices=["tool", "adhoc"], required=False, help="do top pt reweight for ttbar")
     # fmt: on
     return 0
 
@@ -318,10 +319,10 @@ def reweighted_template_defs(template_defs, args):
     rw_adhoc_template_defs = []
     for entry in template_defs:
         tdef_rw_tool, tdef_rw_adhoc = deepcopy(entry), deepcopy(entry)
-        tdef_rw_tool.weight = "weight_nominal_rw_tool"
-        tdef_rw_adhoc.weight = "weight_nominal_rw_adhoc"
-        tdef_rw_tool.weight_suffix = "rw_tool"
-        tdef_rw_adhoc.weight_suffix = "rw_adhoc"
+        tdef_rw_tool.weight = "weight_nominal_tptrw_tool"
+        tdef_rw_adhoc.weight = "weight_nominal_tptrw_adhoc"
+        tdef_rw_tool.weight_suffix = "tptrw_tool"
+        tdef_rw_adhoc.weight_suffix = "tptrw_adhoc"
         rw_tool_template_defs.append(tdef_rw_tool)
         rw_adhoc_template_defs.append(tdef_rw_adhoc)
     return rw_tool_template_defs + rw_adhoc_template_defs
@@ -544,7 +545,7 @@ def rdf_runner(args):
                         continue
                     if not ntuple_is_ttbar_or_tW:
                         continue
-                    if "nominal_rw" in template.weight and ntuple.name != "ttbar":
+                    if "tptrw" in template.weight and ntuple.name != "ttbar":
                         continue
                     weight_suffix = "_{}".format(template.weight_suffix)
                 hist_name = "{rname}_{vname}_{sname}{tree_suffix}{weight_suffix}".format(
@@ -565,7 +566,10 @@ def rdf_runner(args):
                                        bin_instructor.nbins, bin_instructor.xmin, bin_instructor.xmax)
                 else:
                     log.error("something is wrong {} {}".format(bin_instructor.bin_type, bin_instructor.name))
-                df_histograms.append(filt.Histo1D(hmodel, template.var, template.weight))
+                histo_weight_str = template.weight
+                if args.tptrw is not None:
+                    histo_weight_str = "{} * {}".format(histo_weight_str, "tptrw_{}".format(args.tptrw))
+                df_histograms.append(filt.Histo1D(hmodel, template.var, histo_weight_str))
             ## have to save the filter to prevent dangling histograms
             df_filters.append(filt)
 
