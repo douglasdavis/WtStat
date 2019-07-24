@@ -534,20 +534,19 @@ def rdf_runner(args):
                     continue
                 if region.name not in template.regions:
                     continue
-                weight_suffix = ""
                 if template.is_addrad:
                     if  ntuple.ntype == NtupleType.SYSTEMATIC:
                         continue
                     if ntuple.name not in ["ttbar_RU_AFII", "ttbar_AFII", "ttbar", "tW"]:
                         continue
                 elif template.weight != "weight_nominal":
-                    if  ntuple.ntype == NtupleType.SYSTEMATIC:
+                    if ntuple.ntype == NtupleType.SYSTEMATIC:
                         continue
                     if not ntuple_is_ttbar_or_tW:
                         continue
                     if "tptrw" in template.weight and ntuple.name != "ttbar":
                         continue
-                weight_suffix = "_{}".format(template.weight_suffix)
+                weight_suffix = "" if template.weight_suffix is None else "_{}".format(template.weight_suffix)
                 hist_name = "{rname}_{vname}_{sname}{tree_suffix}{weight_suffix}".format(
                     rname=region.name, vname=template.var, sname=ntuple.name,
                     tree_suffix=tree_suffix, weight_suffix=weight_suffix)
