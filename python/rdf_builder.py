@@ -566,10 +566,14 @@ def rdf_runner(args):
                                        bin_instructor.nbins, bin_instructor.xmin, bin_instructor.xmax)
                 else:
                     log.error("something is wrong {} {}".format(bin_instructor.bin_type, bin_instructor.name))
-                histo_weight_str = template.weight
-                if args.tptrw is not None:
-                    histo_weight_str = "{} * {}".format(histo_weight_str, "tptrw_{}".format(args.tptrw))
-                df_histograms.append(filt.Histo1D(hmodel, template.var, histo_weight_str))
+                if ntuple.name == "ttbar" and args.tptrw is not None:
+                    filtdef = filt.Define("exw_{}_{}".format(template.weight, args.tptrw),
+                                          "{} * tptrw_{}".format(template.weight, args.tptrw))
+                    df_histograms.append(filtdef.Histo1D(hmodel, template.var,
+                                                         "exw_{}_{}".format(template.weight, args.tptrw)))
+                    df_filters.append(filtdef)
+                else:
+                    df_histograms.append(filt.Histo1D(hmodel, template.var, template.weight))
             ## have to save the filter to prevent dangling histograms
             df_filters.append(filt)
 
