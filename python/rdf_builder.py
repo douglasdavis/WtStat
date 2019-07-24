@@ -42,7 +42,6 @@ import ROOT
 ROOT.PyConfig.IgnoreCommandLineOptions = True
 RDataFrame = ROOT.ROOT.RDataFrame
 TH1DModel = ROOT.ROOT.RDF.TH1DModel
-SaveGraph = ROOT.ROOT.RDF.SaveGraph
 # fmt: on
 
 
@@ -386,17 +385,19 @@ def template_definitions(yaml_config, args):
             tdef.regions = all_regions
         template_defs.append(tdef)
 
-    template_defs += reweighted_template_defs(template_defs, args)
-    template_defs += addrad_template_defs(template_defs, args)
+    rw_tdefs = reweighted_template_defs(template_defs, args)
+    ar_tdefs = addrad_template_defs(template_defs, args)
 
     if args.noweightsys:
-        return template_defs
+        return (template_defs + rw_tdefs + ar_tdefs)
 
     wsys_tdefs = wsys_template_defs(template_defs, args)
     pdfsys_tdefs = pdfsys_template_defs(template_defs, args)
 
     return (
         template_defs
+        + rw_tdefs
+        + ar_tdefs
         + wsys_tdefs
         + pdfsys_tdefs
     )
@@ -539,7 +540,6 @@ def rdf_runner(args):
                         continue
                     if ntuple.name not in ["ttbar_RU_AFII", "ttbar_AFII", "ttbar", "tW"]:
                         continue
-                    weight_suffix = "_{}".format(template.weight_suffix)
                 elif template.weight != "weight_nominal":
                     if  ntuple.ntype == NtupleType.SYSTEMATIC:
                         continue
@@ -547,7 +547,7 @@ def rdf_runner(args):
                         continue
                     if "tptrw" in template.weight and ntuple.name != "ttbar":
                         continue
-                    weight_suffix = "_{}".format(template.weight_suffix)
+                weight_suffix = "_{}".format(template.weight_suffix)
                 hist_name = "{rname}_{vname}_{sname}{tree_suffix}{weight_suffix}".format(
                     rname=region.name, vname=template.var, sname=ntuple.name,
                     tree_suffix=tree_suffix, weight_suffix=weight_suffix)
@@ -566,11 +566,12 @@ def rdf_runner(args):
                                        bin_instructor.nbins, bin_instructor.xmin, bin_instructor.xmax)
                 else:
                     log.error("something is wrong {} {}".format(bin_instructor.bin_type, bin_instructor.name))
-                if ntuple.name == "ttbar" and args.tptrw is not None:
+                if ntuple.name == "ttbar" and args.tptrw is not None and "tptrw" not in template.weight:
                     filtdef = filt.Define("exw_{}_{}".format(template.weight, args.tptrw),
                                           "{} * tptrw_{}".format(template.weight, args.tptrw))
                     df_histograms.append(filtdef.Histo1D(hmodel, template.var,
                                                          "exw_{}_{}".format(template.weight, args.tptrw)))
+                    log.debug("performed top pt reweight {} * {}".format(template.weight, args.tptrw))
                     df_filters.append(filtdef)
                 else:
                     df_histograms.append(filt.Histo1D(hmodel, template.var, template.weight))
