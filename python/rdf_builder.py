@@ -169,6 +169,8 @@ def rdf_args(parser):
     parser.add_argument("--do-aux", type=str, default=["_none"], nargs="+", help="aux labeled templates to process")
     parser.add_argument("--tptrw", type=str, choices=["tool", "adhoc"], required=False, help="do top pt reweight for ttbar")
     parser.add_argument("--do-tiny", action="store_true", help="Do systematics labeled as tiny")
+    parser.add_argument("--is-v28", action="store_true", help="useful logical helper for old v28 ntuples")
+    parser.add_argument("--do-pdf-namehack", action="store_true", help="perform name hack on PDF weights (bring back '=')")
     parser.add_argument("--debug", action="store_true", help="turn on debug statements")
 
 
@@ -328,6 +330,8 @@ def addrad_template_defs(template_defs, args):
 
 
 def reweighted_template_defs(template_defs, args):
+    if args.is_v28:
+        return []
     rw_tool_template_defs = []
     rw_adhoc_template_defs = []
     for entry in template_defs:
@@ -374,6 +378,8 @@ def pdfsys_template_defs(template_defs, args):
                 continue
             tdef_pdf = deepcopy(entry)
             tdef_pdf.weight = pdfweight.branch
+            if args.do_pdf_namehack:
+                tdef_pdf.weight = tdef_pdf.weight.replace("set_9", "set=9")
             tdef_pdf.weight_suffix = title
             pdf_template_defs.append(tdef_pdf)
     return pdf_template_defs
@@ -554,6 +560,11 @@ def rdf_runner(args):
     started_empty = len(file_keys) < 5
 
     ROOT.gInterpreter.ProcessLine(CPP_SHIFT_CODE)
+
+    if args.tptrw is not None and args.is_v28:
+        log.error("top pt reweighting only supported with v29+ ntuples")
+        out_file.Close()
+        exit(1)
 
     nntuples = len(ntuple_sets)
     for i, ntuple in enumerate(ntuple_sets):
