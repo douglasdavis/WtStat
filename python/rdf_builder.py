@@ -135,6 +135,24 @@ NOMINAL_REGEXES = {
     "tW_MCaNLO_AFII": re.compile("tW_412003_AFII"),
 }
 
+_REXCLUDE_WEIGHTS = None
+_REXCLUDE_TREES = None
+
+def exclusion_regexes(args):
+    global _REXCLUDE_WEIGHTS
+    global _REXCLUDE_TREES
+    if _REXCLUDE_WEIGHTS is None:
+        if args.exclude_weights:
+            _REXCLUDE_WEIGHTS = re.compile(args.exclude_weights)
+        else:
+            _REXCLUDE_WEIGHTS = re.compile("____")
+    if _REXCLUDE_TREES is None:
+        if args.exclude_trees:
+            _REXCLUDE_TREES = re.compile(args.exclude_trees)
+        else:
+            _REXCLUDE_TREES = re.compile("____")
+    return (_REXCLUDE_WEIGHTS, _REXCLUDE_TREES)
+
 
 def rdf_args(parser):
     # fmt: off
@@ -142,16 +160,18 @@ def rdf_args(parser):
     parser.add_argument("-x", "--txt-file", type=str, required=False, help="text file listing all relevant Wt ntuples")
     parser.add_argument("-c", "--config", type=str, default="auto", required=False, help="configuration file")
     parser.add_argument("-o", "--outfile", type=str, required=True, help="output file")
-    parser.add_argument("--exclude-weights", type=str, nargs="+", default=[], help="set of weight systematics to exclude")
-    parser.add_argument("--exclude-trees", type=str, nargs="+", default=[], help="set of tree systematics to exclude")
+    parser.add_argument("--exclude-weights", type=str, required=False, help="regex for weight systematics to exclude (uses re.search)")
+    parser.add_argument("--exclude-trees", type=str, required=False, help="regex for tree systematics to exclude (uses re.search)")
     parser.add_argument("--no-tree-systematics", dest="notreesys", action="store_true", help="ignore all tree  systematics")
     parser.add_argument("--no-weight-systematics", dest="noweightsys", action="store_true", help="ignore all weight systematics")
     parser.add_argument("--tree-prefix", type=str, default="WtLoop", help="Wt tree prefix (WtTMVA or WtLoop)")
     parser.add_argument("--disable-imt", action="store_true", help="disable ROOT's implicit multithreading")
-    parser.add_argument("--debug", action="store_true", help="turn on debug statements")
-    parser.add_argument("--do-aux", action="store_true", help="Do templates with aux property set to true in YAML config")
-    parser.add_argument("--do-tiny", action="store_true", help="Do systematics labeled as tiny")
+    parser.add_argument("--do-aux", type=str, default=["_none"], nargs="+", help="aux labeled templates to process")
     parser.add_argument("--tptrw", type=str, choices=["tool", "adhoc"], required=False, help="do top pt reweight for ttbar")
+    parser.add_argument("--do-tiny", action="store_true", help="Do systematics labeled as tiny")
+    parser.add_argument("--debug", action="store_true", help="turn on debug statements")
+
+
     # fmt: on
     return 0
 
@@ -204,6 +224,7 @@ def sortfiles_systematic(file_list, args):
     re_tW_sys_FS = re.compile("(tW_DR_[0-9]{6}_FS_MC16(a|d|e)_)")
     re_tt_sys_FS = re.compile("(ttbar_[0-9]{6}_FS_MC16(a|d|e)_)")
     files = OrderedDict()
+    _, treeregexclude = exclusion_regexes(args)
     for f in file_list:
         if not f.endswith(".root"):
             continue
@@ -215,7 +236,7 @@ def sortfiles_systematic(file_list, args):
             sres = re_tW_sys_FS.search(f)
             if sres:
                 sys_tree_name = f.split(sres.group(0))[-1].split(".")[0]
-                if sys_tree_name in args.exclude_trees:
+                if re.search(treeregexclude, sys_tree_name):
                     pass
                 elif ("tW", sys_tree_name) not in files:
                     files[("tW", sys_tree_name)] = [f]
@@ -225,7 +246,7 @@ def sortfiles_systematic(file_list, args):
             sres = re_tt_sys_FS.search(f)
             if sres:
                 sys_tree_name = f.split(sres.group(0))[-1].split(".")[0]
-                if sys_tree_name in args.exclude_trees:
+                if re.search(treeregexclude, sys_tree_name):
                     pass
                 elif ("ttbar", sys_tree_name) not in files:
                     files[("ttbar", sys_tree_name)] = [f]
@@ -255,6 +276,7 @@ def region_definitions(yaml_config):
 
 
 def addrad_template_defs(template_defs, args):
+    weightregexclude, _ = exclusion_regexes(args)
     isrComb_template_defs = []
     isr2005_template_defs = []
     fsr2005_template_defs = []
@@ -288,22 +310,14 @@ def addrad_template_defs(template_defs, args):
         tdef_v3cdn.weight_suffix = "Var3cDown"
         tdef_v3cup.is_addrad, tdef_v3cdn.is_addrad = True, True
 
-        if "isrCombRadHi" not in args.exclude_weights:
-            isrComb_template_defs.append(tdef_isrhi)
-        if "isrCombRadLo" not in args.exclude_weights:
-            isrComb_template_defs.append(tdef_isrlo)
-        if "fsr20" not in args.exclude_weights:
-            fsr2005_template_defs.append(tdef_fsr20)
-        if "fsr05" not in args.exclude_weights:
-            fsr2005_template_defs.append(tdef_fsr05)
-        if "20muRF" not in args.exclude_weights:
-            isr2005_template_defs.append(tdef_isr20)
-        if "05muRF" not in args.exclude_weights:
-            isr2005_template_defs.append(tdef_isr05)
-        if "Var3cUp" not in args.exclude_weights:
-            var3cud_template_defs.append(tdef_v3cup)
-        if "Var3cDown" not in args.exclude_weights:
-            var3cud_template_defs.append(tdef_v3cdn)
+        isrComb_template_defs.append(tdef_isrhi)
+        isrComb_template_defs.append(tdef_isrlo)
+        fsr2005_template_defs.append(tdef_fsr20)
+        fsr2005_template_defs.append(tdef_fsr05)
+        isr2005_template_defs.append(tdef_isr20)
+        isr2005_template_defs.append(tdef_isr05)
+        var3cud_template_defs.append(tdef_v3cup)
+        var3cud_template_defs.append(tdef_v3cdn)
 
     return (
         isrComb_template_defs
@@ -328,13 +342,14 @@ def reweighted_template_defs(template_defs, args):
 
 
 def wsys_template_defs(template_defs, args):
+    weightregexclude, _ = exclusion_regexes(args)
     wsys_tdefs = []
     for entry in template_defs:
         for title, sysweight in six.iteritems(SYS_WEIGHTS):
             if sysweight.tiny and not args.do_tiny:
                 log.debug("Skipping because tiny: {} {}".format(title, sysweight))
                 continue
-            if title in args.exclude_weights:
+            if re.search(weightregexclude, title) is not None:
                 log.debug("Skipping because excluded: {} {}".format(title, sysweight))
                 continue
             tdef_up, tdef_dn = deepcopy(entry), deepcopy(entry)
@@ -347,14 +362,15 @@ def wsys_template_defs(template_defs, args):
 
 
 def pdfsys_template_defs(template_defs, args):
+    weightregexclude, _ = exclusion_regexes(args)
     pdf_template_defs = []
     for entry in template_defs:
         for title, pdfweight in six.iteritems(PDF_WEIGHTS):
             if pdfweight.tiny and not args.do_tiny:
                 log.debug("Skipping because tiny: {} {}".format(title, sysweight))
                 continue
-            if title in args.exclude_weights:
-                log.debug("Skipping because excluded: {} {}".format(title, sysweight))
+            if re.search(weightregexclude, title) is not None:
+                log.debug("Skipping because excluded: {} {}".format(title, pdfweight))
                 continue
             tdef_pdf = deepcopy(entry)
             tdef_pdf.weight = pdfweight.branch
@@ -428,6 +444,31 @@ def ntuple_definitions(nominal_files, systematic_files, root_dir):
         sdef.tree_systematic = key[1]
         ntuple_defs.append(sdef)
     return ntuple_defs
+
+
+def should_skip_template(template, region, ntuple, args):
+    ntuple_is_ttbar_or_tW = ntuple.name == "tW" or ntuple.name == "ttbar"
+    if region.name not in template.regions:
+        return True
+    if template.is_aux and "_none" in args.do_aux:
+        return True
+    if "_all" not in args.do_aux:
+        if template.is_aux and template.var not in args.do_aux:
+            return True
+    if template.is_addrad:
+        if  ntuple.ntype == NtupleType.SYSTEMATIC:
+            return True
+        if ntuple.name not in ["ttbar_RU_AFII", "ttbar_AFII", "ttbar", "tW"]:
+            return True
+    elif template.weight != "weight_nominal":
+        if ntuple.ntype == NtupleType.SYSTEMATIC:
+            return True
+        if not ntuple_is_ttbar_or_tW:
+            return True
+        if "tptrw" in template.weight and ntuple.name != "ttbar":
+            return True
+
+    return False
 
 
 CPP_SHIFT_CODE = """
@@ -530,22 +571,8 @@ def rdf_runner(args):
         for region in regions:
             filt = df.Filter(region.selection)
             for template in templates:
-                if template.is_aux and not args.do_aux:
+                if should_skip_template(template, region, ntuple, args):
                     continue
-                if region.name not in template.regions:
-                    continue
-                if template.is_addrad:
-                    if  ntuple.ntype == NtupleType.SYSTEMATIC:
-                        continue
-                    if ntuple.name not in ["ttbar_RU_AFII", "ttbar_AFII", "ttbar", "tW"]:
-                        continue
-                elif template.weight != "weight_nominal":
-                    if ntuple.ntype == NtupleType.SYSTEMATIC:
-                        continue
-                    if not ntuple_is_ttbar_or_tW:
-                        continue
-                    if "tptrw" in template.weight and ntuple.name != "ttbar":
-                        continue
                 weight_suffix = "" if template.weight_suffix is None else "_{}".format(template.weight_suffix)
                 hist_name = "{rname}_{vname}_{sname}{tree_suffix}{weight_suffix}".format(
                     rname=region.name, vname=template.var, sname=ntuple.name,
@@ -570,7 +597,8 @@ def rdf_runner(args):
                                           "{} * tptrw_{}".format(template.weight, args.tptrw))
                     df_histograms.append(filtdef.Histo1D(hmodel, template.var,
                                                          "exw_{}_{}".format(template.weight, args.tptrw)))
-                    log.debug("performed top pt reweight {} * {}".format(template.weight, args.tptrw))
+                    log.debug("performing top pt reweight {} * tptrw_{} on {}".format(
+                        template.weight, args.tptrw, template.var))
                     df_filters.append(filtdef)
                 else:
                     df_histograms.append(filt.Histo1D(hmodel, template.var, template.weight))
