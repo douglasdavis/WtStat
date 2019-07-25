@@ -33,7 +33,7 @@ def parseargs():
     trexgen.add_argument("-f", "--hfile", type=str, required=True, help="Histogram file")
     trexgen.add_argument("-c", "--config", type=str, required=True, help="wt-stat configuration file")
     trexgen.add_argument("-r", "--reg-suff", type=str, default="", help="special region suffix")
-    trexgen.add_argument("-l", "--lumi", type=float, default=140.5, help="Luminosity")
+    trexgen.add_argument("-l", "--lumi", type=float, default=138.965, help="Luminosity")
     trexgen.add_argument("-o", "--out-file", type=str, default="fit.conf", help="output config file name")
     trexgen.add_argument("--vr-plots", action="store_true", help="produce the VR plots")
     trexgen.add_argument("--pruning", type=float, nargs=3, default=[0.001, 0.0005, 0.001], help="pruning settings (MCstat, SystNorm, SystShape)")

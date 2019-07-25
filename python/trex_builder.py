@@ -38,7 +38,7 @@ def Job(args):
   LegendNColumns: 1
   ImageFormat: "{imgf}"
   Lumi: {lumi}
-  LumiLabel: "{lumi} fb^{{-1}}"
+  LumiLabel: "{lumilab} fb^{{-1}}"
   UseATLASRoundingTxt: TRUE
   UseATLASRoundingTex: TRUE
   TableOptions: STANDALONE
@@ -58,6 +58,7 @@ def Job(args):
                       dotables="FALSE" if args.no_tables else "TRUE",
                       dosysplots="FALSE" if args.no_sysplots else "TRUE",
                       lumi=args.lumi,
+                      lumilab=round(args.lumi),
                       imgf=args.img_format)
 
 
@@ -210,9 +211,9 @@ NormFactor: "mu_ttbar"
 def Systematics_fixed():
     BLOCKS = """
 Systematic: "Lumi"
-  OverallDown: -0.02
+  OverallDown: -0.017
   Category: Instrumental
-  OverallUp: 0.02
+  OverallUp: 0.017
   Title: "Lumi"
   Samples: tW,ttbar,Zjets,Diboson,MCNP
   Type: OVERALL
@@ -246,27 +247,11 @@ Systematic: "tW_PS"
 Systematic: "tW_AR_ISR"
   Category: "Modeling"
   Title: "tW ISR"
-  HistoNameSufUp: "_radHi"
-  HistoNameSufDown: "_radLo"
+  HistoNameSufUp: "_isrCombRadHi"
+  HistoNameSufDown: "_isrCombRadLo"
   Symmetrisation: TWOSIDED
   Samples: tW
   Type: HISTO
-
-%Systematic: "tW_AR_ISRlo"
-%  Category: "Modeling"
-%  Title: "tW ISR lo"
-%  HistoNameSufUp: "_radLo"
-%  Symmetrisation: ONESIDED
-%  Samples: tW
-%  Type: HISTO
-%
-%Systematic: "tW_AR_ISRhi"
-%  Category: "Modeling"
-%  Title: "tW ISR hi"
-%  HistoNameSufUp: "_radHi"
-%  Symmetrisation: ONESIDED
-%  Samples: tW
-%  Type: HISTO
 
 Systematic: "tW_AR_FSR"
   Category: "Modeling"
@@ -298,36 +283,18 @@ Systematic: "ttbar_PS"
 Systematic: "ttbar_AR_ISR"
   Category: "Modeling"
   Title: "ttbar ISR"
-  HistoNameSufUp: "_RU_AFII_radHi"
-  HistoNameSufDown: "_AFII_radLo"
+  HistoNameSufUp: "_RU_AFII_isrCombRadHi"
+  HistoNameSufDown: "_AFII_isrCombRadLo"
   ReferenceSample: ttbarghost
   Symmetrisation: TWOSIDED
   Samples: ttbar
   Type: HISTO
 
-%Systematic: "ttbar_AR_ISRlo"
-%  Category: "Modeling"
-%  Title: "ttbar ISR lo"
-%  HistoNameSufUp: "_radLo"
-%  %ReferenceSample: ttbarghost
-%  Symmetrisation: ONESIDED
-%  Samples: ttbar
-%  Type: HISTO
-
-%Systematic: "ttbar_AR_ISRhi"
-%  Category: "Modeling"
-%  Title: "ttbar ISR hi"
-%  HistoNameSufUp: "_RU_AFII_radHi"
-%  ReferenceSample: ttbarghost
-%  Symmetrisation: ONESIDED
-%  Samples: ttbar
-%  Type: HISTO
-
 Systematic: "ttbar_AR_FSR"
   Category: "Modeling"
   Title: "ttbar FSR"
-  HistoNameSufDown: _fsr20
-  HistoNameSufUp: _fsr05
+  HistoNameSufDown: "_fsr20"
+  HistoNameSufUp: "_fsr05"
   Symmetrisation: TWOSIDED
   Samples: ttbar
   Type: HISTO
@@ -509,7 +476,7 @@ def Systematics_trees(args):
     return "\n".join(los)
 
 def tcgen(args):
-    log.warn("Always check configuration file. By-hand modifications are expected.")
+    log.info("Always check configuration file. By-hand modifications are expected.")
     job = Job(args)
     fit = Fit(args)
     regions = Regions(args)
