@@ -48,6 +48,7 @@ def Job(args):
   RatioYmax: 1.20
   RatioYminPostFit: 0.90
   RatioYmaxPostFit: 1.10
+  SplitHistoFiles: TRUE
 """
     return JOB.format(jobname=args.job_name,
                       mcstat=args.pruning[0],
@@ -235,20 +236,79 @@ Systematic: "tW_HS"
   Samples: tW
   Type: HISTO
 
-Systematic: "tW_PS"
+%Systematic: "tW_PS"
+%  Category: "Modeling"
+%  Title: "tW Parton Shower"
+%  ReferenceSample: tWghost
+%  Symmetrisation: ONESIDED
+%  HistoNameSufUp: "_H7_AFII"
+%  Samples: tW
+%  Type: HISTO
+
+Systematic: "tW_PS_1j1b"
   Category: "Modeling"
-  Title: "tW Parton Shower"
+  Title: "tW Parton Shower 1j1b"
   ReferenceSample: tWghost
   Symmetrisation: ONESIDED
   HistoNameSufUp: "_H7_AFII"
   Samples: tW
   Type: HISTO
+  Regions: reg1j1b
 
-Systematic: "tW_AR_ISR"
+Systematic: "tW_PS_2j1b"
   Category: "Modeling"
-  Title: "tW ISR"
-  HistoNameSufUp: "_isrCombRadHi"
-  HistoNameSufDown: "_isrCombRadLo"
+  Title: "tW Parton Shower 2j1b"
+  ReferenceSample: tWghost
+  Symmetrisation: ONESIDED
+  HistoNameSufUp: "_H7_AFII"
+  Samples: tW
+  Type: HISTO
+  Regions: reg2j1b
+
+Systematic: "tW_PS_2j2b"
+  Category: "Modeling"
+  Title: "tW Parton Shower 2j2b"
+  ReferenceSample: tWghost
+  Symmetrisation: ONESIDED
+  HistoNameSufUp: "_H7_AFII"
+  Samples: tW
+  Type: HISTO
+  Regions: reg2j2b
+
+Systematic: "tW_PS_3j"
+  Category: "Modeling"
+  Title: "tW Parton Shower 3j"
+  ReferenceSample: tWghost
+  Symmetrisation: ONESIDED
+  HistoNameSufUp: "_H7_AFII"
+  Samples: tW
+  Type: HISTO
+  Regions: reg3j
+
+%Systematic: "tW_AR_ISR"
+%  Category: "Modeling"
+%  Title: "tW ISR"
+%  HistoNameSufUp: "_isrCombRadHi"
+%  HistoNameSufDown: "_isrCombRadLo"
+%  Symmetrisation: TWOSIDED
+%  Samples: tW
+%  Type: HISTO
+
+
+Systematic: "tW_AR_ISR_scale"
+  Category: "Modeling"
+  Title: "tW ISR Scale Variations"
+  HistoNameSufUp: "_20muRF"
+  HistoNameSufDown: "_05muRF"
+  Symmetrisation: TWOSIDED
+  Samples: tW
+  Type: HISTO
+
+Systematic: "tW_AR_ISR_A14"
+  Category: "Modeling"
+  Title: "tW ISR A14"
+  HistoNameSufUp: "_Var3cUp"
+  HistoNameSufDown: "_Var3cDown"
   Symmetrisation: TWOSIDED
   Samples: tW
   Type: HISTO
@@ -271,21 +331,88 @@ Systematic: "ttbar_HS"
   Samples: ttbar
   Type: HISTO
 
-Systematic: "ttbar_PS"
+%Systematic: "ttbar_PS"
+%  Category: "Modeling"
+%  Title: "ttbar Parton Shower"
+%  ReferenceSample: ttbarghost
+%  Symmetrisation: ONESIDED
+%  HistoNameSufUp: "_H7_AFII"
+%  Samples: ttbar
+%  Type: HISTO
+
+Systematic: "ttbar_PS_1j1b"
   Category: "Modeling"
-  Title: "ttbar Parton Shower"
+  Title: "ttbar Parton Shower 1j1b"
   ReferenceSample: ttbarghost
   Symmetrisation: ONESIDED
   HistoNameSufUp: "_H7_AFII"
   Samples: ttbar
   Type: HISTO
+  Regions: reg1j1b
 
-Systematic: "ttbar_AR_ISR"
+Systematic: "ttbar_PS_2j1b"
   Category: "Modeling"
-  Title: "ttbar ISR"
-  HistoNameSufUp: "_RU_AFII_isrCombRadHi"
-  HistoNameSufDown: "_AFII_isrCombRadLo"
+  Title: "ttbar Parton Shower 2j1b"
   ReferenceSample: ttbarghost
+  Symmetrisation: ONESIDED
+  HistoNameSufUp: "_H7_AFII"
+  Samples: ttbar
+  Type: HISTO
+  Regions: reg2j1b
+
+Systematic: "ttbar_PS_2j2b"
+  Category: "Modeling"
+  Title: "ttbar Parton Shower 2j2b"
+  ReferenceSample: ttbarghost
+  Symmetrisation: ONESIDED
+  HistoNameSufUp: "_H7_AFII"
+  Samples: ttbar
+  Type: HISTO
+  Regions: reg2j2b
+
+Systematic: "ttbar_PS_3j"
+  Category: "Modeling"
+  Title: "ttbar Parton Shower 3j"
+  ReferenceSample: ttbarghost
+  Symmetrisation: ONESIDED
+  HistoNameSufUp: "_H7_AFII"
+  Samples: ttbar
+  Type: HISTO
+  Regions: reg3j
+
+%Systematic: "ttbar_AR_ISR"
+%  Category: "Modeling"
+%  Title: "ttbar ISR"
+%  HistoNameSufUp: "_RU_AFII_isrCombRadHi"
+%  HistoNameSufDown: "_AFII_isrCombRadLo"
+%  ReferenceSample: ttbarghost
+%  Symmetrisation: TWOSIDED
+%  Samples: ttbar
+%  Type: HISTO
+
+Systematic: "ttbar_AR_ISR_hdamp"
+  Category: "Modeling"
+  Title: "ttbar ISR hdamp"
+  HistoNameSufUp: "_RU_AFII"
+  ReferenceSample: ttbarghost
+  Symmetrisation: ONESIDED
+  Samples: ttbar
+  Type: HISTO
+
+Systematic: "ttbar_AR_ISR_scale"
+  Category: "Modeling"
+  Title: "ttbar ISR Scale Variations"
+  HistoNameSufUp: "_20muRF"
+  HistoNameSufDown: "_05muRF"
+  Symmetrisation: TWOSIDED
+  Samples: ttbar
+  Type: HISTO
+
+Systematic: "ttbar_AR_ISR_A14"
+  Category: "Modeling"
+  Title: "ttbar ISR A14"
+  HistoNameSufUp: "_Var3cUp"
+  HistoNameSufDown: "_Var3cDown"
   Symmetrisation: TWOSIDED
   Samples: ttbar
   Type: HISTO

@@ -2,95 +2,23 @@ regions:
 
   - name: reg1j1b
     selection: "reg1j1b && elmu && OS"
-    nbins: 20
+    nbins: 10
     xmin: -0.70
     xmax: 0.60
 
   - name: reg2j1b
     selection: "reg2j1b && elmu && OS"
-    nbins: 20
-    xmin: -0.70
+    nbins: 10
+    xmin: -0.75
     xmax: 0.75
 
   - name: reg2j2b
     selection: "reg2j2b && elmu && OS"
-    nbins: 20
-    xmin: -0.70
+    nbins: 10
+    xmin: -0.75
     xmax: 0.90
 
   - name: reg3j
-    selection: "reg3j && elmu && OS"
-    nbins: 20
-    xmin: -0.675
-    xmax: 0.80
-
-  - name: reg1j1b_03
-    selection: "reg1j1b && elmu && OS"
-    nbins: 3
-    xmin: -0.70
-    xmax: 0.60
-
-  - name: reg2j1b_03
-    selection: "reg2j1b && elmu && OS"
-    nbins: 3
-    xmin: -0.75
-    xmax: 0.75
-
-  - name: reg2j2b_03
-    selection: "reg2j2b && elmu && OS"
-    nbins: 3
-    xmin: -0.75
-    xmax: 0.90
-
-  - name: reg3j_03
-    selection: "reg3j && elmu && OS"
-    nbins: 3
-    xmin: -0.70
-    xmax: 0.80
-
-  - name: reg1j1b_05
-    selection: "reg1j1b && elmu && OS"
-    nbins: 5
-    xmin: -0.70
-    xmax: 0.60
-
-  - name: reg2j1b_05
-    selection: "reg2j1b && elmu && OS"
-    nbins: 5
-    xmin: -0.75
-    xmax: 0.75
-
-  - name: reg2j2b_05
-    selection: "reg2j2b && elmu && OS"
-    nbins: 5
-    xmin: -0.75
-    xmax: 0.90
-
-  - name: reg3j_05
-    selection: "reg3j && elmu && OS"
-    nbins: 5
-    xmin: -0.70
-    xmax: 0.80
-
-  - name: reg1j1b_10
-    selection: "reg1j1b && elmu && OS"
-    nbins: 10
-    xmin: -0.70
-    xmax: 0.60
-
-  - name: reg2j1b_10
-    selection: "reg2j1b && elmu && OS"
-    nbins: 10
-    xmin: -0.75
-    xmax: 0.75
-
-  - name: reg2j2b_10
-    selection: "reg2j2b && elmu && OS"
-    nbins: 10
-    xmin: -0.75
-    xmax: 0.90
-
-  - name: reg3j_10
     selection: "reg3j && elmu && OS"
     nbins: 10
     xmin: -0.70
@@ -707,3 +635,102 @@ samples:
 #- name: reg3jHb
 #  selection: "reg3jHb && elmu && OS"
 #  binning: [-1.0, -0.5312, -0.445, -0.378, -0.3188, -0.2622, -0.2078, -0.1556, -0.106, -0.06, -0.0162, 0.027, 0.07, 0.1166, 0.1684, 0.2328, 0.3132, 0.4044, 0.5002, 0.6022, 1.0]
+
+
+# old regions
+
+#- name: reg1j1b
+#  selection: "reg1j1b && elmu && OS"
+#  nbins: 10
+#  xmin: -0.70
+#  xmax: 0.60
+
+#- name: reg2j1b
+#  selection: "reg2j1b && elmu && OS"
+#  nbins: 10
+#  xmin: -0.70
+#  xmax: 0.75
+
+#- name: reg2j2b
+#  selection: "reg2j2b && elmu && OS"
+#  nbins: 10
+#  xmin: -0.70
+#  xmax: 0.90
+
+#- name: reg3j
+#  selection: "reg3j && elmu && OS"
+#  nbins: 10
+#  xmin: -0.675
+#  xmax: 0.80
+
+# - name: reg1j1b_03
+#   selection: "reg1j1b && elmu && OS"
+#   nbins: 3
+#   xmin: -0.70
+#   xmax: 0.60
+
+# - name: reg2j1b_03
+#   selection: "reg2j1b && elmu && OS"
+#   nbins: 3
+#   xmin: -0.75
+#   xmax: 0.75
+
+# - name: reg2j2b_03
+#   selection: "reg2j2b && elmu && OS"
+#   nbins: 3
+#   xmin: -0.75
+#   xmax: 0.90
+
+# - name: reg3j_03
+#   selection: "reg3j && elmu && OS"
+#   nbins: 3
+#   xmin: -0.70
+#   xmax: 0.80
+
+# - name: reg1j1b_05
+#   selection: "reg1j1b && elmu && OS"
+#   nbins: 5
+#   xmin: -0.70
+#   xmax: 0.60
+
+# - name: reg2j1b_05
+#   selection: "reg2j1b && elmu && OS"
+#   nbins: 5
+#   xmin: -0.75
+#   xmax: 0.75
+
+# - name: reg2j2b_05
+#   selection: "reg2j2b && elmu && OS"
+#   nbins: 5
+#   xmin: -0.75
+#   xmax: 0.90
+
+# - name: reg3j_05
+#   selection: "reg3j && elmu && OS"
+#   nbins: 5
+#   xmin: -0.70
+#   xmax: 0.80
+
+#- name: reg1j1b_10
+#  selection: "reg1j1b && elmu && OS"
+#  nbins: 10
+#  xmin: -0.70
+#  xmax: 0.60
+
+#- name: reg2j1b_10
+#  selection: "reg2j1b && elmu && OS"
+#  nbins: 10
+#  xmin: -0.75
+#  xmax: 0.75
+
+#- name: reg2j2b_10
+#  selection: "reg2j2b && elmu && OS"
+#  nbins: 10
+#  xmin: -0.75
+#  xmax: 0.90
+
+#- name: reg3j_10
+#  selection: "reg3j && elmu && OS"
+#  nbins: 10
+#  xmin: -0.70
+#  xmax: 0.80
