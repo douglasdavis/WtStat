@@ -42,6 +42,8 @@ def parseargs():
     trexgen.add_argument("--no-sysplots", action="store_true", help="Set do sys control plots to FALSE")
     trexgen.add_argument("--num-cpu", type=int, default=1, help="NumCPU option")
     trexgen.add_argument("--skip-tiny", action="store_true", help="Skip uncertainties tagged as tiny")
+    trexgen.add_argument("--no-summaryplot", action="store_true", help="Skip summary plot (saves time)")
+    trexgen.add_argument("--cm-thresh", type=str, default="0.35", help="correlation matrix threshold")
 
     rank = subcommands.add_parser("rank", help="perform ranking processing in parallel")
     rank.add_argument("config", type=str, help="TRExFitter config")

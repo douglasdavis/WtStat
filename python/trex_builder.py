@@ -30,7 +30,8 @@ def Job(args):
   HistoChecks: NOCRASH
   DoPieChartPlot: TRUE
   CmeLabel: "13 TeV"
-  DoSummaryPlot: TRUE
+  DoSummaryPlot: {dosummaryplot}
+  SummaryPlotRegions: reg1j1b,reg2j1b,reg2j2b,reg3j
   DoTables: {dotables}
   SystCategoryTables: {dotables}
   SystControlPlots: {dosysplots}
@@ -49,6 +50,7 @@ def Job(args):
   RatioYminPostFit: 0.90
   RatioYmaxPostFit: 1.10
   SplitHistoFiles: TRUE
+  CorrelationThreshold: {cmthresh}
 """
     return JOB.format(jobname=args.job_name,
                       mcstat=args.pruning[0],
@@ -56,11 +58,13 @@ def Job(args):
                       pruneshape=args.pruning[2],
                       histopath=histopath,
                       histofile=histofile,
+                      dosummaryplot="FALSE" if args.no_summaryplot else "TRUE",
                       dotables="FALSE" if args.no_tables else "TRUE",
                       dosysplots="FALSE" if args.no_sysplots else "TRUE",
                       lumi=args.lumi,
                       lumilab=round(args.lumi),
-                      imgf=args.img_format)
+                      imgf=args.img_format,
+                      cmthresh=args.cm_thresh)
 
 
 def Fit(args):
